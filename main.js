@@ -1,4 +1,3 @@
-maricones
 import { users } from './data/users.js';
 import { posts } from './data/posts.js';
 import { comments } from './data/comments.js';
@@ -110,9 +109,11 @@ usuariosPredefinidos.forEach(usuario => {
   selectorUsuario.appendChild(opcion);
 });
 
+
+
 // Manejar la creación de nuevas publicaciones
 document.getElementById('nuevoPostForm').addEventListener('submit', function (e) {
-  e.preventDefault();   
+  e.preventDefault();
 
   const userId = parseInt(document.getElementById('usuarioSelect').value);
   const title = document.getElementById('postTitulo').value;
@@ -131,17 +132,6 @@ document.getElementById('nuevoPostForm').addEventListener('submit', function (e)
   if (usuario) {
     newPost.asignarUsuario(usuario);
   }
-
-  //Crear un nuevo comentario comentario
-  /* let btnPublicar = document.querySelector("#publicarComment");
-  btnPublicar.addEventListener("click",(e)=>{
-    let tituloComment = document.querySelector("#tituloComment").value;
-    let contenidoComment = document.querySelector("#postId").value;
-    let newCom = new Comment(nextId,userId,tituloComment,contenidoComment);
-    console.log(newCom)
-    newCom.push(comentariosObjetos);
-  }); */
-
 
   // Añadir al principio del array
   publicacionesObjetos.splice(0, 0, newPost);
@@ -221,7 +211,7 @@ btnCancelar.addEventListener('click', ocultarModalEliminar);
 btnEliminar.addEventListener('click', () => {
   alert("Esto aun no está implementado jaja poneros las pilas");
   ocultarModalEliminar();
-  
+
 });
 
 // Configuración de búsqueda
