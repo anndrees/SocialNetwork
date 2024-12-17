@@ -46,6 +46,7 @@ export class Post {
     //Mostrar el formulario de añadir el comentario
     btnAddComentario.addEventListener("click",()=>{
       postElement.querySelector("#modal-add-comments").classList.remove("oculto");
+      document.body.classList.add('modal-open');
     });
 
     //Crear un nuevo comentario comentario
@@ -63,6 +64,7 @@ export class Post {
     //Ocultar el formulario de añadir el comentario al pulsar cancelar
     btnCancelarComment.addEventListener("click",()=>{
       postElement.querySelector("#modal-add-comments").classList.add("oculto");
+      document.body.classList.remove('modal-open');
     });
     
     // Mostrar los primeros 3 comentarios

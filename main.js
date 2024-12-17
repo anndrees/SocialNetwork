@@ -186,10 +186,12 @@ const btnEliminar = document.getElementById('btn-eliminar');
 
 function mostrarModalEliminar() {
   modalEliminar.classList.remove('oculto');
+  document.body.classList.add('modal-open');
 }
 
 function ocultarModalEliminar() {
   modalEliminar.classList.add('oculto');
+  document.body.classList.remove('modal-open');
 }
 
 // Eventos para la funcionalidad de eliminar
@@ -286,10 +288,12 @@ window.mostrarPerfilUsuario = function (userId) {
 
   // Mostrar el modal
   modalUsuario.classList.remove('oculto');
+  document.body.classList.add('modal-open');
 };
 
 function ocultarModalUsuario() {
   modalUsuario.classList.add('oculto');
+  document.body.classList.remove('modal-open');
 }
 
 // Eventos para abrir/cerrar el modal de usuario
