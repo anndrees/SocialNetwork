@@ -21,6 +21,9 @@ export class Post {
     const template = document.getElementById('post-template').content.cloneNode(true);
     const postElement = template.querySelector('.post');
     
+    // Añadir el data-post-id al elemento del post
+    postElement.dataset.postId = this.id;
+    
     postElement.querySelector('.post-titulo').textContent = this.title;
     const autorElement = postElement.querySelector('.post-autor');
     autorElement.textContent = `Publicado por ${this.user.name} (@${this.user.username})`;
