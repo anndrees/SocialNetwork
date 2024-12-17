@@ -15,7 +15,7 @@ const usuariosObjetos = [];
 const publicacionesObjetos = [];
 const comentariosObjetos = [];
 let todosObjetos = [];
-//asdasd
+
 // Crear usuarios predefinidos
 let idMaximo = 0;
 for (let i = 0; i < users.length; i++) {
@@ -25,7 +25,7 @@ for (let i = 0; i < users.length; i++) {
 }
 
 const usuariosPredefinidos = [
-  { id: idMaximo + 1, name: "Andrés", username: "andres.aranda", email: "andres@example.com", lat: "38.471466", lng: "-0.795974", phone: "123-456-789", website: "andres.dev" },
+  { id: idMaximo + 1, name: "Andrés", username: "andres.aranda", email: "andres@example.com", lat: "38.471785", lng: "-0.796950", phone: "123-456-789", website: "andres.dev" },
   { id: idMaximo + 2, name: "Saúl", username: "saul.dominguez", email: "saul@example.com", lat: "38.435533", lng: "-0.839848", phone: "234-567-890", website: "saul.dev" },
   { id: idMaximo + 3, name: "Miguel", username: "miguel.rico", email: "miguel@example.com", lat: "38.435533", lng: "-0.839848", phone: "345-678-901", website: "miguel.dev" },
   { id: idMaximo + 4, name: "Carlos", username: "carlos.perea", email: "carlos@example.com", lat: "38.382552", lng: "-0.763297", phone: "456-789-012", website: "carlos.dev" }
@@ -108,8 +108,6 @@ usuariosPredefinidos.forEach(usuario => {
   opcion.textContent = `${usuario.name} (@${usuario.username})`;
   selectorUsuario.appendChild(opcion);
 });
-
-
 
 // Manejar la creación de nuevas publicaciones
 document.getElementById('nuevoPostForm').addEventListener('submit', function (e) {
@@ -281,7 +279,6 @@ window.mostrarPerfilUsuario = function (userId) {
     const checkbox = todoElement.querySelector('input[type="checkbox"]');
     checkbox.addEventListener('change', (e) => {
       todo.completed = e.target.checked;
-      // Aquí podrías añadir código para persistir el cambio si lo necesitas
     });
 
     todosContainer.appendChild(todoElement);
@@ -331,18 +328,27 @@ function mostrarResultados(resultados, tipo) {
         const autor = usuariosObjetos.find(user => user.id === resultado.userId);
         template.querySelector('.post-title').textContent = resultado.title;
         template.querySelector('.post-author').textContent = `Publicado por @${autor.username}`;
+        template.querySelector('.item-resultado-busqueda').dataset.postId = resultado.id;
         break;
 
       case 'comentarios':
         template = document.querySelector('#comentario-resultado-template').content.cloneNode(true);
         template.querySelector('.comment-name').textContent = resultado.name;
         template.querySelector('.comment-body').textContent = `${resultado.body.substring(0, 100)}...`;
+        template.querySelector('.item-resultado-busqueda').dataset.commentId = resultado.id;
+        template.querySelector('.item-resultado-busqueda').dataset.postId = resultado.postId;
         break;
 
       case 'todos':
         template = document.querySelector('#todo-resultado-template').content.cloneNode(true);
         template.querySelector('.todo-title').textContent = resultado.title;
         template.querySelector('.todo-status').textContent = resultado.completed ? '✓ Completado' : '○ Pendiente';
+        // Buscar el usuario correspondiente y mostrar su nombre
+        const usuario = usuariosObjetos.find(user => user.id === resultado.userId);
+        if (usuario) {
+          template.querySelector('.todo-user').textContent = `Tarea de: ${usuario.name} (@${usuario.username})`;
+          template.querySelector('.item-resultado-busqueda').dataset.userId = usuario.id;
+        }
         break;
 
       default:
@@ -356,6 +362,7 @@ function mostrarResultados(resultados, tipo) {
 
   // Añadir event listeners para los resultados de usuarios
   if (tipo === 'usuarios') {
+    // si se hace click en un resultado de usuario, se abre su perfil en un modal
     const resultadosUsuarios = listaResultados.querySelectorAll('.item-resultado-busqueda.usuario');
     resultadosUsuarios.forEach(resultado => {
       resultado.addEventListener('click', () => {
@@ -363,6 +370,83 @@ function mostrarResultados(resultados, tipo) {
         const usuario = usuariosObjetos.find(u => u.id === userId);
         if (usuario) {
           mostrarPerfilUsuario(usuario.id);
+        }
+      });
+    });
+  } else if (tipo === 'publicaciones') {
+    // si se hace click en un resultado de publicación, se hace scroll hasta ella para verla en detalle
+    listaResultados.querySelectorAll('.item-resultado-busqueda').forEach(resultado => {
+      resultado.addEventListener('click', () => {
+        const postId = resultado.dataset.postId;
+        const postElement = document.querySelector(`.post[data-post-id="${postId}"]`);
+        if (postElement) {
+          const offsetTop = postElement.offsetTop - 90;
+          window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  } else if (tipo === 'comentarios') {
+    listaResultados.querySelectorAll('.item-resultado-busqueda').forEach(resultado => {
+      resultado.addEventListener('click', () => {
+        const commentId = resultado.dataset.commentId;
+        const postId = resultado.dataset.postId;
+        const postElement = document.querySelector(`.post[data-post-id="${postId}"]`);
+
+        if (postElement) {
+          // Hacer scroll hasta el post
+          const offsetTop = postElement.offsetTop - 90;
+          window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
+          });
+
+          // Esperar a que termine el scroll y buscar el comentario
+          setTimeout(() => {
+            const commentElement = postElement.querySelector(`.comment[data-comment-id="${commentId}"]`);
+            const commentsContainer = postElement.querySelector('.comments-container');
+
+            // Si el comentario está oculto, mostrar más comentarios
+            if (commentElement && commentElement.classList.contains('hidden')) {
+              const verMasLink = commentsContainer.querySelector('.ver-mas-comentarios');
+              // Ejecutamos la función mostrarSiguientesComentarios después de 300 ms hasta que el comentario se muestre
+              const mostrarSiguientesComentarios = () => {
+                if (verMasLink && !verMasLink.style.display && commentElement.classList.contains('hidden')) {
+                  verMasLink.click();
+                  setTimeout(mostrarSiguientesComentarios, 300);
+                } else {
+                  // Resaltar el comentario con una animación
+                  commentElement.style.transition = 'opacity 0.3s ease-in-out';
+                  commentElement.style.opacity = '0.3';
+                  setTimeout(() => {
+                    commentElement.style.opacity = '1';
+                  }, 300);
+                }
+              };
+              mostrarSiguientesComentarios();
+            } else if (commentElement) {
+              // Si el comentario ya es visible, solo resaltarlo
+              commentElement.style.transition = 'opacity 0.3s ease-in-out';
+              commentElement.style.opacity = '0.3';
+              setTimeout(() => {
+                commentElement.style.opacity = '1';
+              }, 300);
+            }
+          }, 800);
+        }
+      });
+    });
+  } else if (tipo === 'todos') {
+    // Añadir event listener para los resultados de to-dos
+    listaResultados.querySelectorAll('.item-resultado-busqueda').forEach(resultado => {
+      resultado.addEventListener('click', () => {
+        // Convertir a número ya que es un string
+        const userId = parseInt(resultado.dataset.userId);
+        const usuario = usuariosObjetos.find(user => user.id === userId);
+        if (usuario) {
+          mostrarPerfilUsuario(userId);
         }
       });
     });
