@@ -11,6 +11,10 @@ export class Comment {
     const template = document.getElementById('comment-template').content.cloneNode(true);
     const commentElement = template.querySelector('.comment');
     
+    // Añadir atributos data para identificación
+    commentElement.dataset.commentId = this.id;
+    commentElement.dataset.postId = this.postId;
+    
     commentElement.querySelector('.comment-autor').textContent = this.name;
     commentElement.querySelector('.comment-username').textContent = this.email;
     commentElement.querySelector('.comment-body').textContent = this.body;
