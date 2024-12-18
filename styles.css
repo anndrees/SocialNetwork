@@ -227,13 +227,22 @@ body.modal-open {
   border: solid 1px black;
   padding: 7px;
   border-radius: 0.5rem;
+  justify-content: center;
+  
+}
+
+.contenedor-add-user:hover{
+  background-color: #baf2e9;
+  cursor: pointer;
 }
 
 .texto-add-user{
-  justify-content: center;
-  align-content: center;
   margin: 10px;
   font-weight: bold;
+}
+
+.imagenAddUser{
+  vertical-align: middle;
 }
 
 .post-form select,
