@@ -249,6 +249,7 @@ window.mostrarPerfilUsuario = function (userId) {
   const usuario = usuariosObjetos.find(user => user.id === userId);
   if (!usuario) return;
 
+  
   // Código existente del perfil...
   modalUsuario.querySelector('.perfil-avatar').src = usuario.getAvatarUrl(120);
   modalUsuario.querySelector('.perfil-nombre').textContent = usuario.name;
@@ -291,6 +292,12 @@ window.mostrarPerfilUsuario = function (userId) {
   modalUsuario.classList.remove('oculto');
   document.body.classList.add('modal-open');
 };
+/*let btnModificarUsuario = modalUsuario.querySelector(".btn-modificar-usuario");
+  btnModificarUsuario.addEventListener("click",()=>{
+    let email = modalUsuario.querySelector('.perfil-email');
+    let telefono = modalUsuario.querySelector('.perfil-telefono').textContent;
+
+  });*/
 
 function ocultarModalUsuario() {
   modalUsuario.classList.add('oculto');
