@@ -136,13 +136,34 @@ body.modal-open {
   margin-bottom: 8px;
 }
 
+.comment-autor-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.comment-avatar {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.comment-autor-info {
+  display: flex;
+  gap: 5px;
+  align-items: baseline;
+}
+
 .comment-autor {
   color: var(--text-color);
-  margin-right: 5px;
+  font-weight: 600;
 }
 
 .comment-username {
   color: var(--secondary-color);
+  font-size: 0.9em;
 }
 
 .comment-body {
@@ -753,4 +774,54 @@ body.modal-open {
       margin-right: 70px;
     }
   }
+}
+.perfil-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  border: 4px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.post-autor-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.post-autor-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.usuario-resultado-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.usuario-resultado-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.usuario-resultado-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.usuario-resultado-info .username {
+  color: var(--primary-color);
+  font-size: 14px;
+}
+
+.usuario-resultado-info .name {
+  color: var(--text-color);
+  font-size: 13px;
+  margin-top: 2px;
 }

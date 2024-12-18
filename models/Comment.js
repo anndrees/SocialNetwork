@@ -5,6 +5,11 @@ export class Comment {
     this.name = name;
     this.email = email;
     this.body = body;
+    this.user = null; // Añadimos una referencia al usuario
+  }
+
+  asignarUsuario(usuario) {
+    this.user = usuario;
   }
 
   render() {
@@ -18,6 +23,17 @@ export class Comment {
     commentElement.querySelector('.comment-autor').textContent = this.name;
     commentElement.querySelector('.comment-username').textContent = this.email;
     commentElement.querySelector('.comment-body').textContent = this.body;
+
+    // Añadir avatar si tenemos usuario asignado
+    if (this.user) {
+      commentElement.querySelector('.comment-avatar').src = this.user.getAvatarUrl(25);
+    } else {
+      // Si no hay usuario, generar avatar basado en el email
+      const [localPart, domain] = this.email.split('@');
+      const avatarText = `${localPart[0]}${domain[0]}`; // Primera letra de cada parte
+      const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(avatarText)}&size=25&background=random`;
+      commentElement.querySelector('.comment-avatar').src = avatarUrl;
+    }
     
     return commentElement;
   }

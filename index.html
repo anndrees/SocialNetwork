@@ -38,7 +38,10 @@
           <article class="post">
             <div class="post-cabecera">
               <h2 class="post-titulo"></h2>
-              <p class="post-autor usuario-link"></p>
+              <div class="post-autor-container">
+                <img class="post-autor-avatar" alt="Avatar del autor">
+                <p class="post-autor usuario-link"></p>
+              </div>
               <button class="eliminar-post-btn">
                 <img src="img/papelera.svg" alt="Eliminar post" title="Eliminar post">
               </button>
@@ -73,8 +76,13 @@
         <template id="comment-template">
           <div class="comment">
             <div class="comment-cabecera">
-              <strong class="comment-autor"></strong>
-              <span class="comment-username"></span>
+              <div class="comment-autor-container">
+                <img class="comment-avatar" alt="Avatar del autor">
+                <div class="comment-autor-info">
+                  <strong class="comment-autor"></strong>
+                  <span class="comment-username"></span>
+                </div>
+              </div>
             </div>
             <p class="comment-body"></p>
           </div>
@@ -83,8 +91,13 @@
         <!-- Templates para resultados de búsqueda -->
         <template id="usuario-resultado-template">
           <div class="item-resultado-busqueda usuario" data-userid="">
-            <strong class="username"></strong>
-            <div class="name"></div>
+            <div class="usuario-resultado-container">
+              <img class="usuario-resultado-avatar" alt="Avatar del usuario">
+              <div class="usuario-resultado-info">
+                <strong class="username"></strong>
+                <div class="name"></div>
+              </div>
+            </div>
           </div>
         </template>
         
@@ -153,6 +166,7 @@
         <button class="cerrar-modal">✕</button>
       </div>
       <div class="perfil-cabecera">
+        <img class="perfil-avatar" alt="Avatar del usuario">
         <h2 class="perfil-nombre"></h2>
         <p class="perfil-username"></p>
       </div>

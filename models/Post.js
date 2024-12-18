@@ -26,6 +26,8 @@ export class Post {
     
     postElement.querySelector('.post-titulo').textContent = this.title;
     const autorElement = postElement.querySelector('.post-autor');
+    const avatarElement = postElement.querySelector('.post-autor-avatar');
+    avatarElement.src = this.user.getAvatarUrl(30);
     autorElement.textContent = `Publicado por ${this.user.name} (@${this.user.username})`;
     autorElement.dataset.userid = this.user.id;
     autorElement.classList.add('usuario-link');

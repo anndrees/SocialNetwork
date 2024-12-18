@@ -28,7 +28,7 @@ const usuariosPredefinidos = [
   { id: idMaximo + 1, name: "Andrés", username: "andres.aranda", email: "andres@example.com", lat: "38.471785", lng: "-0.796950", phone: "123-456-789", website: "andres.dev" },
   { id: idMaximo + 2, name: "Saúl", username: "saul.dominguez", email: "saul@example.com", lat: "38.435533", lng: "-0.839848", phone: "234-567-890", website: "saul.dev" },
   { id: idMaximo + 3, name: "Miguel", username: "miguel.rico", email: "miguel@example.com", lat: "38.435533", lng: "-0.839848", phone: "345-678-901", website: "miguel.dev" },
-  { id: idMaximo + 4, name: "Carlos", username: "carlos.perea", email: "carlos@example.com", lat: "38.382552", lng: "-0.763297", phone: "456-789-012", website: "carlos.dev" }
+  { id: idMaximo + 4, name: "Carlos", username: "carlos.perea", email: "carlos@example.com", lat: "38.38236415002482", lng: "-0.7611997778939564", phone: "456-789-012", website: "carlos.dev" }
 ];
 
 // Crear objetos User para los usuarios predefinidos
@@ -250,6 +250,7 @@ window.mostrarPerfilUsuario = function (userId) {
   if (!usuario) return;
 
   // Código existente del perfil...
+  modalUsuario.querySelector('.perfil-avatar').src = usuario.getAvatarUrl(120);
   modalUsuario.querySelector('.perfil-nombre').textContent = usuario.name;
   modalUsuario.querySelector('.perfil-username').textContent = `@${usuario.username}`;
   modalUsuario.querySelector('.perfil-email').textContent = usuario.email;
@@ -317,6 +318,7 @@ function mostrarResultados(resultados, tipo) {
         template.querySelector('.username').textContent = `@${resultado.username}`;
         template.querySelector('.name').textContent = resultado.name;
         template.querySelector('.usuario').dataset.userid = resultado.id;
+        template.querySelector('.usuario-resultado-avatar').src = resultado.getAvatarUrl(30);
         break;
 
       case 'fotos':
