@@ -41,34 +41,14 @@ export class Post {
     postID.textContent = this.id;
     postID.classList.add('oculto');
 
-    //Coger los botones para el comentario
-    let btnAddComentario = postElement.querySelector("#add-comment");
-    let btnCancelarComment = postElement.querySelector("#cancelar-comment");
-
-    //Mostrar el formulario de añadir el comentario
-    btnAddComentario.addEventListener("click",()=>{
-      postElement.querySelector("#modal-add-comments").classList.remove("oculto");
-      document.body.classList.add('modal-open');
+    //Mostrar el perfil del usuario
+    autorElement.addEventListener("click", () => {
+      mostrarPerfilUsuario(this.user.id);
     });
 
-    //Crear un nuevo comentario comentario
-    /* let btnPublicar = postElement.querySelector("#publicarComment");
-    console.log(btnPublicar);
-    btnPublicar.addEventListener("click", () => {
-      console.log("has hecho click");
-      let tituloComment = postElement.querySelector("#tituloComment").value;
-      let contenidoComment = postElement.querySelector("#postId").value;
-      let nuevoComment = new Comment("nextId", "userId", tituloComment, contenidoComment);
-      console.log(nuevoComment)
-      nuevoComment.push(comentariosObjetos);
-    }); */
+    //Añadir el id del post
+    postElement.querySelector("#post-id").textContent = this.id;
 
-    //Ocultar el formulario de añadir el comentario al pulsar cancelar
-    btnCancelarComment.addEventListener("click",()=>{
-      postElement.querySelector("#modal-add-comments").classList.add("oculto");
-      document.body.classList.remove('modal-open');
-    });
-    
     // Mostrar los primeros 3 comentarios
     this.comments.slice(0, 3).forEach(comment => {
       const commentElement = comment.render();
@@ -96,16 +76,6 @@ export class Post {
       
       commentsContainer.appendChild(verMasLink);
     }
-
-    // Añadir event listener para el click en el autor
-    autorElement.addEventListener('click', () => {
-      if (this.user) {
-        const mostrarPerfilUsuario = window.mostrarPerfilUsuario;
-        if (typeof mostrarPerfilUsuario === 'function') {
-          mostrarPerfilUsuario(this.user.id);
-        }
-      }
-    });
 
     return postElement;
   }
