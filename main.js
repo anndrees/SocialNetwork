@@ -250,6 +250,7 @@ window.mostrarPerfilUsuario = function (userId) {
   if (!usuario) return;
 
   // Código existente del perfil...
+  modalUsuario.querySelector('.perfil-avatar').src = usuario.getAvatarUrl(120);
   modalUsuario.querySelector('.perfil-nombre').textContent = usuario.name;
   modalUsuario.querySelector('.perfil-username').textContent = `@${usuario.username}`;
   modalUsuario.querySelector('.perfil-email').textContent = usuario.email;
@@ -317,6 +318,7 @@ function mostrarResultados(resultados, tipo) {
         template.querySelector('.username').textContent = `@${resultado.username}`;
         template.querySelector('.name').textContent = resultado.name;
         template.querySelector('.usuario').dataset.userid = resultado.id;
+        template.querySelector('.usuario-resultado-avatar').src = resultado.getAvatarUrl(30);
         break;
 
       case 'fotos':
