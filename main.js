@@ -506,9 +506,10 @@ function mostrarModalComentarios(postElement) {
   const postId = postElement.querySelector('#post-id').textContent;
   const modalComentarios = postElement.querySelector('#modal-add-comments');
   modalComentarios.classList.remove('oculto');
+  document.body.classList.add('modal-open');
   
   // Obtener el select de usuarios en el modal de comentarios
-  const usuarioSelectComentarios = modalComentarios.querySelector('#usuarioSelect');
+  const usuarioSelectComentarios = modalComentarios.querySelector('#usuarioSelectComentario');
   
   // Limpiar opciones existentes
   usuarioSelectComentarios.innerHTML = '<option value="">Selecciona un usuario</option>';
@@ -544,7 +545,7 @@ document.addEventListener('click', (e) => {
   if (e.target.id === 'publicarComment') {
     const postElement = e.target.closest('.post');
     const modalComentarios = postElement.querySelector('#modal-add-comments');
-    const usuarioId = modalComentarios.querySelector('#usuarioSelect').value;
+    const usuarioId = modalComentarios.querySelector('#usuarioSelectComentario').value;
     const titulo = modalComentarios.querySelector('#tituloComment').value;
     const contenido = modalComentarios.querySelector('#postBody').value;
     
@@ -552,8 +553,9 @@ document.addEventListener('click', (e) => {
       // Aquí iría la lógica para crear el comentario
       // Por ahora solo ocultamos el modal
       ocultarModalComentarios(postElement);
+      document.body.classList.remove('modal-open');
       
-      // Limpiar el formulario para que no se vea en el siguiente comentario
+      // Limpiar el formulario
       modalComentarios.querySelector('form').reset();
     }
   }

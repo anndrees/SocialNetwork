@@ -41,6 +41,16 @@ export class Post {
     postID.textContent = this.id;
     postID.classList.add('oculto');
 
+    // Añadir event listener para el click en el autor
+    autorElement.addEventListener('click', () => {
+      if (this.user) {
+        const mostrarPerfilUsuario = window.mostrarPerfilUsuario;
+        if (typeof mostrarPerfilUsuario === 'function') {
+          mostrarPerfilUsuario(this.user.id);
+        }
+      }
+    });
+
     //Coger los botones para el comentario
     let btnAddComentario = postElement.querySelector("#add-comment");
     let btnCancelarComment = postElement.querySelector("#cancelar-comment");
