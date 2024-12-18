@@ -17,7 +17,7 @@ export class Post {
     this.comments.push(comment);
   }
 
-  render() {
+   render() {
     const template = document.getElementById('post-template').content.cloneNode(true);
     const postElement = template.querySelector('.post');
     
@@ -40,6 +40,16 @@ export class Post {
     const postID = postElement.querySelector('#post-id'); 
     postID.textContent = this.id;
     postID.classList.add('oculto');
+
+    // Añadir event listener para el click en el autor
+    autorElement.addEventListener('click', () => {
+      if (this.user) {
+        const mostrarPerfilUsuario = window.mostrarPerfilUsuario;
+        if (typeof mostrarPerfilUsuario === 'function') {
+          mostrarPerfilUsuario(this.user.id);
+        }
+      }
+    });
 
     //Coger los botones para el comentario
     let btnAddComentario = postElement.querySelector("#add-comment");
@@ -96,16 +106,6 @@ export class Post {
       
       commentsContainer.appendChild(verMasLink);
     }
-
-    // Añadir event listener para el click en el autor
-    autorElement.addEventListener('click', () => {
-      if (this.user) {
-        const mostrarPerfilUsuario = window.mostrarPerfilUsuario;
-        if (typeof mostrarPerfilUsuario === 'function') {
-          mostrarPerfilUsuario(this.user.id);
-        }
-      }
-    });
 
     return postElement;
   }

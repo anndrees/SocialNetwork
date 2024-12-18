@@ -234,6 +234,28 @@ body.modal-open {
   gap: 15px;
 }
 
+.contenedor-add-user{
+  border: solid 1px black;
+  padding: 7px;
+  border-radius: 0.5rem;
+  justify-content: center;
+  
+}
+
+.contenedor-add-user:hover{
+  background-color: #baf2e9;
+  cursor: pointer;
+}
+
+.texto-add-user{
+  margin: 10px;
+  font-weight: bold;
+}
+
+.imagenAddUser{
+  vertical-align: middle;
+}
+
 .post-form select,
 .post-form input,
 .post-form textarea {

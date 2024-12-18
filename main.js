@@ -100,7 +100,7 @@ comments.forEach(datosComentario => {
 // Crear objetos Todo
 todosObjetos = todos.map(todo => new Todo(todo));
 
-// Establecer el select SOLO con los usuarios predefinidos
+// Establecer el select con los usuarios predefinidos
 const selectorUsuario = document.getElementById('usuarioSelect');
 usuariosPredefinidos.forEach(usuario => {
   const opcion = document.createElement('option');
@@ -507,3 +507,63 @@ function realizarBusqueda(consulta) {
 
   mostrarResultados(resultados, tipoBusquedaSeleccionado);
 }
+
+// Función para mostrar el modal de añadir comentarios
+function mostrarModalComentarios(postElement) {
+  const postId = postElement.querySelector('#post-id').textContent;
+  const modalComentarios = postElement.querySelector('#modal-add-comments');
+  modalComentarios.classList.remove('oculto');
+  document.body.classList.add('modal-open');
+  
+  // Obtener el select de usuarios en el modal de comentarios
+  const usuarioSelectComentarios = modalComentarios.querySelector('#usuarioSelectComentario');
+  
+  // Limpiar opciones existentes
+  usuarioSelectComentarios.innerHTML = '<option value="">Selecciona un usuario</option>';
+  
+  // Poblar el select con todos los usuarios
+  usuariosObjetos.forEach(usuario => {
+    const option = document.createElement('option');
+    option.value = usuario.id;
+    option.textContent = usuario.name + ' (@' + usuario.username + ')';
+    usuarioSelectComentarios.appendChild(option);
+  });
+}
+
+// Función para ocultar el modal de comentarios
+function ocultarModalComentarios(postElement) {
+  const modalComentarios = postElement.querySelector('#modal-add-comments');
+  modalComentarios.classList.add('oculto');
+}
+
+// Eventos para el modal de comentarios
+document.addEventListener('click', (e) => {
+  const addCommentBtn = e.target.closest('#add-comment');
+  if (addCommentBtn) {
+    const postElement = addCommentBtn.closest('.post');
+    mostrarModalComentarios(postElement);
+  }
+  
+  if (e.target.id === 'cancelar-comment') {
+    const postElement = e.target.closest('.post');
+    ocultarModalComentarios(postElement);
+  }
+  
+  if (e.target.id === 'publicarComment') {
+    const postElement = e.target.closest('.post');
+    const modalComentarios = postElement.querySelector('#modal-add-comments');
+    const usuarioId = modalComentarios.querySelector('#usuarioSelectComentario').value;
+    const titulo = modalComentarios.querySelector('#tituloComment').value;
+    const contenido = modalComentarios.querySelector('#postBody').value;
+    
+    if (usuarioId && titulo && contenido) {
+      // Aquí iría la lógica para crear el comentario
+      // Por ahora solo ocultamos el modal
+      ocultarModalComentarios(postElement);
+      document.body.classList.remove('modal-open');
+      
+      // Limpiar el formulario
+      modalComentarios.querySelector('form').reset();
+    }
+  }
+});
