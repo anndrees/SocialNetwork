@@ -136,13 +136,34 @@ body.modal-open {
   margin-bottom: 8px;
 }
 
+.comment-autor-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.comment-avatar {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.comment-autor-info {
+  display: flex;
+  gap: 5px;
+  align-items: baseline;
+}
+
 .comment-autor {
   color: var(--text-color);
-  margin-right: 5px;
+  font-weight: 600;
 }
 
 .comment-username {
   color: var(--secondary-color);
+  font-size: 0.9em;
 }
 
 .comment-body {
