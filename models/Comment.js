@@ -28,8 +28,10 @@ export class Comment {
     if (this.user) {
       commentElement.querySelector('.comment-avatar').src = this.user.getAvatarUrl(25);
     } else {
-      // Si no hay usuario, generar avatar basado en el nombre del comentario
-      const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(this.name)}&size=25&background=random`;
+      // Si no hay usuario, generar avatar basado en el email
+      const [localPart, domain] = this.email.split('@');
+      const avatarText = `${localPart[0]}${domain[0]}`; // Primera letra de cada parte
+      const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(avatarText)}&size=25&background=random`;
       commentElement.querySelector('.comment-avatar').src = avatarUrl;
     }
     
