@@ -17,7 +17,7 @@ export class Post {
     this.comments.push(comment);
   }
 
-  render() {
+   render() {
     const template = document.getElementById('post-template').content.cloneNode(true);
     const postElement = template.querySelector('.post');
     
@@ -56,7 +56,7 @@ export class Post {
       console.log("has hecho click");
       let tituloComment = postElement.querySelector("#tituloComment").value;
       let contenidoComment = postElement.querySelector("#postId").value;
-      let nuevoComment = new Comment("nextId", "userId", tituloComment, contenidoComment);
+      let nuevoComment = new Comment("nextId", "postId", name, contenidoComment);
       console.log(nuevoComment)
       nuevoComment.push(comentariosObjetos);
     }); */

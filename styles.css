@@ -202,6 +202,19 @@ body.modal-open {
   gap: 15px;
 }
 
+.contenedor-add-user{
+  border: solid 1px black;
+  padding: 7px;
+  border-radius: 0.5rem;
+}
+
+.texto-add-user{
+  justify-content: center;
+  align-content: center;
+  margin: 10px;
+  font-weight: bold;
+}
+
 .post-form select,
 .post-form input,
 .post-form textarea {
