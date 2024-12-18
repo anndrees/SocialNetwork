@@ -100,7 +100,7 @@ comments.forEach(datosComentario => {
 // Crear objetos Todo
 todosObjetos = todos.map(todo => new Todo(todo));
 
-// Establecer el select SOLO con los usuarios predefinidos
+// Establecer el select con los usuarios predefinidos
 const selectorUsuario = document.getElementById('usuarioSelect');
 usuariosPredefinidos.forEach(usuario => {
   const opcion = document.createElement('option');
