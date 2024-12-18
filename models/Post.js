@@ -41,6 +41,16 @@ export class Post {
     postID.textContent = this.id;
     postID.classList.add('oculto');
 
+    // Añadir event listener para el click en el autor
+    autorElement.addEventListener('click', () => {
+      if (this.user) {
+        const mostrarPerfilUsuario = window.mostrarPerfilUsuario;
+        if (typeof mostrarPerfilUsuario === 'function') {
+          mostrarPerfilUsuario(this.user.id);
+        }
+      }
+    });
+
     //Coger los botones para el comentario
     let btnAddComentario = postElement.querySelector("#add-comment");
     let btnCancelarComment = postElement.querySelector("#cancelar-comment");
@@ -58,7 +68,7 @@ export class Post {
       console.log("has hecho click");
       let tituloComment = postElement.querySelector("#tituloComment").value;
       let contenidoComment = postElement.querySelector("#postId").value;
-      let nuevoComment = new Comment("nextId", "postId", name, contenidoComment);
+      let nuevoComment = new Comment("nextId", "userId", tituloComment, contenidoComment);
       console.log(nuevoComment)
       nuevoComment.push(comentariosObjetos);
     }); */
@@ -96,16 +106,6 @@ export class Post {
       
       commentsContainer.appendChild(verMasLink);
     }
-
-    // Añadir event listener para el click en el autor
-    autorElement.addEventListener('click', () => {
-      if (this.user) {
-        const mostrarPerfilUsuario = window.mostrarPerfilUsuario;
-        if (typeof mostrarPerfilUsuario === 'function') {
-          mostrarPerfilUsuario(this.user.id);
-        }
-      }
-    });
 
     return postElement;
   }
