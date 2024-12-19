@@ -292,11 +292,21 @@ window.mostrarPerfilUsuario = function (userId) {
   modalUsuario.classList.remove('oculto');
   document.body.classList.add('modal-open');
 };
-/*let btnModificarUsuario = modalUsuario.querySelector(".btn-modificar-usuario");
-  btnModificarUsuario.addEventListener("click",()=>{
-    let email = modalUsuario.querySelector('.perfil-email');
-    let telefono = modalUsuario.querySelector('.perfil-telefono').textContent;
 
+/*let clicado = false;
+let btnModificarUsuario = modalUsuario.querySelector(".btn-modificar-usuario");
+  btnModificarUsuario.addEventListener("click",()=>{
+    if (!clicado) {
+      let email = modalUsuario.querySelector('.perfil-email');
+      let telefono = modalUsuario.querySelector('.perfil-telefono');
+      email.appendChild(input);
+      telefono.innerHTML = inptelefono.textContent;
+      clicado = !clicado;
+    }else{
+      if (email.querySelector("input").value == "") {
+      }
+      email.textContent = email.querySelector("input").value;
+    }
   });*/
 
 function ocultarModalUsuario() {
