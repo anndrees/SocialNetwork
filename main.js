@@ -62,6 +62,17 @@ users.forEach(datosUsuario => {
   usuariosPredefinidos.push(usuario);
 });
 
+//Crear un nuevo user
+let panelUser = document.querySelector(".contenedor-add-user");
+let div = panelUser.querySelector("#modal-add-user");
+console.log(panelUser);
+panelUser.addEventListener("click",()=>{
+  console.log(panelUser);
+    div.classList.remove('oculto');
+    div.classList.add("modal-open");
+    
+});
+
 // Crear objetos Post
 posts.forEach(datosPublicacion => {
   const publicacion = new Post(
