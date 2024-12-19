@@ -347,6 +347,7 @@ function mostrarResultados(resultados, tipo) {
         img.src = resultado.url;
         img.alt = resultado.title;
         template.querySelector('.photo-title').textContent = resultado.title;
+        template.querySelector('.item-resultado-busqueda.photo').dataset.photoId = resultado.id;
         break;
 
       case 'publicaciones':
@@ -547,14 +548,25 @@ function mostrarModalComentarios(postElement) {
 function ocultarModalComentarios(postElement) {
   const modalComentarios = postElement.querySelector('#modal-add-comments');
   modalComentarios.classList.add('oculto');
+  document.body.classList.remove('modal-open');
 }
 
 // Eventos para el modal de comentarios
 document.addEventListener('click', (e) => {
   const addCommentBtn = e.target.closest('#add-comment');
+  const modalComentarios = e.target.closest('#modal-add-comments');
+  const formularioComentario = e.target.closest('.formulario-comentario');
+  
   if (addCommentBtn) {
     const postElement = addCommentBtn.closest('.post');
     mostrarModalComentarios(postElement);
+  }
+  
+  // Si se hace clic fuera del formulario y dentro del modal, cerrar el modal
+  if (modalComentarios && !formularioComentario) {
+    const postElement = modalComentarios.closest('.post');
+    ocultarModalComentarios(postElement);
+    document.body.classList.remove('modal-open');
   }
   
   if (e.target.id === 'cancelar-comment') {
@@ -578,5 +590,50 @@ document.addEventListener('click', (e) => {
       // Limpiar el formulario
       modalComentarios.querySelector('form').reset();
     }
+  }
+});
+
+// Funciones para el modal de fotos
+function mostrarModalFoto(foto) {
+  const modalFoto = document.getElementById('modal-foto');
+  const titulo = modalFoto.querySelector('.foto-titulo');
+  const imagen = modalFoto.querySelector('.foto-imagen');
+  const albumSpan = modalFoto.querySelector('.foto-album span');
+  const urlLink = modalFoto.querySelector('.foto-url a');
+
+  titulo.textContent = foto.title;
+  imagen.src = foto.url;
+  imagen.alt = foto.title;
+  albumSpan.textContent = foto.albumId;
+  urlLink.href = foto.url;
+  urlLink.textContent = foto.url;
+
+  modalFoto.classList.remove('oculto');
+  document.body.classList.add('modal-open');
+}
+
+function ocultarModalFoto() {
+  const modalFoto = document.getElementById('modal-foto');
+  modalFoto.classList.add('oculto');
+  document.body.classList.remove('modal-open');
+}
+
+// Event listeners para el modal de fotos
+document.addEventListener('click', (e) => {
+  const fotoResultado = e.target.closest('.item-resultado-busqueda.photo');
+  if (fotoResultado) {
+    const fotoId = fotoResultado.dataset.photoId;
+    const foto = photos.find(p => p.id === parseInt(fotoId));
+    if (foto) {
+      mostrarModalFoto(foto);
+    }
+  }
+
+  if (e.target.closest('#modal-foto .cerrar-modal')) {
+    ocultarModalFoto();
+  }
+
+  if (e.target.id === 'modal-foto') {
+    ocultarModalFoto();
   }
 });
