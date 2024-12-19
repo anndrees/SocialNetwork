@@ -92,6 +92,14 @@
                   <span class="comment-username"></span>
                 </div>
               </div>
+              <div class="comment-actions">
+                <button class="edit-comment-btn">
+                  <img src="img/pencil-square-svgrepo-com.svg" alt="Editar comentario" title="Editar comentario">
+                </button>
+                <button class="delete-comment-btn">
+                  <img src="img/papelera.svg" alt="Eliminar comentario" title="Eliminar comentario">
+                </button>
+              </div>
             </div>
             <p class="comment-body"></p>
           </div>
@@ -176,6 +184,9 @@
       </div>
       <div class="perfil-cabecera">
         <img class="perfil-avatar" alt="Avatar del usuario">
+        <button type="button" id="btn-modificar-usuario" class="btn-modificar-usuario">
+          <img src="img/pencil-square-svgrepo-com.svg" alt="Añadir comentario" class="add-comment-icon" title="Añadir comentario">
+        </button>
         <h2 class="perfil-nombre"></h2>
         <p class="perfil-username"></p>
       </div>
@@ -206,8 +217,23 @@
       </div>
     </div>
   </div>
+  <div id="modal-foto" class="modal-fondo oculto">
+    <div class="modal-contenido modal-foto">
+      <div class="modal-header">
+        <h3 class="foto-titulo"></h3>
+        <button class="cerrar-modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <img class="foto-imagen" src="" alt="">
+        <div class="foto-info">
+          <p class="foto-album">Álbum: <span></span></p>
+          <p class="foto-url">URL: <a href="" target="_blank"></a></p>
+        </div>
+      </div>
+    </div>
+  </div>
   <button id="volverArriba" class="volver-arriba" aria-label="Volver arriba">
-    <img src="/img/flecha_volver_arriba.svg" alt="Volver arriba" title="Volver arriba">
+    <img src="img/flecha_volver_arriba.svg" alt="Volver arriba" title="Volver arriba">
   </button>
   <script src="main.js" type="module"></script>
 </body>

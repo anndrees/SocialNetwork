@@ -66,6 +66,17 @@ body.modal-open {
   margin: 0 0 20px 0;
 }
 
+.btn-modificar-usuario {
+  position: absolute;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  color: var(--text-color);
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
 .eliminar-post-btn {
   position: absolute;
   top: 10px;
@@ -130,9 +141,13 @@ body.modal-open {
   border-radius: 8px;
   padding: 12px;
   margin-bottom: 10px;
+  position: relative;
 }
 
 .comment-cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   margin-bottom: 8px;
 }
 
@@ -190,6 +205,47 @@ body.modal-open {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.comment-actions {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  display: flex;
+  gap: 8px;
+}
+
+.comment:hover .comment-actions {
+  opacity: 1;
+}
+
+.comment-actions button {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.comment-actions button img {
+  width: 20px;
+  height: 20px;
+  opacity: 0.7;
+}
+
+.comment-actions .edit-comment-btn:hover {
+  background-color: var(--secondary-color-hover);
+}
+
+.comment-actions .delete-comment-btn:hover {
+  background-color: #ffebee;
+}
+
+.comment-actions button:hover img {
+  opacity: 1;
 }
 
 .ver-mas-comentarios {
@@ -833,4 +889,157 @@ body.modal-open {
   color: var(--text-color);
   font-size: 13px;
   margin-top: 2px;
+}
+
+/* Estilos para el modal de comentarios */
+#modal-add-comments {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+#modal-add-comments .modal-content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#modal-add-comments select,
+#modal-add-comments textarea,
+#modal-add-comments #tituloComment {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+#modal-add-comments textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+#modal-add-comments .modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+#modal-add-comments #cancelar-comment {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  background-color: #dc3545;
+  color: white;
+}
+
+#modal-add-comments #cancelar-comment:hover {
+  background-color: #c82333;
+}
+
+#modal-add-comments #publicarComment {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  background-color: var(--primary-color);
+  color: white;
+}
+
+#modal-add-comments #publicarComment:hover {
+  background-color: var(--primary-color-hover);
+}
+
+/* Estilos para el modal de fotos */
+.modal-foto {
+  max-width: 800px;
+  padding: 0;
+}
+
+.modal-foto .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.modal-foto .modal-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--text-color);
+}
+
+.modal-foto .modal-body {
+  padding: 1rem;
+}
+
+.modal-foto .foto-imagen {
+  width: 100%;
+  max-height: 500px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+}
+
+.modal-foto .foto-info {
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.modal-foto .foto-info p {
+  margin: 0.5rem 0;
+  color: var(--text-color);
+}
+
+.modal-foto .foto-info a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.modal-foto .foto-info a:hover {
+  text-decoration: underline;
+}
+
+/* Estilo común para botones de cerrar modal */
+button.cerrar-modal {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #666;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  padding: 0;
+  margin: 0;
+}
+
+button.cerrar-modal:hover {
+  background-color: #f0f0f0;
+  color: #333;
+  transform: scale(1.1);
+  border-radius: 50%;
 }
