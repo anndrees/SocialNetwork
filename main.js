@@ -243,6 +243,7 @@ entradaBusqueda.addEventListener('input', (e) => {
 // Funcionalidad del modal de usuario
 const modalUsuario = document.getElementById('modal-usuario');
 const btnCerrarModalUsuario = modalUsuario.querySelector('.cerrar-modal');
+let clicado = false;
 
 // Hacer la función mostrarPerfilUsuario disponible globalmente
 window.mostrarPerfilUsuario = function (userId) {
@@ -288,29 +289,34 @@ window.mostrarPerfilUsuario = function (userId) {
     todosContainer.appendChild(todoElement);
   });
 
+  let email = modalUsuario.querySelector('.perfil-email');
+  let telefono = modalUsuario.querySelector('.perfil-telefono');
+
+  let btnModificarUsuario = modalUsuario.querySelector(".btn-modificar-usuario");
+    btnModificarUsuario.addEventListener("click",()=>{
+      if (!clicado) {
+        email.innerHTML = "<input type='text' id='email1' value='"+usuario.email+"'>";
+        telefono.innerHTML = "<input type='text' id='telefono1' value='"+usuario.phone+"'>";
+      }else{
+        let textoInputEmail = document.getElementById("email1").value;
+        let textoInputTelefono = document.getElementById("telefono1").value;
+
+        if (!(textoInputEmail=="" && textoInputTelefono=="")) {
+          email.textContent = textoInputEmail;
+          telefono.textContent = textoInputTelefono;
+          usuario.email = email.textContent;
+          usuario.phone = telefono.textContent;
+        }
+      }
+      clicado = !clicado;
+    });
+
   // Mostrar el modal
   modalUsuario.classList.remove('oculto');
   document.body.classList.add('modal-open');
 };
 
-let clicado = false;
-let email = modalUsuario.querySelector('.perfil-email');
-let telefono = modalUsuario.querySelector('.perfil-telefono');
 
-let btnModificarUsuario = modalUsuario.querySelector(".btn-modificar-usuario");
-  btnModificarUsuario.addEventListener("click",()=>{
-    if (!clicado) {
-      email.innerHTML = "<input type='text' value='"+email.textContent+"'>";
-      telefono.innerHTML = "<input type='text' value='"+telefono.textContent+"'>";
-      clicado = !clicado;
-    }else{
-      if (!email.querySelector("input").value == "") {
-        email.textContent = email.querySelector("input").value;
-        telefono.textContent = telefono.querySelector("input").value;
-        clicado = !clicado;
-      }
-    }
-  });
 
 function ocultarModalUsuario() {
   modalUsuario.classList.add('oculto');
@@ -319,7 +325,7 @@ function ocultarModalUsuario() {
 
 // Eventos para abrir/cerrar el modal de usuario
 btnCerrarModalUsuario.addEventListener('click', ocultarModalUsuario);
-modalUsuario.addEventListener('click', (e) => {
+modalUsuario.addEventListener('click',(e) => {
   if (e.target === modalUsuario) {
     ocultarModalUsuario();
   }
