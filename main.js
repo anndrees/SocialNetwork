@@ -293,21 +293,24 @@ window.mostrarPerfilUsuario = function (userId) {
   document.body.classList.add('modal-open');
 };
 
-/*let clicado = false;
+let clicado = false;
+let email = modalUsuario.querySelector('.perfil-email');
+let telefono = modalUsuario.querySelector('.perfil-telefono');
+
 let btnModificarUsuario = modalUsuario.querySelector(".btn-modificar-usuario");
   btnModificarUsuario.addEventListener("click",()=>{
     if (!clicado) {
-      let email = modalUsuario.querySelector('.perfil-email');
-      let telefono = modalUsuario.querySelector('.perfil-telefono');
-      email.appendChild(input);
-      telefono.innerHTML = inptelefono.textContent;
+      email.innerHTML = "<input type='text' value='"+email.textContent+"'>";
+      telefono.innerHTML = "<input type='text' value='"+telefono.textContent+"'>";
       clicado = !clicado;
     }else{
-      if (email.querySelector("input").value == "") {
+      if (!email.querySelector("input").value == "") {
+        email.textContent = email.querySelector("input").value;
+        telefono.textContent = telefono.querySelector("input").value;
+        clicado = !clicado;
       }
-      email.textContent = email.querySelector("input").value;
     }
-  });*/
+  });
 
 function ocultarModalUsuario() {
   modalUsuario.classList.add('oculto');
