@@ -61,18 +61,6 @@ export class Post {
       document.body.classList.add('modal-open');
     });
 
-    //Crear un nuevo comentario comentario
-    /* let btnPublicar = postElement.querySelector("#publicarComment");
-    console.log(btnPublicar);
-    btnPublicar.addEventListener("click", () => {
-      console.log("has hecho click");
-      let tituloComment = postElement.querySelector("#tituloComment").value;
-      let contenidoComment = postElement.querySelector("#postId").value;
-      let nuevoComment = new Comment("nextId", "userId", tituloComment, contenidoComment);
-      console.log(nuevoComment)
-      nuevoComment.push(comentariosObjetos);
-    }); */
-
     //Ocultar el formulario de añadir el comentario al pulsar cancelar
     btnCancelarComment.addEventListener("click",()=>{
       postElement.querySelector("#modal-add-comments").classList.add("oculto");
