@@ -14,18 +14,25 @@
       <img src="img/Escudo_Isengard.svg" alt="Logo Isengard" class="logo">
       <h1>Isengard</h1>
     </div>
+    <!--Contenedor para añadir el usuario-->
     <div class="contenedor-add-user">
       <span class="texto-add-user">Añadir usuario</span>
       <img class="imagenAddUser" src="img/add_user.svg" alt="Logo añadir usuario" title="Añadir usuario">
-      <div id="modal-add-user" class="modal-fondo oculto">
-        <div class="formulario-comentario">
-          <form>
-            <input id="tituloComment" type="text" placeholder="Introduce el título del comentario" required>
-            <textarea id="postBody" placeholder="Contenido de el comentario" required></textarea>
-            <button id="publicarComment" type="button">Publicar</button>
-            <button type="button" id="cancelar-comment">Cancelar</button>
-          </form>
-        </div>
+    </div>
+    <!--Contenedor oculto que se abrirá una vez clicado en el contenedor de añadir user-->
+    <div id="modal-add-user" class="modal-fondo oculto">
+      <div class="formulario-comentario">
+        <form>
+          <label for="nombrePersona">Nombre: </label>
+          <input id="nombrePersona" type="text" placeholder="Nombre" required>
+          <label for="user-Name">Nombre de usuaio: </label>
+          <input id="user-Name" placeholder="Nombre de usuario" required>
+          <label for="correo-User">Email: </label>
+          <input id="correo-User" placeholder="Email" required>
+          <button id="crearUser" type="button">Crear</button>
+          <button type="button" id="cancelar-creacion-user">Cancelar</button>
+        </form>
+      </div>
     </div>
   </header>
 
@@ -60,20 +67,20 @@
               <img src="img/add_comment.svg" alt="Añadir comentario" class="add-comment-icon" title="Añadir comentario">
             </button>
             <div id="modal-add-comments" class="modal-fondo oculto">
-                <div class="formulario-comentario">
-                  <form>
-                    <select id="usuarioSelectComentario" >
-                      <option value="">Selecciona un usuario</option>
-                    </select>
-                    <input id="tituloComment" type="text" placeholder="Introduce el título del comentario" required>
-                    <textarea id="postBody" placeholder="Contenido de el comentario" required></textarea>
-                    <button id="publicarComment" type="button">Publicar</button>
-                    <button type="button" id="cancelar-comment">Cancelar</button>
-                  </form>
-                </div>
+              <div class="formulario-comentario">
+                <form>
+                  <select id="usuarioSelectComentario">
+                    <option value="">Selecciona un usuario</option>
+                  </select>
+                  <input id="tituloComment" type="text" placeholder="Introduce el título del comentario" required>
+                  <textarea id="postBody" placeholder="Contenido de el comentario" required></textarea>
+                  <button id="publicarComment" type="button">Publicar</button>
+                  <button type="button" id="cancelar-comment">Cancelar</button>
+                </form>
+              </div>
               <a href=""></a>
             </div>
-            
+
             <div class="comments-section">
               <h3>Comentarios: <span class="comments-count"></span></h3>
               <div class="comments-container"></div>
@@ -117,28 +124,28 @@
             </div>
           </div>
         </template>
-        
+
         <template id="foto-resultado-template">
           <div class="item-resultado-busqueda photo">
             <img class="photo-img" src="" alt="">
             <div class="photo-title"></div>
           </div>
         </template>
-        
+
         <template id="publicacion-resultado-template">
           <div class="item-resultado-busqueda">
             <div class="post-title"></div>
             <div class="post-author"></div>
           </div>
         </template>
-        
+
         <template id="comentario-resultado-template">
           <div class="item-resultado-busqueda">
             <div class="comment-name"></div>
             <div class="comment-body"></div>
           </div>
         </template>
-        
+
         <template id="todo-resultado-template">
           <div class="item-resultado-busqueda">
             <div class="todo-title"></div>
@@ -185,7 +192,8 @@
       <div class="perfil-cabecera">
         <img class="perfil-avatar" alt="Avatar del usuario">
         <button type="button" id="btn-modificar-usuario" class="btn-modificar-usuario">
-          <img src="img/pencil-square-svgrepo-com.svg" alt="Añadir comentario" class="add-comment-icon" title="Añadir comentario">
+          <img src="img/pencil-square-svgrepo-com.svg" alt="Añadir comentario" class="add-comment-icon"
+            title="Añadir comentario">
         </button>
         <h2 class="perfil-nombre"></h2>
         <p class="perfil-username"></p>

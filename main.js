@@ -63,14 +63,21 @@ users.forEach(datosUsuario => {
 });
 
 //Crear un nuevo user
-let panelUser = document.querySelector(".contenedor-add-user");
-let div = panelUser.querySelector("#modal-add-user");
-console.log(panelUser);
-panelUser.addEventListener("click",()=>{
-  console.log(panelUser);
-    div.classList.remove('oculto');
-    div.classList.add("modal-open");
-    
+let contenedorAddUser = document.querySelector(".contenedor-add-user");
+let div = document.querySelector("#modal-add-user");
+
+//Este es el contenedor de el logo de añadir usuario que cuando se haga click se mostrará un div oculto para insertar al user
+contenedorAddUser.addEventListener("click",()=>{
+    div.classList.remove("oculto");
+    div.classList.add("modal-open"); 
+});
+
+//Este botón es para ocultar la creación del usuario
+let btnCancelarUser = document.getElementById("cancelar-creacion-user");
+btnCancelarUser.addEventListener("click",()=>{
+  div.classList.add("oculto");
+  div.classList.remove("modal-open");
+  console.log("soy el cancelar");
 });
 
 // Crear objetos Post

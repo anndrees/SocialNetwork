@@ -280,7 +280,7 @@ body.modal-open {
 }
 
 .contenedor-add-user{
-  border: solid 1px black;
+  border: solid 2px black;
   padding: 7px;
   border-radius: 0.5rem;
   justify-content: center;
