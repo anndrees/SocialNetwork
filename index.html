@@ -21,14 +21,22 @@
     </div>
     <!--Contenedor oculto que se abrirá una vez clicado en el contenedor de añadir user-->
     <div id="modal-add-user" class="modal-fondo oculto">
-      <div class="formulario-comentario">
+      <div class="formulario-usuario">
         <form>
           <label for="nombrePersona">Nombre: </label>
-          <input id="nombrePersona" type="text" placeholder="Nombre" required>
+          <input id="nombrePersona" type="text" placeholder="Nombre" required><br>
           <label for="user-Name">Nombre de usuaio: </label>
-          <input id="user-Name" placeholder="Nombre de usuario" required>
+          <input id="user-Name" placeholder="Nombre de usuario" required><br>
           <label for="correo-User">Email: </label>
-          <input id="correo-User" placeholder="Email" required>
+          <input id="correo-User" placeholder="Email" required><br>
+          <label for="latitud">Latitud:</label>
+          <input type="text" name="latitud" id="latitud"><br>
+          <label for="longitud">Longitud:</label>
+          <input type="text" name="longitud" id="longitud"><br>
+          <label for="telefono">Teléfono:</label>
+          <input type="text" name="telefono" id="telefono" placeholder="Tel: 600000000"><br>
+          <label for="latitud">Web:</label>
+          <input type="text" name="web" id="web" placeholder="Página web"><br>
           <button id="crearUser" type="button">Crear</button>
           <button type="button" id="cancelar-creacion-user">Cancelar</button>
         </form>
