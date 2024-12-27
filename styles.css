@@ -140,6 +140,11 @@ body.modal-open {
   margin: 5px;
 }
 
+#span-datos-incorrectos{
+  color: red;
+  font-weight: bold;
+}
+
 .comments-section {
   border-top: 1px solid var(--border-color);
   padding-top: 15px;

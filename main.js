@@ -62,14 +62,96 @@ users.forEach(datosUsuario => {
   usuariosPredefinidos.push(usuario);
 });
 
-//Crear un nuevo user
+//Coger el contenedor de añadir usuario
 let contenedorAddUser = document.querySelector(".contenedor-add-user");
 let div = document.querySelector("#modal-add-user");
 
-//Este es el contenedor de el logo de añadir usuario que cuando se haga click se mostrará un div oculto para insertar al user
+//Este es el contenedor de el logo de añadir usuario que cuando se haga click se mostrará un div oculto (un formulario)
 contenedorAddUser.addEventListener("click",()=>{
-    div.classList.remove("oculto");
-    div.classList.add("modal-open"); 
+  //Con esto mostramos el formulario
+  div.classList.remove("oculto");
+  div.classList.add("modal-open");
+});
+
+//CREAR USUARIO
+//Nos creamos las variales de las expresiones regulares
+
+//Nombre: letras, espacios y acentos, mínimo 2 caracteres
+let nombreRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{2,}$/;
+
+//Nombre de usuario: letras, números y guiones bajos, 3-20 caracteres
+let nombreUserRegex = /^[a-zA-Z0-9_]{3,20}$/;
+
+//Correo electrónico
+let correoRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+//Latitud: número decimal entre -90 y 90
+let latitudRegex = /^-?([1-8]?\d(\.\d+)?|90(\.0+)?)$/;
+
+//Longitud: número decimal entre -180 y 180
+let longitudRegex = /^-?((1[0-7]\d(\.\d+)?)|([1-9]?\d(\.\d+)?)|180(\.0+)?)$/;
+
+//teléfono: formato español (9 dígitos, puede empezar con +34)
+let telefonoRegex = /^(\+34|0034|34)?[6-9]\d{8}$/;
+
+//Expresión regular para validar URLs opcionales con http/https, www, nombre de dominio y extensión, permitiendo rutas opcionales.
+let sitioWebRegex = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/\S*)?$/;
+
+function camposValidos() {
+  let nombre = document.querySelector("#nombrePersona");
+  let nombreUser = document.querySelector("#user-Name");
+  let correo = document.querySelector("#correo-User");
+  let latitud = document.querySelector("#latitud");
+  let longitud = document.querySelector("#longitud");
+  let telefono = document.querySelector("#telefono");
+  let sitioWeb = document.querySelector("#sitio-web");
+
+  let esValido = true;
+
+  function validarCampo(elemento, regex) {
+    if (!regex.test(elemento.value)) {
+      elemento.style.borderColor = "red";
+      esValido = false;
+    } else {
+      elemento.style.borderColor = "";
+    }
+  }
+
+  validarCampo(nombre, nombreRegex);
+  validarCampo(nombreUser, nombreUserRegex);
+  validarCampo(correo, correoRegex);
+  validarCampo(latitud, latitudRegex);
+  validarCampo(longitud, longitudRegex);
+  validarCampo(telefono, telefonoRegex);
+  validarCampo(sitioWeb, sitioWebRegex);
+
+  return esValido;
+}
+
+//BOTÓN CREAR
+//Cogemos el botónd de crear para hacer evento
+let btnCrearUser = document.querySelector("#crearUser");
+
+//EVENTO CREAR USER
+//Creamos el evento de crear user
+btnCrearUser.addEventListener("click",()=>{
+  //Comprobar los campos sean válidos
+  if(camposValidos()){
+    let nombre = document.querySelector("#nombrePersona");
+    let nombreUser = document.querySelector("#user-Name");
+    let correo = document.querySelector("#correo-User");
+    let latitud = document.querySelector("#latitud");
+    let longitud = document.querySelector("#longitud");
+    let telefono = document.querySelector("#telefono");
+    let sitioWeb = document.querySelector("#sitio-web");
+    let nuevoUsuario = new User(idMaximo,nombre,nombreUser,correo,latitud,longitud,telefono,sitioWeb);
+    console.log(nuevoUsuario);
+    console.log("longitud array: "+usuariosPredefinidos.length);
+    usuariosPredefinidos.push(nuevoUsuario);//habria que cambiar el nombre del array
+    console.log("longitud array despeus de meter user: "+usuariosPredefinidos.length);
+  }else{
+    document.querySelector("#span-datos-incorrectos").textContent = "Los campos en rojon son incorrectos";
+  }
 });
 
 //Este botón es para ocultar la creación del usuario
