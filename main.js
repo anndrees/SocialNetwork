@@ -128,6 +128,9 @@ function camposValidos() {
   return esValido;
 }
 
+//El id max de los users es siempre 14 al principio ya que contamos los de el grupo
+let maxIdUsuario = 14;
+
 //BOTÓN CREAR
 //Cogemos el botónd de crear para hacer evento
 let btnCrearUser = document.querySelector("#crearUser");
@@ -144,11 +147,16 @@ btnCrearUser.addEventListener("click",()=>{
     let longitud = document.querySelector("#longitud");
     let telefono = document.querySelector("#telefono");
     let sitioWeb = document.querySelector("#sitio-web");
-    let nuevoUsuario = new User(idMaximo,nombre,nombreUser,correo,latitud,longitud,telefono,sitioWeb);
+
+    //incrementamos el id maximo antes de crear al user
+    maxIdUsuario = maxIdUsuario + 1;
+
+    let nuevoUsuario = new User(maxIdUsuario,nombre,nombreUser,correo,latitud,longitud,telefono,sitioWeb);
     console.log(nuevoUsuario);
-    console.log("longitud array: "+usuariosPredefinidos.length);
-    usuariosPredefinidos.push(nuevoUsuario);//habria que cambiar el nombre del array
-    console.log("longitud array despeus de meter user: "+usuariosPredefinidos.length);
+    console.log("longitud array: " + usuariosPredefinidos.length);
+    //metemos al user en el array
+    usuariosPredefinidos.push(nuevoUsuario);
+    console.log("longitud array despues de meter user: "+usuariosPredefinidos.length);
   }else{
     document.querySelector("#span-datos-incorrectos").textContent = "Los campos en rojon son incorrectos";
   }
@@ -159,7 +167,6 @@ let btnCancelarUser = document.getElementById("cancelar-creacion-user");
 btnCancelarUser.addEventListener("click",()=>{
   div.classList.add("oculto");
   div.classList.remove("modal-open");
-  console.log("soy el cancelar");
 });
 
 // Crear objetos Post
