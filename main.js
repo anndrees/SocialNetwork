@@ -140,13 +140,13 @@ let btnCrearUser = document.querySelector("#crearUser");
 btnCrearUser.addEventListener("click",()=>{
   //Comprobar los campos sean válidos
   if(camposValidos()){
-    let nombre = document.querySelector("#nombrePersona");
-    let nombreUser = document.querySelector("#user-Name");
-    let correo = document.querySelector("#correo-User");
-    let latitud = document.querySelector("#latitud");
-    let longitud = document.querySelector("#longitud");
-    let telefono = document.querySelector("#telefono");
-    let sitioWeb = document.querySelector("#sitio-web");
+    let nombre = document.querySelector("#nombrePersona").value;
+    let nombreUser = document.querySelector("#user-Name").value;
+    let correo = document.querySelector("#correo-User").value;
+    let latitud = document.querySelector("#latitud").value;
+    let longitud = document.querySelector("#longitud").value;
+    let telefono = document.querySelector("#telefono").value;
+    let sitioWeb = document.querySelector("#sitio-web").value;
 
     //incrementamos el id maximo antes de crear al user
     maxIdUsuario = maxIdUsuario + 1;
@@ -157,6 +157,13 @@ btnCrearUser.addEventListener("click",()=>{
     //metemos al user en el array
     usuariosPredefinidos.push(nuevoUsuario);
     console.log("longitud array despues de meter user: "+usuariosPredefinidos.length);
+
+    let selectorUsuarioNuevo = document.getElementById('usuarioSelect');
+    let opcionNueva = document.createElement('option');
+    opcionNueva.value = nuevoUsuario.id;
+    opcionNueva.textContent = `${nuevoUsuario.name} (@${nuevoUsuario.username})`;
+    selectorUsuarioNuevo.appendChild(opcionNueva);
+
   }else{
     document.querySelector("#span-datos-incorrectos").textContent = "Los campos en rojon son incorrectos";
   }
