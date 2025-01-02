@@ -17,7 +17,7 @@ export class Post {
     this.comments.push(comment);
   }
 
-  render() {
+   render() {
     const template = document.getElementById('post-template').content.cloneNode(true);
     const postElement = template.querySelector('.post');
     
@@ -26,6 +26,8 @@ export class Post {
     
     postElement.querySelector('.post-titulo').textContent = this.title;
     const autorElement = postElement.querySelector('.post-autor');
+    const avatarElement = postElement.querySelector('.post-autor-avatar');
+    avatarElement.src = this.user.getAvatarUrl(30);
     autorElement.textContent = `Publicado por ${this.user.name} (@${this.user.username})`;
     autorElement.dataset.userid = this.user.id;
     autorElement.classList.add('usuario-link');
@@ -39,6 +41,16 @@ export class Post {
     postID.textContent = this.id;
     postID.classList.add('oculto');
 
+    // Añadir event listener para el click en el autor
+    autorElement.addEventListener('click', () => {
+      if (this.user) {
+        const mostrarPerfilUsuario = window.mostrarPerfilUsuario;
+        if (typeof mostrarPerfilUsuario === 'function') {
+          mostrarPerfilUsuario(this.user.id);
+        }
+      }
+    });
+
     //Coger los botones para el comentario
     let btnAddComentario = postElement.querySelector("#add-comment");
     let btnCancelarComment = postElement.querySelector("#cancelar-comment");
@@ -48,18 +60,6 @@ export class Post {
       postElement.querySelector("#modal-add-comments").classList.remove("oculto");
       document.body.classList.add('modal-open');
     });
-
-    //Crear un nuevo comentario comentario
-    /* let btnPublicar = postElement.querySelector("#publicarComment");
-    console.log(btnPublicar);
-    btnPublicar.addEventListener("click", () => {
-      console.log("has hecho click");
-      let tituloComment = postElement.querySelector("#tituloComment").value;
-      let contenidoComment = postElement.querySelector("#postId").value;
-      let nuevoComment = new Comment("nextId", "userId", tituloComment, contenidoComment);
-      console.log(nuevoComment)
-      nuevoComment.push(comentariosObjetos);
-    }); */
 
     //Ocultar el formulario de añadir el comentario al pulsar cancelar
     btnCancelarComment.addEventListener("click",()=>{

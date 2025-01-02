@@ -14,6 +14,34 @@
       <img src="img/Escudo_Isengard.svg" alt="Logo Isengard" class="logo">
       <h1>Isengard</h1>
     </div>
+    <!--Contenedor para añadir el usuario-->
+    <div class="contenedor-add-user">
+      <span class="texto-add-user">Añadir usuario</span>
+      <img class="imagenAddUser" src="img/add_user.svg" alt="Logo añadir usuario" title="Añadir usuario">
+    </div>
+    <!--Contenedor oculto que se abrirá una vez clicado en el contenedor de añadir user-->
+    <div id="modal-add-user" class="modal-fondo oculto">
+      <div class="formulario-usuario">
+        <form>
+          <label for="nombrePersona">Nombre: </label>
+          <input id="nombrePersona" type="text" placeholder="Nombre" required value="Pruebaaaa"><br>
+          <label for="user-Name">Nombre de usuario: </label>
+          <input id="user-Name" placeholder="Nombre de usuario" required value="prueba123"><br>
+          <label for="correo-User">Email: </label>
+          <input id="correo-User" placeholder="Email" required value="prueba@gmail.com"><br>
+          <label for="latitud">Latitud:</label>
+          <input type="text" name="latitud" id="latitud" placeholder="90" value="90"><br>
+          <label for="longitud">Longitud:</label>
+          <input type="text" name="longitud" id="longitud" placeholder="-3.7038" value="-3.7038"><br>
+          <label for="telefono">Teléfono:</label>
+          <input type="text" name="telefono" id="telefono" placeholder="Tel: 600000000" value="612123123"><br>
+          <label for="sitio-web">Web:</label>
+          <input type="text" name="sitio-web" id="sitio-web" placeholder="Página web" value="www.prueba.com"><br>
+          <button id="crearUser" type="button">Crear</button>
+          <button id="cancelar-creacion-user" type="button" >Cancelar</button><br><span id="span-datos-incorrectos"></span>
+        </form>
+      </div>
+    </div>
   </header>
 
   <div class="layout-container">
@@ -38,6 +66,10 @@
               <button class="modificar-post-btn">
                 <img src="img/pencil-svgrepo-com.svg" alt="Añadir comentario" class="modify-post-icon" title="Añadir comentario">
               </button>
+              <div class="post-autor-container">
+                <img class="post-autor-avatar" alt="Avatar del autor">
+                <p class="post-autor usuario-link"></p>
+              </div>
               <button class="eliminar-post-btn">
                 <img src="img/papelera.svg" alt="Eliminar post" title="Eliminar post">
               </button>
@@ -47,20 +79,20 @@
               <img src="img/add_comment.svg" alt="Añadir comentario" class="add-comment-icon" title="Añadir comentario">
             </button>
             <div id="modal-add-comments" class="modal-fondo oculto">
-                <div class="formulario-comentario">
-                  <form>
-                    <select id="usuarioSelect" >
-                      <option value="">Selecciona un usuario</option>
-                    </select>
-                    <input id="tituloComment" type="text" placeholder="Introduce el título del comentario" required>
-                    <textarea id="postBody" placeholder="Contenido de el comentario" required></textarea>
-                    <button id="publicarComment" type="button">Publicar</button>
-                    <button type="button" id="cancelar-comment">Cancelar</button>
-                  </form>
-                </div>
+              <div class="formulario-comentario">
+                <form>
+                  <select id="usuarioSelectComentario">
+                    <option value="">Selecciona un usuario</option>
+                  </select>
+                  <input id="tituloComment" type="text" placeholder="Introduce el título del comentario" required>
+                  <textarea id="postBody" placeholder="Contenido de el comentario" required></textarea>
+                  <button id="publicarComment" type="button">Publicar</button>
+                  <button type="button" id="cancelar-comment">Cancelar</button>
+                </form>
+              </div>
               <a href=""></a>
             </div>
-            
+
             <div class="comments-section">
               <h3>Comentarios: <span class="comments-count"></span></h3>
               <div class="comments-container"></div>
@@ -72,8 +104,21 @@
         <template id="comment-template">
           <div class="comment">
             <div class="comment-cabecera">
-              <strong class="comment-autor"></strong>
-              <span class="comment-username"></span>
+              <div class="comment-autor-container">
+                <img class="comment-avatar" alt="Avatar del autor">
+                <div class="comment-autor-info">
+                  <strong class="comment-autor"></strong>
+                  <span class="comment-username"></span>
+                </div>
+              </div>
+              <div class="comment-actions">
+                <button class="edit-comment-btn">
+                  <img src="img/pencil-square-svgrepo-com.svg" alt="Editar comentario" title="Editar comentario">
+                </button>
+                <button class="delete-comment-btn">
+                  <img src="img/papelera.svg" alt="Eliminar comentario" title="Eliminar comentario">
+                </button>
+              </div>
             </div>
             <p class="comment-body"></p>
           </div>
@@ -82,32 +127,37 @@
         <!-- Templates para resultados de búsqueda -->
         <template id="usuario-resultado-template">
           <div class="item-resultado-busqueda usuario" data-userid="">
-            <strong class="username"></strong>
-            <div class="name"></div>
+            <div class="usuario-resultado-container">
+              <img class="usuario-resultado-avatar" alt="Avatar del usuario">
+              <div class="usuario-resultado-info">
+                <strong class="username"></strong>
+                <div class="name"></div>
+              </div>
+            </div>
           </div>
         </template>
-        
+
         <template id="foto-resultado-template">
           <div class="item-resultado-busqueda photo">
             <img class="photo-img" src="" alt="">
             <div class="photo-title"></div>
           </div>
         </template>
-        
+
         <template id="publicacion-resultado-template">
           <div class="item-resultado-busqueda">
             <div class="post-title"></div>
             <div class="post-author"></div>
           </div>
         </template>
-        
+
         <template id="comentario-resultado-template">
           <div class="item-resultado-busqueda">
             <div class="comment-name"></div>
             <div class="comment-body"></div>
           </div>
         </template>
-        
+
         <template id="todo-resultado-template">
           <div class="item-resultado-busqueda">
             <div class="todo-title"></div>
@@ -118,7 +168,7 @@
 
         <div id="modal-eliminar" class="modal-fondo oculto">
           <div class="modal-contenido">
-            <h3>¿Estás seguro de que quieres eliminar esta publicación?</h3>
+            <h3>¿Estás seguro de que quieres eliminar?</h3>
             <p>Esta acción es permanente y no podrá deshacerse</p>
             <div class="modal-botones">
               <button id="btn-cancelar" class="btn-secundario">Cancelar</button>
@@ -164,6 +214,11 @@
         <button class="cerrar-modal">✕</button>
       </div>
       <div class="perfil-cabecera">
+        <img class="perfil-avatar" alt="Avatar del usuario">
+        <button type="button" id="btn-modificar-usuario" class="btn-modificar-usuario">
+          <img src="img/pencil-square-svgrepo-com.svg" alt="Añadir comentario" class="add-comment-icon"
+            title="Añadir comentario">
+        </button>
         <h2 class="perfil-nombre"></h2>
         <p class="perfil-username"></p>
       </div>
@@ -194,8 +249,23 @@
       </div>
     </div>
   </div>
+  <div id="modal-foto" class="modal-fondo oculto">
+    <div class="modal-contenido modal-foto">
+      <div class="modal-header">
+        <h3 class="foto-titulo"></h3>
+        <button class="cerrar-modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <img class="foto-imagen" src="" alt="">
+        <div class="foto-info">
+          <p class="foto-album">Álbum: <span></span></p>
+          <p class="foto-url">URL: <a href="" target="_blank"></a></p>
+        </div>
+      </div>
+    </div>
+  </div>
   <button id="volverArriba" class="volver-arriba" aria-label="Volver arriba">
-    <img src="/img/flecha_volver_arriba.svg" alt="Volver arriba" title="Volver arriba">
+    <img src="img/flecha_volver_arriba.svg" alt="Volver arriba" title="Volver arriba">
   </button>
   <script src="main.js" type="module"></script>
 </body>
