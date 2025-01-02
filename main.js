@@ -399,6 +399,52 @@ document.addEventListener('click', (e) => {
 
 btnCancelar.addEventListener('click', ocultarModalEliminar);
 
+const modalModificar = document.getElementById('modal-modificar');
+const btnCancelarModificar = document.getElementById('btn-cancelar-modificar');
+const formularioModificar = document.getElementById("modificarPost");
+
+function mostrarModalModificar() {
+  modalModificar.classList.remove('oculto');
+  document.body.classList.add('modal-open');
+}
+
+function ocultarModalModificar() {
+  modalModificar.classList.add('oculto');
+  document.body.classList.remove('modal-open');
+}
+
+// Eventos para la funcionalidad de modificar
+postElement.querySelector(".modificar-post-btn").addEventListener("click",(e)=>{
+  mostrarModalModificar();
+  document.getElementById("modificarTitulo").value = this.title;
+  document.getElementById("modificarBody").value = this.body;
+
+  // Cerrar modal al hacer click fuera
+  if (e.target === modalModificar) {
+    ocultarModalModificar();
+  }
+});
+        
+
+btnCancelarModificar.addEventListener('click', ocultarModalModificar);
+
+formularioModificar.addEventListener('submit', (event) => {
+  event.preventDefault();
+  let modificarTitulo = document.getElementById("modificarTitulo").value;
+  let modificarBody = document.getElementById("modificarBody").value;
+
+  if (!modificarTitulo=="") {
+    this.title = modificarTitulo;
+  }
+  if (!modificarBody=="") {
+     this.body = modificarBody;
+  }
+  ocultarModalModificar();
+      
+});
+
+
+
 // Configuración de búsqueda
 const entradaBusqueda = document.getElementById('buscador');
 const opcionesBusqueda = document.querySelectorAll('.search-option');
