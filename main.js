@@ -624,7 +624,7 @@ function mostrarResultados(resultados, tipo) {
     resultadosUsuarios.forEach(resultado => {
       resultado.addEventListener('click', () => {
         const userId = parseInt(resultado.dataset.userid);
-        const usuario = usuariosObjetos.find(u => u.id === userId);
+        const usuario = usuariosObjetos.find(user => user.id === userId);
         if (usuario) {
           mostrarPerfilUsuario(usuario.id);
         }
@@ -746,7 +746,95 @@ function realizarBusqueda(consulta) {
   mostrarResultados(resultados, tipoBusquedaSeleccionado);
 }
 
-// Función para mostrar el modal de añadir comentarios
+// Funciones para el modal de fotos
+function mostrarModalFoto(foto) {
+  const modalFoto = document.getElementById('modal-foto');
+  const titulo = modalFoto.querySelector('.foto-titulo');
+  const imagen = modalFoto.querySelector('.foto-imagen');
+  const albumSpan = modalFoto.querySelector('.foto-album span');
+  const urlLink = modalFoto.querySelector('.foto-url a');
+
+  titulo.textContent = foto.title;
+  imagen.src = foto.url;
+  imagen.alt = foto.title;
+  imagen.dataset.photoId = foto.id;  // Añadir el ID de la foto
+  albumSpan.textContent = foto.albumId;
+  urlLink.href = foto.url;
+  urlLink.textContent = foto.url;
+
+  modalFoto.classList.remove('oculto');
+  document.body.classList.add('modal-open');
+}
+
+function ocultarModalFoto() {
+  const modalFoto = document.getElementById('modal-foto');
+  modalFoto.classList.add('oculto');
+  document.body.classList.remove('modal-open');
+}
+
+// Event listeners para el modal de fotos
+document.addEventListener('click', (e) => {
+  const fotoResultado = e.target.closest('.item-resultado-busqueda.photo');
+  if (fotoResultado) {
+    const fotoId = fotoResultado.dataset.photoId;
+    const foto = photos.find(p => p.id === parseInt(fotoId));
+    if (foto) {
+      mostrarModalFoto(foto);
+    }
+  }
+
+  if (e.target.closest('#modal-foto .cerrar-modal')) {
+    ocultarModalFoto();
+  }
+
+  if (e.target.id === 'modal-foto') {
+    ocultarModalFoto();
+  }
+
+  if (e.target.closest('#btn-eliminar-foto')) {
+    const modalFoto = document.getElementById('modal-foto');
+    const fotoId = parseInt(modalFoto.querySelector('.foto-imagen').dataset.photoId);
+    const foto = photos.find(p => p.id === fotoId);
+    
+    // Cerrar el modal de la foto
+    ocultarModalFoto();
+    
+    // Mostrar el modal de confirmación
+    mostrarModalEliminar();
+    
+    // Evento para el botón de eliminar
+    btnEliminar.addEventListener('click', () => {
+      // Eliminar la foto del array de fotos
+      const indice = photos.findIndex(f => f.id === fotoId);
+      if (indice !== -1) {
+        photos.splice(indice, 1);
+      }
+
+      // Eliminar el resultado de búsqueda si existe
+      const resultadoFoto = document.querySelector(`.item-resultado-busqueda.photo[data-photo-id="${fotoId}"]`);
+      if (resultadoFoto) {
+        resultadoFoto.remove();
+      }
+
+      ocultarModalEliminar();
+      
+      // Actualizar los resultados de búsqueda si estamos en la sección de fotos
+      if (tipoBusquedaSeleccionado === 'fotos') {
+        realizarBusqueda(entradaBusqueda.value);
+      }
+    }, { once: true });
+
+    // Evento para el botón de cancelar
+    btnCancelar.addEventListener('click', () => {
+      ocultarModalEliminar();
+      if (foto) {
+        mostrarModalFoto(foto);
+      }
+    }, { once: true });
+  }
+});
+
+// Funciones para el modal de comentarios
 function mostrarModalComentarios(postElement) {
   const postId = postElement.querySelector('#post-id').textContent;
   const modalComentarios = postElement.querySelector('#modal-add-comments');
@@ -768,7 +856,6 @@ function mostrarModalComentarios(postElement) {
   });
 }
 
-// Función para ocultar el modal de comentarios
 function ocultarModalComentarios(postElement) {
   const modalComentarios = postElement.querySelector('#modal-add-comments');
   modalComentarios.classList.add('oculto');
@@ -814,50 +901,5 @@ document.addEventListener('click', (e) => {
       // Limpiar el formulario
       modalComentarios.querySelector('form').reset();
     }
-  }
-});
-
-// Funciones para el modal de fotos
-function mostrarModalFoto(foto) {
-  const modalFoto = document.getElementById('modal-foto');
-  const titulo = modalFoto.querySelector('.foto-titulo');
-  const imagen = modalFoto.querySelector('.foto-imagen');
-  const albumSpan = modalFoto.querySelector('.foto-album span');
-  const urlLink = modalFoto.querySelector('.foto-url a');
-
-  titulo.textContent = foto.title;
-  imagen.src = foto.url;
-  imagen.alt = foto.title;
-  albumSpan.textContent = foto.albumId;
-  urlLink.href = foto.url;
-  urlLink.textContent = foto.url;
-
-  modalFoto.classList.remove('oculto');
-  document.body.classList.add('modal-open');
-}
-
-function ocultarModalFoto() {
-  const modalFoto = document.getElementById('modal-foto');
-  modalFoto.classList.add('oculto');
-  document.body.classList.remove('modal-open');
-}
-
-// Event listeners para el modal de fotos
-document.addEventListener('click', (e) => {
-  const fotoResultado = e.target.closest('.item-resultado-busqueda.photo');
-  if (fotoResultado) {
-    const fotoId = fotoResultado.dataset.photoId;
-    const foto = photos.find(p => p.id === parseInt(fotoId));
-    if (foto) {
-      mostrarModalFoto(foto);
-    }
-  }
-
-  if (e.target.closest('#modal-foto .cerrar-modal')) {
-    ocultarModalFoto();
-  }
-
-  if (e.target.id === 'modal-foto') {
-    ocultarModalFoto();
   }
 });
