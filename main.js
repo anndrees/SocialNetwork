@@ -214,6 +214,7 @@ btnEliminar.addEventListener('click', () => {
 
 });
 
+
 // Configuración de búsqueda
 const entradaBusqueda = document.getElementById('buscador');
 const opcionesBusqueda = document.querySelectorAll('.search-option');
