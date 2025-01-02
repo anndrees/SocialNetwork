@@ -253,7 +253,6 @@ document.getElementById('nuevoPostForm').addEventListener('submit', function (e)
   const newPost = new Post(nextId, userId, title, body);
   const usuario = usuariosObjetos.find(u => u.id === userId);
   if (!usuario) {
-    console.error('Usuario no encontrado:', userId);
     return;
   }
   newPost.asignarUsuario(usuario);
@@ -342,6 +341,10 @@ document.addEventListener('click', (e) => {
       if (indicePost !== -1) {
         publicacionesObjetos.splice(indicePost, 1);
       }
+
+      // Eliminar los comentarios asociados al post
+      const comentariosAMantener = comentariosObjetos.filter(comment => comment.postId !== postId);
+      comentariosObjetos.splice(0, comentariosObjetos.length, ...comentariosAMantener);
       
       postElement.remove();
       ocultarModalEliminar();
@@ -440,7 +443,6 @@ document.addEventListener('click', (e) => {
       const opcionUsuario = usuarioSelect.querySelector(`option[value="${idUsuario}"]`);
       if (opcionUsuario) opcionUsuario.remove();
 
-      console.log(`Eliminando al usuario con id ${userId}`);
       ocultarModalEliminar();
 
       // Actualizar los resultados de búsqueda con el valor actual del buscador
