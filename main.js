@@ -253,7 +253,6 @@ document.getElementById('nuevoPostForm').addEventListener('submit', function (e)
   const newPost = new Post(nextId, userId, title, body);
   const usuario = usuariosObjetos.find(u => u.id === userId);
   if (!usuario) {
-    console.error('Usuario no encontrado:', userId);
     return;
   }
   newPost.asignarUsuario(usuario);
@@ -321,9 +320,9 @@ function ocultarModalEliminar() {
   document.body.classList.remove('modal-open');
 }
 
-function obtenerPapi(elemento,tipo){
+function obtenerPapi(elemento, tipo) {
   let actual = elemento;
-  while(actual&&!actual.classList.contains(tipo)){
+  while (actual && !actual.classList.contains(tipo)) {
     actual = actual.parentElement;
   }
   return actual;
@@ -334,17 +333,80 @@ document.addEventListener('click', (e) => {
   if (e.target.closest('.eliminar-post-btn')) {
     mostrarModalEliminar();
     btnEliminar.addEventListener('click', (event) => {
-      obtenerPapi(e.target,"post").remove();
+      const postElement = obtenerPapi(e.target, "post");
+      const postId = parseInt(postElement.getAttribute('data-post-id'));
+      
+      // Eliminar el post del array
+      const indicePost = publicacionesObjetos.findIndex(post => post.id === postId);
+      if (indicePost !== -1) {
+        publicacionesObjetos.splice(indicePost, 1);
+      }
+
+      // Eliminar los comentarios asociados al post
+      const comentariosAMantener = comentariosObjetos.filter(comment => comment.postId !== postId);
+      comentariosObjetos.splice(0, comentariosObjetos.length, ...comentariosAMantener);
+      
+      postElement.remove();
       ocultarModalEliminar();
-    },{once:true});
+      
+      // Actualizar los resultados de búsqueda
+      realizarBusqueda(entradaBusqueda.value);
+    }, { once: true });
   }
 
   if (e.target.closest('.delete-comment-btn')) {
     mostrarModalEliminar();
     btnEliminar.addEventListener('click', (event) => {
-      obtenerPapi(e.target,"comment").remove();
+      const commentElement = obtenerPapi(e.target, "comment");
+      const commentId = parseInt(commentElement.getAttribute('data-comment-id'));
+      const postElement = commentElement.closest('.post');
+      const postId = parseInt(postElement.querySelector('#post-id').textContent);
+      
+      // Eliminar el comentario del array
+      const indiceComment = comentariosObjetos.findIndex(comment => comment.id === commentId);
+      if (indiceComment !== -1) {
+        comentariosObjetos.splice(indiceComment, 1);
+      }
+
+      // Actualizar el contador de comentarios en el post
+      const comentariosPost = comentariosObjetos.filter(comment => comment.postId === postId);
+      const contadorComentarios = postElement.querySelector('.comments-count');
+      if (contadorComentarios) {
+        contadorComentarios.textContent = comentariosPost.length;
+      }
+
+      // Verificar si el comentario eliminado era uno de los visibles
+      const comentariosContainer = postElement.querySelector('.comments-container');
+      if (comentariosContainer) {
+        const comentariosVisibles = comentariosContainer.querySelectorAll('.comment:not(.hidden)');
+        const eraVisible = Array.from(comentariosVisibles).some(c => c === commentElement);
+
+        // Eliminar el comentario del DOM
+        commentElement.remove();
+
+        // Si era uno de los visibles y hay comentarios ocultos, mostrar el siguiente
+        if (eraVisible) {
+          const comentariosOcultos = comentariosContainer.querySelectorAll('.comment.hidden');
+          if (comentariosOcultos.length > 0) {
+            comentariosOcultos[0].classList.remove('hidden');
+            comentariosOcultos[0].classList.add('showing');
+          }
+        }
+
+        // Actualizar el enlace "Ver más comentarios"
+        const verMasLink = comentariosContainer.querySelector('.ver-mas-comentarios');
+        if (verMasLink) {
+          if (comentariosPost.length <= 3) {
+            verMasLink.style.display = 'none';
+          }
+        }
+      }
+      
       ocultarModalEliminar();
-    },{once:true});
+      
+      // Actualizar los resultados de búsqueda
+      realizarBusqueda(entradaBusqueda.value);
+    }, { once: true });
   }
 
   if (e.target.closest('#btn-eliminar-usuario')) {
@@ -353,8 +415,38 @@ document.addEventListener('click', (e) => {
     mostrarModalEliminar();
 
     btnEliminar.addEventListener('click', (event) => {
-      console.log(`Eliminando al usuario con id ${userId}`);
+      const idUsuario = parseInt(userId);
+
+      // Eliminar el usuario del array
+      const indiceUsuario = usuariosObjetos.findIndex(user => user.id === idUsuario);
+      if (indiceUsuario !== -1) {
+        usuariosObjetos.splice(indiceUsuario, 1);
+      }
+
+      // Eliminar los posts del usuario
+      const postsUsuario = publicacionesObjetos.filter(post => post.userId === idUsuario);
+      postsUsuario.forEach(post => {
+        const postElement = document.querySelector(`[data-post-id="${post.id}"]`);
+        if (postElement) postElement.remove();
+      });
+      // Modificar el array existente en lugar de reasignarlo
+      publicacionesObjetos.splice(0, publicacionesObjetos.length, ...publicacionesObjetos.filter(post => post.userId !== idUsuario));
+
+      // Eliminar los comentarios del usuario (mismo cambio)
+      comentariosObjetos.splice(0, comentariosObjetos.length, ...comentariosObjetos.filter(comment => comment.userId !== idUsuario));
+
+      // Eliminar los todos del usuario (mismo cambio)
+      todosObjetos.splice(0, todosObjetos.length, ...todosObjetos.filter(todo => todo.userId !== idUsuario));
+
+      // Actualizar el select de usuarios
+      const usuarioSelect = document.getElementById('usuarioSelect');
+      const opcionUsuario = usuarioSelect.querySelector(`option[value="${idUsuario}"]`);
+      if (opcionUsuario) opcionUsuario.remove();
+
       ocultarModalEliminar();
+
+      // Actualizar los resultados de búsqueda con el valor actual del buscador
+      realizarBusqueda(entradaBusqueda.value);
     }, { once: true });
 
     btnCancelar.addEventListener('click', (event) => {
@@ -373,7 +465,6 @@ btnCancelar.addEventListener('click', ocultarModalEliminar);
 
 const modalModificar = document.getElementById('modal-modificar');
 const btnCancelarModificar = document.getElementById('btn-cancelar-modificar');
-const formularioModificar = document.getElementById("modificarPost");
 
 function mostrarModalModificar() {
   modalModificar.classList.remove('oculto');
@@ -449,6 +540,9 @@ entradaBusqueda.addEventListener('input', (e) => {
   realizarBusqueda(e.target.value);
 });
 
+// Realizar búsqueda inicial para mostrar todas las publicaciones
+realizarBusqueda('')
+
 // Funcionalidad del modal de usuario
 const modalUsuario = document.getElementById('modal-usuario');
 const btnCerrarModalUsuario = modalUsuario.querySelector('.cerrar-modal');
@@ -484,19 +578,29 @@ window.mostrarPerfilUsuario = function (userId) {
   todosContainer.innerHTML = '';
 
   todosUsuario.forEach(todo => {
-    const todoElement = document.createElement('div');
-    todoElement.className = 'todo-item';
-    todoElement.innerHTML = `
-      <input type="checkbox" id="todo-${todo.id}" ${todo.completed ? 'checked' : ''}>
-      <label for="todo-${todo.id}">${todo.title}</label>
+    const todoItem = document.createElement('div');
+    todoItem.className = 'todo-item';
+    todoItem.innerHTML = `
+      <div>
+        <input type="checkbox" id="todo-${todo.id}" ${todo.completed ? 'checked' : ''}>
+        <label for="todo-${todo.id}">${todo.title}</label>
+      </div>
+      <div class="todo-actions">
+        <button class="edit-todo" data-todo-id="${todo.id}">
+          <img src="img/pencil-svgrepo-com.svg" alt="Editar" title="Editar to-do">
+        </button>
+        <button class="delete-todo" data-todo-id="${todo.id}">
+          <img src="img/papelera.svg" alt="Eliminar" title="Eliminar to-do">
+        </button>
+      </div>
     `;
 
-    const checkbox = todoElement.querySelector('input[type="checkbox"]');
+    const checkbox = todoItem.querySelector('input[type="checkbox"]');
     checkbox.addEventListener('change', (e) => {
       todo.completed = e.target.checked;
     });
 
-    todosContainer.appendChild(todoElement);
+    todosContainer.appendChild(todoItem);
   });
 
   let email = modalUsuario.querySelector('.perfil-email');
@@ -526,7 +630,6 @@ window.mostrarPerfilUsuario = function (userId) {
   document.body.classList.add('modal-open');
 };
 
-
 function ocultarModalUsuario() {
   modalUsuario.classList.add('oculto');
   document.body.classList.remove('modal-open');
@@ -537,6 +640,16 @@ btnCerrarModalUsuario.addEventListener('click', ocultarModalUsuario);
 modalUsuario.addEventListener('click', (e) => {
   if (e.target === modalUsuario) {
     ocultarModalUsuario();
+  }
+});
+
+// Evento para eliminar to-dos
+document.addEventListener('click', (e) => {
+  const deleteBtn = e.target.closest('.delete-todo');
+  if (deleteBtn) {
+    const todoId = parseInt(deleteBtn.dataset.todoId);
+    todosObjetos = todosObjetos.filter(todo => todo.id !== todoId);
+    deleteBtn.closest('.todo-item').remove();
   }
 });
 
@@ -609,7 +722,7 @@ function mostrarResultados(resultados, tipo) {
     resultadosUsuarios.forEach(resultado => {
       resultado.addEventListener('click', () => {
         const userId = parseInt(resultado.dataset.userid);
-        const usuario = usuariosObjetos.find(u => u.id === userId);
+        const usuario = usuariosObjetos.find(user => user.id === userId);
         if (usuario) {
           mostrarPerfilUsuario(usuario.id);
         }
@@ -697,47 +810,129 @@ function mostrarResultados(resultados, tipo) {
 
 // Función para realizar la búsqueda
 function realizarBusqueda(consulta) {
-  if (!consulta) {
-    encabezadoResultados.textContent = '';
-    listaResultados.innerHTML = '';
-    return;
-  }
-
   let resultados = [];
-  consulta = consulta.toLowerCase();
+  consulta = consulta ? consulta.toLowerCase() : '';
 
   switch (tipoBusquedaSeleccionado) {
     case 'usuarios':
       resultados = usuariosObjetos.filter(usuario =>
-        usuario.username.toLowerCase().includes(consulta)
+        consulta ? usuario.username.toLowerCase().includes(consulta) : true
       );
       break;
     case 'publicaciones':
-      resultados = posts.filter(publicacion =>
-        publicacion.title.toLowerCase().includes(consulta)
+      resultados = publicacionesObjetos.filter(publicacion =>
+        consulta ? publicacion.title.toLowerCase().includes(consulta) : true
       );
       break;
     case 'comentarios':
-      resultados = comments.filter(comentario =>
-        comentario.name.toLowerCase().includes(consulta)
+      resultados = comentariosObjetos.filter(comentario =>
+        consulta ? comentario.name.toLowerCase().includes(consulta) : true
       );
       break;
     case 'fotos':
       resultados = photos.filter(foto =>
-        foto.title.toLowerCase().includes(consulta)
+        consulta ? foto.title.toLowerCase().includes(consulta) : true
       ).map(foto => new Photo(foto));
       break;
     case 'todos':
-      resultados = todos.filter(tarea =>
-        tarea.title.toLowerCase().includes(consulta)
-      ).map(tarea => new Todo(tarea));
+      resultados = todosObjetos.filter(tarea =>
+        consulta ? tarea.title.toLowerCase().includes(consulta) : true
+      );
       break;
   }
 
   mostrarResultados(resultados, tipoBusquedaSeleccionado);
 }
 
-// Función para mostrar el modal de añadir comentarios
+// Funciones para el modal de fotos
+function mostrarModalFoto(foto) {
+  const modalFoto = document.getElementById('modal-foto');
+  const titulo = modalFoto.querySelector('.foto-titulo');
+  const imagen = modalFoto.querySelector('.foto-imagen');
+  const albumSpan = modalFoto.querySelector('.foto-album span');
+  const urlLink = modalFoto.querySelector('.foto-url a');
+
+  titulo.textContent = foto.title;
+  imagen.src = foto.url;
+  imagen.alt = foto.title;
+  imagen.dataset.photoId = foto.id;  // Añadir el ID de la foto
+  albumSpan.textContent = foto.albumId;
+  urlLink.href = foto.url;
+  urlLink.textContent = foto.url;
+
+  modalFoto.classList.remove('oculto');
+  document.body.classList.add('modal-open');
+}
+
+function ocultarModalFoto() {
+  const modalFoto = document.getElementById('modal-foto');
+  modalFoto.classList.add('oculto');
+  document.body.classList.remove('modal-open');
+}
+
+// Event listeners para el modal de fotos
+document.addEventListener('click', (e) => {
+  const fotoResultado = e.target.closest('.item-resultado-busqueda.photo');
+  if (fotoResultado) {
+    const fotoId = fotoResultado.dataset.photoId;
+    const foto = photos.find(p => p.id === parseInt(fotoId));
+    if (foto) {
+      mostrarModalFoto(foto);
+    }
+  }
+
+  if (e.target.closest('#modal-foto .cerrar-modal')) {
+    ocultarModalFoto();
+  }
+
+  if (e.target.id === 'modal-foto') {
+    ocultarModalFoto();
+  }
+
+  if (e.target.closest('#btn-eliminar-foto')) {
+    const modalFoto = document.getElementById('modal-foto');
+    const fotoId = parseInt(modalFoto.querySelector('.foto-imagen').dataset.photoId);
+    const foto = photos.find(p => p.id === fotoId);
+    
+    // Cerrar el modal de la foto
+    ocultarModalFoto();
+    
+    // Mostrar el modal de confirmación
+    mostrarModalEliminar();
+    
+    // Evento para el botón de eliminar
+    btnEliminar.addEventListener('click', () => {
+      // Eliminar la foto del array de fotos
+      const indice = photos.findIndex(f => f.id === fotoId);
+      if (indice !== -1) {
+        photos.splice(indice, 1);
+      }
+
+      // Eliminar el resultado de búsqueda si existe
+      const resultadoFoto = document.querySelector(`.item-resultado-busqueda.photo[data-photo-id="${fotoId}"]`);
+      if (resultadoFoto) {
+        resultadoFoto.remove();
+      }
+
+      ocultarModalEliminar();
+      
+      // Actualizar los resultados de búsqueda si estamos en la sección de fotos
+      if (tipoBusquedaSeleccionado === 'fotos') {
+        realizarBusqueda(entradaBusqueda.value);
+      }
+    }, { once: true });
+
+    // Evento para el botón de cancelar
+    btnCancelar.addEventListener('click', () => {
+      ocultarModalEliminar();
+      if (foto) {
+        mostrarModalFoto(foto);
+      }
+    }, { once: true });
+  }
+});
+
+// Funciones para el modal de comentarios
 function mostrarModalComentarios(postElement) {
   const postId = postElement.querySelector('#post-id').textContent;
   const modalComentarios = postElement.querySelector('#modal-add-comments');
@@ -759,7 +954,6 @@ function mostrarModalComentarios(postElement) {
   });
 }
 
-// Función para ocultar el modal de comentarios
 function ocultarModalComentarios(postElement) {
   const modalComentarios = postElement.querySelector('#modal-add-comments');
   modalComentarios.classList.add('oculto');
@@ -805,50 +999,5 @@ document.addEventListener('click', (e) => {
       // Limpiar el formulario
       modalComentarios.querySelector('form').reset();
     }
-  }
-});
-
-// Funciones para el modal de fotos
-function mostrarModalFoto(foto) {
-  const modalFoto = document.getElementById('modal-foto');
-  const titulo = modalFoto.querySelector('.foto-titulo');
-  const imagen = modalFoto.querySelector('.foto-imagen');
-  const albumSpan = modalFoto.querySelector('.foto-album span');
-  const urlLink = modalFoto.querySelector('.foto-url a');
-
-  titulo.textContent = foto.title;
-  imagen.src = foto.url;
-  imagen.alt = foto.title;
-  albumSpan.textContent = foto.albumId;
-  urlLink.href = foto.url;
-  urlLink.textContent = foto.url;
-
-  modalFoto.classList.remove('oculto');
-  document.body.classList.add('modal-open');
-}
-
-function ocultarModalFoto() {
-  const modalFoto = document.getElementById('modal-foto');
-  modalFoto.classList.add('oculto');
-  document.body.classList.remove('modal-open');
-}
-
-// Event listeners para el modal de fotos
-document.addEventListener('click', (e) => {
-  const fotoResultado = e.target.closest('.item-resultado-busqueda.photo');
-  if (fotoResultado) {
-    const fotoId = fotoResultado.dataset.photoId;
-    const foto = photos.find(p => p.id === parseInt(fotoId));
-    if (foto) {
-      mostrarModalFoto(foto);
-    }
-  }
-
-  if (e.target.closest('#modal-foto .cerrar-modal')) {
-    ocultarModalFoto();
-  }
-
-  if (e.target.id === 'modal-foto') {
-    ocultarModalFoto();
   }
 });
