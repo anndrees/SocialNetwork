@@ -66,6 +66,11 @@ body.modal-open {
   margin: 0 0 20px 0;
 }
 
+.modificar-post-btn {
+  position: absolute;
+  top: 8px;
+  right: 45px;
+}
 .btn-modificar-usuario {
   position: absolute;
   background: none;

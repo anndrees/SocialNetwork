@@ -62,6 +62,10 @@
           <article class="post">
             <div class="post-cabecera">
               <h2 class="post-titulo"></h2>
+              <p class="post-autor usuario-link"></p>
+              <button class="modificar-post-btn">
+                <img src="img/pencil-svgrepo-com.svg" alt="Añadir comentario" class="modify-post-icon" title="Añadir comentario">
+              </button>
               <div class="post-autor-container">
                 <img class="post-autor-avatar" alt="Avatar del autor">
                 <p class="post-autor usuario-link"></p>
@@ -170,6 +174,18 @@
               <button id="btn-cancelar" class="btn-secundario">Cancelar</button>
               <button id="btn-eliminar" class="btn-primario">Eliminar</button>
             </div>
+          </div>
+        </div>
+        <div id="modal-modificar" class="modal-fondo oculto">
+          <div class="modal-contenido">
+            <form id="modificarPost" class="post-form">
+              <input type="text" id="modificarTitulo">
+              <textarea id="modificarBody"></textarea>
+              <button type="submit">Modificar</button>
+              <div class="modal-botones">
+                <button type="button" id="btn-cancelar-modificar" class="btn-secundario">Cancelar</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
