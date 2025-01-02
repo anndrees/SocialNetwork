@@ -1145,3 +1145,27 @@ button.cerrar-modal:hover {
   height: 16px;
   filter: invert(1);
 }
+.btn-eliminar-foto {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 16px 0;
+  transition: background-color 0.2s ease;
+}
+
+.btn-eliminar-foto:hover {
+  background-color: #c82333;
+}
+
+.btn-eliminar-foto img {
+  width: 16px;
+  height: 16px;
+  filter: invert(1);
+}
