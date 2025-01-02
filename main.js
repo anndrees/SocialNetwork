@@ -67,7 +67,7 @@ let contenedorAddUser = document.querySelector(".contenedor-add-user");
 let div = document.querySelector("#modal-add-user");
 
 //Este es el contenedor de el logo de añadir usuario que cuando se haga click se mostrará un div oculto (un formulario)
-contenedorAddUser.addEventListener("click",()=>{
+contenedorAddUser.addEventListener("click", () => {
   //Con esto mostramos el formulario
   div.classList.remove("oculto");
   div.classList.add("modal-open");
@@ -137,9 +137,9 @@ let btnCrearUser = document.querySelector("#crearUser");
 
 //EVENTO CREAR USER
 //Creamos el evento de crear user
-btnCrearUser.addEventListener("click",()=>{
+btnCrearUser.addEventListener("click", () => {
   //Comprobar los campos sean válidos
-  if(camposValidos()){
+  if (camposValidos()) {
     let nombre = document.querySelector("#nombrePersona").value;
     let nombreUser = document.querySelector("#user-Name").value;
     let correo = document.querySelector("#correo-User").value;
@@ -151,12 +151,11 @@ btnCrearUser.addEventListener("click",()=>{
     //incrementamos el id maximo antes de crear al user
     maxIdUsuario = maxIdUsuario + 1;
 
-    let nuevoUsuario = new User(maxIdUsuario,nombre,nombreUser,correo,latitud,longitud,telefono,sitioWeb);
-    console.log(nuevoUsuario);
-    console.log("longitud array: " + usuariosPredefinidos.length);
+    let nuevoUsuario = new User(maxIdUsuario, nombre, nombreUser, correo, latitud, longitud, telefono, sitioWeb);
+
     //metemos al user en el array
     usuariosPredefinidos.push(nuevoUsuario);
-    console.log("longitud array despues de meter user: "+usuariosPredefinidos.length);
+    usuariosObjetos.push(nuevoUsuario);
 
     let selectorUsuarioNuevo = document.getElementById('usuarioSelect');
     let opcionNueva = document.createElement('option');
@@ -164,14 +163,26 @@ btnCrearUser.addEventListener("click",()=>{
     opcionNueva.textContent = `${nuevoUsuario.name} (@${nuevoUsuario.username})`;
     selectorUsuarioNuevo.appendChild(opcionNueva);
 
-  }else{
-    document.querySelector("#span-datos-incorrectos").textContent = "Los campos en rojon son incorrectos";
+    // Reiniciar el formulario
+    const form = document.querySelector(".formulario-usuario form");
+    form.reset();
+
+    // Limpiar mensaje de error si existe
+    document.querySelector("#span-datos-incorrectos").textContent = "";
+
+    // Cerrar el modal
+    div.classList.add("oculto");
+    div.classList.remove("modal-open");
+    document.body.classList.remove("modal-open");
+
+  } else {
+    document.querySelector("#span-datos-incorrectos").textContent = "Los campos en rojo son incorrectos";
   }
 });
 
 //Este botón es para ocultar la creación del usuario
 let btnCancelarUser = document.getElementById("cancelar-creacion-user");
-btnCancelarUser.addEventListener("click",()=>{
+btnCancelarUser.addEventListener("click", () => {
   div.classList.add("oculto");
   div.classList.remove("modal-open");
 });
@@ -241,9 +252,11 @@ document.getElementById('nuevoPostForm').addEventListener('submit', function (e)
   // Crear nuevo post
   const newPost = new Post(nextId, userId, title, body);
   const usuario = usuariosObjetos.find(u => u.id === userId);
-  if (usuario) {
-    newPost.asignarUsuario(usuario);
+  if (!usuario) {
+    console.error('Usuario no encontrado:', userId);
+    return;
   }
+  newPost.asignarUsuario(usuario);
 
   // Añadir al principio del array
   publicacionesObjetos.splice(0, 0, newPost);
@@ -364,7 +377,7 @@ window.mostrarPerfilUsuario = function (userId) {
   const usuario = usuariosObjetos.find(user => user.id === userId);
   if (!usuario) return;
 
-  
+
   // Código existente del perfil...
   modalUsuario.querySelector('.perfil-avatar').src = usuario.getAvatarUrl(120);
   modalUsuario.querySelector('.perfil-nombre').textContent = usuario.name;
@@ -407,29 +420,28 @@ window.mostrarPerfilUsuario = function (userId) {
   let telefono = modalUsuario.querySelector('.perfil-telefono');
 
   let btnModificarUsuario = modalUsuario.querySelector(".btn-modificar-usuario");
-    btnModificarUsuario.addEventListener("click",()=>{
-      if (!clicado) {
-        email.innerHTML = "<input type='text' id='email1' value='"+usuario.email+"'>";
-        telefono.innerHTML = "<input type='text' id='telefono1' value='"+usuario.phone+"'>";
-      }else{
-        let textoInputEmail = document.getElementById("email1").value;
-        let textoInputTelefono = document.getElementById("telefono1").value;
+  btnModificarUsuario.addEventListener("click", () => {
+    if (!clicado) {
+      email.innerHTML = "<input type='text' id='email1' value='" + usuario.email + "'>";
+      telefono.innerHTML = "<input type='text' id='telefono1' value='" + usuario.phone + "'>";
+    } else {
+      let textoInputEmail = document.getElementById("email1").value;
+      let textoInputTelefono = document.getElementById("telefono1").value;
 
-        if (!(textoInputEmail=="" && textoInputTelefono=="")) {
-          email.textContent = textoInputEmail;
-          telefono.textContent = textoInputTelefono;
-          usuario.email = email.textContent;
-          usuario.phone = telefono.textContent;
-        }
+      if (!(textoInputEmail == "" && textoInputTelefono == "")) {
+        email.textContent = textoInputEmail;
+        telefono.textContent = textoInputTelefono;
+        usuario.email = email.textContent;
+        usuario.phone = telefono.textContent;
       }
-      clicado = !clicado;
-    });
+    }
+    clicado = !clicado;
+  });
 
   // Mostrar el modal
   modalUsuario.classList.remove('oculto');
   document.body.classList.add('modal-open');
 };
-
 
 
 function ocultarModalUsuario() {
@@ -439,7 +451,7 @@ function ocultarModalUsuario() {
 
 // Eventos para abrir/cerrar el modal de usuario
 btnCerrarModalUsuario.addEventListener('click', ocultarModalUsuario);
-modalUsuario.addEventListener('click',(e) => {
+modalUsuario.addEventListener('click', (e) => {
   if (e.target === modalUsuario) {
     ocultarModalUsuario();
   }
@@ -648,13 +660,13 @@ function mostrarModalComentarios(postElement) {
   const modalComentarios = postElement.querySelector('#modal-add-comments');
   modalComentarios.classList.remove('oculto');
   document.body.classList.add('modal-open');
-  
+
   // Obtener el select de usuarios en el modal de comentarios
   const usuarioSelectComentarios = modalComentarios.querySelector('#usuarioSelectComentario');
-  
+
   // Limpiar opciones existentes
   usuarioSelectComentarios.innerHTML = '<option value="">Selecciona un usuario</option>';
-  
+
   // Poblar el select con todos los usuarios
   usuariosObjetos.forEach(usuario => {
     const option = document.createElement('option');
@@ -676,37 +688,37 @@ document.addEventListener('click', (e) => {
   const addCommentBtn = e.target.closest('#add-comment');
   const modalComentarios = e.target.closest('#modal-add-comments');
   const formularioComentario = e.target.closest('.formulario-comentario');
-  
+
   if (addCommentBtn) {
     const postElement = addCommentBtn.closest('.post');
     mostrarModalComentarios(postElement);
   }
-  
+
   // Si se hace clic fuera del formulario y dentro del modal, cerrar el modal
   if (modalComentarios && !formularioComentario) {
     const postElement = modalComentarios.closest('.post');
     ocultarModalComentarios(postElement);
     document.body.classList.remove('modal-open');
   }
-  
+
   if (e.target.id === 'cancelar-comment') {
     const postElement = e.target.closest('.post');
     ocultarModalComentarios(postElement);
   }
-  
+
   if (e.target.id === 'publicarComment') {
     const postElement = e.target.closest('.post');
     const modalComentarios = postElement.querySelector('#modal-add-comments');
     const usuarioId = modalComentarios.querySelector('#usuarioSelectComentario').value;
     const titulo = modalComentarios.querySelector('#tituloComment').value;
     const contenido = modalComentarios.querySelector('#postBody').value;
-    
+
     if (usuarioId && titulo && contenido) {
       // Aquí iría la lógica para crear el comentario
       // Por ahora solo ocultamos el modal
       ocultarModalComentarios(postElement);
       document.body.classList.remove('modal-open');
-      
+
       // Limpiar el formulario
       modalComentarios.querySelector('form').reset();
     }
