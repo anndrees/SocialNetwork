@@ -334,16 +334,75 @@ document.addEventListener('click', (e) => {
   if (e.target.closest('.eliminar-post-btn')) {
     mostrarModalEliminar();
     btnEliminar.addEventListener('click', (event) => {
-      obtenerPapi(e.target, "post").remove();
+      const postElement = obtenerPapi(e.target, "post");
+      const postId = parseInt(postElement.getAttribute('data-post-id'));
+      
+      // Eliminar el post del array
+      const indicePost = publicacionesObjetos.findIndex(post => post.id === postId);
+      if (indicePost !== -1) {
+        publicacionesObjetos.splice(indicePost, 1);
+      }
+      
+      postElement.remove();
       ocultarModalEliminar();
+      
+      // Actualizar los resultados de búsqueda
+      realizarBusqueda(entradaBusqueda.value);
     }, { once: true });
   }
 
   if (e.target.closest('.delete-comment-btn')) {
     mostrarModalEliminar();
     btnEliminar.addEventListener('click', (event) => {
-      obtenerPapi(e.target, "comment").remove();
+      const commentElement = obtenerPapi(e.target, "comment");
+      const commentId = parseInt(commentElement.getAttribute('data-comment-id'));
+      const postElement = commentElement.closest('.post');
+      const postId = parseInt(postElement.querySelector('#post-id').textContent);
+      
+      // Eliminar el comentario del array
+      const indiceComment = comentariosObjetos.findIndex(comment => comment.id === commentId);
+      if (indiceComment !== -1) {
+        comentariosObjetos.splice(indiceComment, 1);
+      }
+
+      // Actualizar el contador de comentarios en el post
+      const comentariosPost = comentariosObjetos.filter(comment => comment.postId === postId);
+      const contadorComentarios = postElement.querySelector('.comments-count');
+      if (contadorComentarios) {
+        contadorComentarios.textContent = comentariosPost.length;
+      }
+
+      // Verificar si el comentario eliminado era uno de los visibles
+      const comentariosContainer = postElement.querySelector('.comments-container');
+      if (comentariosContainer) {
+        const comentariosVisibles = comentariosContainer.querySelectorAll('.comment:not(.hidden)');
+        const eraVisible = Array.from(comentariosVisibles).some(c => c === commentElement);
+
+        // Eliminar el comentario del DOM
+        commentElement.remove();
+
+        // Si era uno de los visibles y hay comentarios ocultos, mostrar el siguiente
+        if (eraVisible) {
+          const comentariosOcultos = comentariosContainer.querySelectorAll('.comment.hidden');
+          if (comentariosOcultos.length > 0) {
+            comentariosOcultos[0].classList.remove('hidden');
+            comentariosOcultos[0].classList.add('showing');
+          }
+        }
+
+        // Actualizar el enlace "Ver más comentarios"
+        const verMasLink = comentariosContainer.querySelector('.ver-mas-comentarios');
+        if (verMasLink) {
+          if (comentariosPost.length <= 3) {
+            verMasLink.style.display = 'none';
+          }
+        }
+      }
+      
       ocultarModalEliminar();
+      
+      // Actualizar los resultados de búsqueda
+      realizarBusqueda(entradaBusqueda.value);
     }, { once: true });
   }
 
@@ -383,6 +442,9 @@ document.addEventListener('click', (e) => {
 
       console.log(`Eliminando al usuario con id ${userId}`);
       ocultarModalEliminar();
+
+      // Actualizar los resultados de búsqueda con el valor actual del buscador
+      realizarBusqueda(entradaBusqueda.value);
     }, { once: true });
 
     btnCancelar.addEventListener('click', (event) => {
@@ -500,19 +562,29 @@ window.mostrarPerfilUsuario = function (userId) {
   todosContainer.innerHTML = '';
 
   todosUsuario.forEach(todo => {
-    const todoElement = document.createElement('div');
-    todoElement.className = 'todo-item';
-    todoElement.innerHTML = `
-      <input type="checkbox" id="todo-${todo.id}" ${todo.completed ? 'checked' : ''}>
-      <label for="todo-${todo.id}">${todo.title}</label>
+    const todoItem = document.createElement('div');
+    todoItem.className = 'todo-item';
+    todoItem.innerHTML = `
+      <div>
+        <input type="checkbox" id="todo-${todo.id}" ${todo.completed ? 'checked' : ''}>
+        <label for="todo-${todo.id}">${todo.title}</label>
+      </div>
+      <div class="todo-actions">
+        <button class="edit-todo" data-todo-id="${todo.id}">
+          <img src="img/pencil-svgrepo-com.svg" alt="Editar" title="Editar to-do">
+        </button>
+        <button class="delete-todo" data-todo-id="${todo.id}">
+          <img src="img/papelera.svg" alt="Eliminar" title="Eliminar to-do">
+        </button>
+      </div>
     `;
 
-    const checkbox = todoElement.querySelector('input[type="checkbox"]');
+    const checkbox = todoItem.querySelector('input[type="checkbox"]');
     checkbox.addEventListener('change', (e) => {
       todo.completed = e.target.checked;
     });
 
-    todosContainer.appendChild(todoElement);
+    todosContainer.appendChild(todoItem);
   });
 
   let email = modalUsuario.querySelector('.perfil-email');
@@ -552,6 +624,16 @@ btnCerrarModalUsuario.addEventListener('click', ocultarModalUsuario);
 modalUsuario.addEventListener('click', (e) => {
   if (e.target === modalUsuario) {
     ocultarModalUsuario();
+  }
+});
+
+// Evento para eliminar to-dos
+document.addEventListener('click', (e) => {
+  const deleteBtn = e.target.closest('.delete-todo');
+  if (deleteBtn) {
+    const todoId = parseInt(deleteBtn.dataset.todoId);
+    todosObjetos = todosObjetos.filter(todo => todo.id !== todoId);
+    deleteBtn.closest('.todo-item').remove();
   }
 });
 
@@ -722,12 +804,12 @@ function realizarBusqueda(consulta) {
       );
       break;
     case 'publicaciones':
-      resultados = posts.filter(publicacion =>
+      resultados = publicacionesObjetos.filter(publicacion =>
         consulta ? publicacion.title.toLowerCase().includes(consulta) : true
       );
       break;
     case 'comentarios':
-      resultados = comments.filter(comentario =>
+      resultados = comentariosObjetos.filter(comentario =>
         consulta ? comentario.name.toLowerCase().includes(consulta) : true
       );
       break;
@@ -737,9 +819,9 @@ function realizarBusqueda(consulta) {
       ).map(foto => new Photo(foto));
       break;
     case 'todos':
-      resultados = todos.filter(tarea =>
+      resultados = todosObjetos.filter(tarea =>
         consulta ? tarea.title.toLowerCase().includes(consulta) : true
-      ).map(tarea => new Todo(tarea));
+      );
       break;
   }
 
