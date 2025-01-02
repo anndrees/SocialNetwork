@@ -321,9 +321,9 @@ function ocultarModalEliminar() {
   document.body.classList.remove('modal-open');
 }
 
-function obtenerPapi(elemento,tipo){
+function obtenerPapi(elemento, tipo) {
   let actual = elemento;
-  while(actual&&!actual.classList.contains(tipo)){
+  while (actual && !actual.classList.contains(tipo)) {
     actual = actual.parentElement;
   }
   return actual;
@@ -334,17 +334,17 @@ document.addEventListener('click', (e) => {
   if (e.target.closest('.eliminar-post-btn')) {
     mostrarModalEliminar();
     btnEliminar.addEventListener('click', (event) => {
-      obtenerPapi(e.target,"post").remove();
+      obtenerPapi(e.target, "post").remove();
       ocultarModalEliminar();
-    },{once:true});
+    }, { once: true });
   }
 
   if (e.target.closest('.delete-comment-btn')) {
     mostrarModalEliminar();
     btnEliminar.addEventListener('click', (event) => {
-      obtenerPapi(e.target,"comment").remove();
+      obtenerPapi(e.target, "comment").remove();
       ocultarModalEliminar();
-    },{once:true});
+    }, { once: true });
   }
 
   if (e.target.closest('#btn-eliminar-usuario')) {
@@ -401,7 +401,6 @@ btnCancelar.addEventListener('click', ocultarModalEliminar);
 
 const modalModificar = document.getElementById('modal-modificar');
 const btnCancelarModificar = document.getElementById('btn-cancelar-modificar');
-const formularioModificar = document.getElementById("modificarPost");
 
 function mostrarModalModificar() {
   modalModificar.classList.remove('oculto');
@@ -413,35 +412,32 @@ function ocultarModalModificar() {
   document.body.classList.remove('modal-open');
 }
 
-// Eventos para la funcionalidad de modificar
-postElement.querySelector(".modificar-post-btn").addEventListener("click",(e)=>{
-  mostrarModalModificar();
-  document.getElementById("modificarTitulo").value = this.title;
-  document.getElementById("modificarBody").value = this.body;
+btnCancelarModificar.addEventListener('click', ocultarModalModificar);
 
-  // Cerrar modal al hacer click fuera
+// Cerrar modal al hacer click fuera
+modalModificar.addEventListener('click', (e) => {
   if (e.target === modalModificar) {
     ocultarModalModificar();
   }
 });
-        
+
 
 btnCancelarModificar.addEventListener('click', ocultarModalModificar);
 
-formularioModificar.addEventListener('submit', (event) => {
+/* formularioModificar.addEventListener('submit', (event) => {
   event.preventDefault();
   let modificarTitulo = document.getElementById("modificarTitulo").value;
   let modificarBody = document.getElementById("modificarBody").value;
 
-  if (!modificarTitulo=="") {
+  if (!modificarTitulo == "") {
     this.title = modificarTitulo;
   }
-  if (!modificarBody=="") {
-     this.body = modificarBody;
+  if (!modificarBody == "") {
+    this.body = modificarBody;
   }
   ocultarModalModificar();
-      
-});
+
+}); */
 
 
 

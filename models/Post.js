@@ -17,13 +17,13 @@ export class Post {
     this.comments.push(comment);
   }
 
-   render() {
+  render() {
     const template = document.getElementById('post-template').content.cloneNode(true);
     const postElement = template.querySelector('.post');
-    
+
     // Añadir el data-post-id al elemento del post
     postElement.dataset.postId = this.id;
-    
+
     postElement.querySelector('.post-titulo').textContent = this.title;
     const autorElement = postElement.querySelector('.post-autor');
     const avatarElement = postElement.querySelector('.post-autor-avatar');
@@ -34,10 +34,42 @@ export class Post {
 
     postElement.querySelector('.post-body').textContent = this.body;
 
+    // Añadir event listener para el botón de modificar
+    const btnModificar = postElement.querySelector(".modificar-post-btn");
+    if (btnModificar) {
+      btnModificar.addEventListener("click", () => {
+        const modalModificar = document.getElementById('modal-modificar');
+        modalModificar.classList.remove('oculto');
+        document.body.classList.add('modal-open');
+
+        document.getElementById("modificarTitulo").value = this.title;
+        document.getElementById("modificarBody").value = this.body;
+
+        const formularioModificar = document.getElementById("modificarPost");
+        formularioModificar.onsubmit = (event) => {
+          event.preventDefault();
+          const modificarTitulo = document.getElementById("modificarTitulo").value;
+          const modificarBody = document.getElementById("modificarBody").value;
+
+          if (modificarTitulo !== "") {
+            this.title = modificarTitulo;
+            postElement.querySelector('.post-titulo').textContent = this.title;
+          }
+          if (modificarBody !== "") {
+            this.body = modificarBody;
+            postElement.querySelector('.post-body').textContent = this.body;
+          }
+
+          modalModificar.classList.add('oculto');
+          document.body.classList.remove('modal-open');
+        };
+      });
+    }
+
     const commentsContainer = postElement.querySelector('.comments-container');
     const commentsCount = postElement.querySelector('.comments-count');
     commentsCount.textContent = this.comments.length;
-    const postID = postElement.querySelector('#post-id'); 
+    const postID = postElement.querySelector('#post-id');
     postID.textContent = this.id;
     postID.classList.add('oculto');
 
@@ -56,17 +88,17 @@ export class Post {
     let btnCancelarComment = postElement.querySelector("#cancelar-comment");
 
     //Mostrar el formulario de añadir el comentario
-    btnAddComentario.addEventListener("click",()=>{
+    btnAddComentario.addEventListener("click", () => {
       postElement.querySelector("#modal-add-comments").classList.remove("oculto");
       document.body.classList.add('modal-open');
     });
 
     //Ocultar el formulario de añadir el comentario al pulsar cancelar
-    btnCancelarComment.addEventListener("click",()=>{
+    btnCancelarComment.addEventListener("click", () => {
       postElement.querySelector("#modal-add-comments").classList.add("oculto");
       document.body.classList.remove('modal-open');
     });
-    
+
     // Mostrar los primeros 3 comentarios
     this.comments.slice(0, 3).forEach(comment => {
       const commentElement = comment.render();
@@ -86,12 +118,12 @@ export class Post {
       verMasLink.href = '#';
       verMasLink.className = 'ver-mas-comentarios';
       verMasLink.textContent = 'Ver más comentarios';
-      
+
       verMasLink.addEventListener('click', (e) => {
         e.preventDefault();
         this.mostrarMasComentarios(commentsContainer);
       });
-      
+
       commentsContainer.appendChild(verMasLink);
     }
 
@@ -111,7 +143,7 @@ export class Post {
     // Calcular cuántos comentarios más mostrar
     const start = this.commentIndex;
     const end = Math.min(start + 5, this.comments.length);
-    
+
     // Mostrar los siguientes comentarios con animación
     const commentsOcultos = commentsContainer.querySelectorAll('.comment.hidden');
     for (let i = 0; i < end - start; i++) {
@@ -120,10 +152,10 @@ export class Post {
         commentsOcultos[i].classList.add('showing');
       }
     }
-    
+
     // Actualizar el índice
     this.commentIndex = end;
-    
+
     // Si no hay más comentarios para mostrar, ocultar el enlace
     if (this.commentIndex >= this.comments.length) {
       const verMasLink = commentsContainer.querySelector('.ver-mas-comentarios');
