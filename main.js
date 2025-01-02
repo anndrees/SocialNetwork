@@ -421,9 +421,6 @@ modalModificar.addEventListener('click', (e) => {
   }
 });
 
-
-btnCancelarModificar.addEventListener('click', ocultarModalModificar);
-
 /* formularioModificar.addEventListener('submit', (event) => {
   event.preventDefault();
   let modificarTitulo = document.getElementById("modificarTitulo").value;
@@ -438,8 +435,6 @@ btnCancelarModificar.addEventListener('click', ocultarModalModificar);
   ocultarModalModificar();
 
 }); */
-
-
 
 // Configuración de búsqueda
 const entradaBusqueda = document.getElementById('buscador');
@@ -466,6 +461,9 @@ opcionesBusqueda.forEach(opcion => {
 entradaBusqueda.addEventListener('input', (e) => {
   realizarBusqueda(e.target.value);
 });
+
+// Realizar búsqueda inicial para mostrar todas las publicaciones
+realizarBusqueda('')
 
 // Funcionalidad del modal de usuario
 const modalUsuario = document.getElementById('modal-usuario');
@@ -543,7 +541,6 @@ window.mostrarPerfilUsuario = function (userId) {
   modalUsuario.classList.remove('oculto');
   document.body.classList.add('modal-open');
 };
-
 
 function ocultarModalUsuario() {
   modalUsuario.classList.add('oculto');
@@ -715,39 +712,33 @@ function mostrarResultados(resultados, tipo) {
 
 // Función para realizar la búsqueda
 function realizarBusqueda(consulta) {
-  if (!consulta) {
-    encabezadoResultados.textContent = '';
-    listaResultados.innerHTML = '';
-    return;
-  }
-
   let resultados = [];
-  consulta = consulta.toLowerCase();
+  consulta = consulta ? consulta.toLowerCase() : '';
 
   switch (tipoBusquedaSeleccionado) {
     case 'usuarios':
       resultados = usuariosObjetos.filter(usuario =>
-        usuario.username.toLowerCase().includes(consulta)
+        consulta ? usuario.username.toLowerCase().includes(consulta) : true
       );
       break;
     case 'publicaciones':
       resultados = posts.filter(publicacion =>
-        publicacion.title.toLowerCase().includes(consulta)
+        consulta ? publicacion.title.toLowerCase().includes(consulta) : true
       );
       break;
     case 'comentarios':
       resultados = comments.filter(comentario =>
-        comentario.name.toLowerCase().includes(consulta)
+        consulta ? comentario.name.toLowerCase().includes(consulta) : true
       );
       break;
     case 'fotos':
       resultados = photos.filter(foto =>
-        foto.title.toLowerCase().includes(consulta)
+        consulta ? foto.title.toLowerCase().includes(consulta) : true
       ).map(foto => new Photo(foto));
       break;
     case 'todos':
       resultados = todos.filter(tarea =>
-        tarea.title.toLowerCase().includes(consulta)
+        consulta ? tarea.title.toLowerCase().includes(consulta) : true
       ).map(tarea => new Todo(tarea));
       break;
   }
