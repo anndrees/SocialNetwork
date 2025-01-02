@@ -321,10 +321,30 @@ function ocultarModalEliminar() {
   document.body.classList.remove('modal-open');
 }
 
+function obtenerPapi(elemento,tipo){
+  let actual = elemento;
+  while(actual&&!actual.classList.contains(tipo)){
+    actual = actual.parentElement;
+  }
+  return actual;
+}
+
 // Eventos para la funcionalidad de eliminar
 document.addEventListener('click', (e) => {
   if (e.target.closest('.eliminar-post-btn')) {
     mostrarModalEliminar();
+    btnEliminar.addEventListener('click', (event) => {
+      obtenerPapi(e.target,"post").remove();
+      ocultarModalEliminar();
+    },{once:true});
+  }
+
+  if (e.target.closest('.delete-comment-btn')) {
+    mostrarModalEliminar();
+    btnEliminar.addEventListener('click', (event) => {
+      obtenerPapi(e.target,"comment").remove();
+      ocultarModalEliminar();
+    },{once:true});
   }
 
   // Cerrar modal al hacer click fuera
@@ -334,12 +354,6 @@ document.addEventListener('click', (e) => {
 });
 
 btnCancelar.addEventListener('click', ocultarModalEliminar);
-
-btnEliminar.addEventListener('click', () => {
-  alert("Esto aun no está implementado jaja poneros las pilas");
-  ocultarModalEliminar();
-
-});
 
 // Configuración de búsqueda
 const entradaBusqueda = document.getElementById('buscador');
