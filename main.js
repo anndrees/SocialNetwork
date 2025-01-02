@@ -371,13 +371,6 @@ document.addEventListener('click', (e) => {
 
 btnCancelar.addEventListener('click', ocultarModalEliminar);
 
-btnEliminar.addEventListener('click', () => {
-  alert("Esto aun no está implementado jaja poneros las pilas");
-  ocultarModalEliminar();
-
-});
-
-
 // Configuración de búsqueda
 const entradaBusqueda = document.getElementById('buscador');
 const opcionesBusqueda = document.querySelectorAll('.search-option');
