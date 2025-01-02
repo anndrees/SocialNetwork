@@ -353,6 +353,34 @@ document.addEventListener('click', (e) => {
     mostrarModalEliminar();
 
     btnEliminar.addEventListener('click', (event) => {
+      const idUsuario = parseInt(userId);
+
+      // Eliminar el usuario del array
+      const indiceUsuario = usuariosObjetos.findIndex(user => user.id === idUsuario);
+      if (indiceUsuario !== -1) {
+        usuariosObjetos.splice(indiceUsuario, 1);
+      }
+
+      // Eliminar los posts del usuario
+      const postsUsuario = publicacionesObjetos.filter(post => post.userId === idUsuario);
+      postsUsuario.forEach(post => {
+        const postElement = document.querySelector(`[data-post-id="${post.id}"]`);
+        if (postElement) postElement.remove();
+      });
+      // Modificar el array existente en lugar de reasignarlo
+      publicacionesObjetos.splice(0, publicacionesObjetos.length, ...publicacionesObjetos.filter(post => post.userId !== idUsuario));
+
+      // Eliminar los comentarios del usuario (mismo cambio)
+      comentariosObjetos.splice(0, comentariosObjetos.length, ...comentariosObjetos.filter(comment => comment.userId !== idUsuario));
+
+      // Eliminar los todos del usuario (mismo cambio)
+      todosObjetos.splice(0, todosObjetos.length, ...todosObjetos.filter(todo => todo.userId !== idUsuario));
+
+      // Actualizar el select de usuarios
+      const usuarioSelect = document.getElementById('usuarioSelect');
+      const opcionUsuario = usuarioSelect.querySelector(`option[value="${idUsuario}"]`);
+      if (opcionUsuario) opcionUsuario.remove();
+
       console.log(`Eliminando al usuario con id ${userId}`);
       ocultarModalEliminar();
     }, { once: true });
