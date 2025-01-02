@@ -386,34 +386,40 @@ function ocultarModalModificar() {
 }
 
 // Eventos para la funcionalidad de modificar
-postElement.querySelector(".modificar-post-btn").addEventListener("click",(e)=>{
-  mostrarModalModificar();
-  document.getElementById("modificarTitulo").value = this.title;
-  document.getElementById("modificarBody").value = this.body;
+document.addEventListener('click', (e) => {
+  if (e.target.closest('.modificar-post-btn')) {
+    console.log(obtenerPapi(e.target,"post").getAttribute("data-post-id"));
+    console.log(obtenerPapi(e.target,"post").querySelector(".post-titulo").textContent);
 
+    mostrarModalModificar();  
+    let idPost = obtenerPapi(e.target,"post").getAttribute("data-post-id");
+    document.getElementById("modificarTitulo").value = obtenerPapi(e.target,"post").querySelector(".post-titulo").textContent;
+    document.getElementById("modificarBody").value =  obtenerPapi(e.target,"post").querySelector(".post-body").textContent;
+    formularioModificar.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!document.getElementById("modificarTitulo").value=="") {
+        publicacionesObjetos[idPost-1].title =  document.getElementById("modificarTitulo").value;
+      }
+      if (!document.getElementById("modificarBody").value=="") {
+        publicacionesObjetos[idPost-1].body =  document.getElementById("modificarBody").value;
+      }
+      console.log(obtenerPapi(e.target,"post").querySelector(".post-titulo").textContent);
+
+      obtenerPapi(e.target,"post").querySelector(".post-titulo").textContent = publicacionesObjetos[idPost-1].title;
+      obtenerPapi(e.target,"post").querySelector(".post-body").textContent = publicacionesObjetos[idPost-1].body;
+      ocultarModalModificar();
+          
+    });
+    
+  }
   // Cerrar modal al hacer click fuera
   if (e.target === modalModificar) {
     ocultarModalModificar();
   }
+  
 });
-        
 
 btnCancelarModificar.addEventListener('click', ocultarModalModificar);
-
-formularioModificar.addEventListener('submit', (event) => {
-  event.preventDefault();
-  let modificarTitulo = document.getElementById("modificarTitulo").value;
-  let modificarBody = document.getElementById("modificarBody").value;
-
-  if (!modificarTitulo=="") {
-    this.title = modificarTitulo;
-  }
-  if (!modificarBody=="") {
-     this.body = modificarBody;
-  }
-  ocultarModalModificar();
-      
-});
 
 
 
