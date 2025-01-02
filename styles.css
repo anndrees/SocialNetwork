@@ -1120,3 +1120,28 @@ button.cerrar-modal:hover {
   transform: scale(1.1);
   border-radius: 50%;
 }
+
+.btn-eliminar-usuario {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 16px 0;
+  transition: background-color 0.2s ease;
+}
+
+.btn-eliminar-usuario:hover {
+  background-color: #c82333;
+}
+
+.btn-eliminar-usuario img {
+  width: 16px;
+  height: 16px;
+  filter: invert(1);
+}

@@ -347,6 +347,22 @@ document.addEventListener('click', (e) => {
     },{once:true});
   }
 
+  if (e.target.closest('#btn-eliminar-usuario')) {
+    const userId = modalUsuario.querySelector('.perfil-info').dataset.userId;
+    ocultarModalUsuario();
+    mostrarModalEliminar();
+
+    btnEliminar.addEventListener('click', (event) => {
+      console.log(`Eliminando al usuario con id ${userId}`);
+      ocultarModalEliminar();
+    }, { once: true });
+
+    btnCancelar.addEventListener('click', (event) => {
+      ocultarModalEliminar();
+      mostrarPerfilUsuario(parseInt(userId));
+    }, { once: true });
+  }
+
   // Cerrar modal al hacer click fuera
   if (e.target === modalEliminar) {
     ocultarModalEliminar();
@@ -437,6 +453,7 @@ window.mostrarPerfilUsuario = function (userId) {
   const usuario = usuariosObjetos.find(user => user.id === userId);
   if (!usuario) return;
 
+  modalUsuario.querySelector('.perfil-info').dataset.userId = userId;
 
   // Código existente del perfil...
   modalUsuario.querySelector('.perfil-avatar').src = usuario.getAvatarUrl(120);
