@@ -1278,3 +1278,24 @@ button.cerrar-modal:hover {
 .modificar-post-btn img {
   vertical-align: middle;
 }
+
+.user-todos-section {
+  display: flex;
+  flex-direction: column;
+}
+
+#add-tarea {
+  position: relative;
+  top: -40px;
+  margin-left: -130px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--text-color);
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+#add-tarea:hover{
+  opacity: 1;
+}
