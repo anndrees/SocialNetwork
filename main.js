@@ -480,30 +480,35 @@ function ocultarModalModificar() {
 // Eventos para la funcionalidad de modificar
 document.addEventListener('click', (e) => {
   if (e.target.closest('.modificar-post-btn')) {
-    console.log(obtenerPapi(e.target,"post").getAttribute("data-post-id"));
-    console.log(obtenerPapi(e.target,"post").querySelector(".post-titulo").textContent);
 
     mostrarModalModificar();  
-    let idPost = obtenerPapi(e.target,"post").getAttribute("data-post-id");
     document.getElementById("modificarTitulo").value = obtenerPapi(e.target,"post").querySelector(".post-titulo").textContent;
     document.getElementById("modificarBody").value =  obtenerPapi(e.target,"post").querySelector(".post-body").textContent;
-    formularioModificar.addEventListener('submit', (event) => {
-      event.preventDefault();
-      if (!document.getElementById("modificarTitulo").value=="") {
-        publicacionesObjetos[idPost-1].title =  document.getElementById("modificarTitulo").value;
-      }
-      if (!document.getElementById("modificarBody").value=="") {
-        publicacionesObjetos[idPost-1].body =  document.getElementById("modificarBody").value;
-      }
-      console.log(obtenerPapi(e.target,"post").querySelector(".post-titulo").textContent);
 
-      obtenerPapi(e.target,"post").querySelector(".post-titulo").textContent = publicacionesObjetos[idPost-1].title;
-      obtenerPapi(e.target,"post").querySelector(".post-body").textContent = publicacionesObjetos[idPost-1].body;
-      console.log(obtenerPapi(e.target,"post").querySelector(".post-titulo").textContent);
 
-      ocultarModalModificar();
-          
-    });
+   let publicacion1 = publicacionesObjetos.find((publicacion) => publicacion.id == obtenerPapi(e.target,"post").getAttribute("data-post-id"));
+
+
+    if (publicacion1) {
+      formularioModificar.addEventListener('submit', (event) => {
+        event.preventDefault();
+        if (!document.getElementById("modificarTitulo").value=="") {
+          publicacion1.title =  document.getElementById("modificarTitulo").value;
+        }
+        if (!document.getElementById("modificarBody").value=="") {
+          publicacion1.body =  document.getElementById("modificarBody").value;
+        }
+        
+        let postsArray = Array.from(document.querySelectorAll(".post"));
+        let postObjetivo  = postsArray.find((post) => post.getAttribute("data-post-id") == publicacion1.id);
+        postObjetivo.querySelector(".post-titulo").textContent = publicacion1.title;
+        postObjetivo.querySelector(".post-body").textContent = publicacion1.body;
+  
+        ocultarModalModificar();
+            
+      },{ once: true });
+      
+    }
     
   }
   // Cerrar modal al hacer click fuera
