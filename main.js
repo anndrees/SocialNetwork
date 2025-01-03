@@ -672,6 +672,7 @@ window.mostrarPerfilUsuario = function (userId) {
 
   // Mostrar el modal
   modalUsuario.classList.remove('oculto');
+  document.getElementById('userId-tarea').value = usuario.id;
   document.body.classList.add('modal-open');
 };
 
@@ -1162,7 +1163,8 @@ btnAddTarea.addEventListener("click",() => {
 
 //Creamos la tarea nueva
 let btnCrearTarea = document.querySelector("#crear-tarea");
-btnCrearTarea.addEventListener("click",()=>{
+btnCrearTarea.addEventListener("click", () => {
+  const userId = document.getElementById('userId-tarea').value;
   
 });
 
