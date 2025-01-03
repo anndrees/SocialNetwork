@@ -21,6 +21,7 @@ body {
 
 body.modal-open {
   overflow: hidden;
+  padding-right: 15px; /* Compensar el scrollbar que desaparece */
 }
 
 #container {
@@ -140,7 +141,9 @@ body.modal-open {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   max-width: 400px;
   width: 90%;
-  margin: 0 auto;
+  margin: 20px auto;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .formulario-usuario form {
@@ -465,8 +468,10 @@ body.modal-open {
   -webkit-backdrop-filter: blur(5px);
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   z-index: 1000;
+  overflow-y: auto;
+  padding: 20px 0;
 }
 
 .modal-contenido {
