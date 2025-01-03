@@ -465,6 +465,7 @@ btnCancelar.addEventListener('click', ocultarModalEliminar);
 
 const modalModificar = document.getElementById('modal-modificar');
 const btnCancelarModificar = document.getElementById('btn-cancelar-modificar');
+let formularioModificar = document.getElementById("modificarPost");
 
 function mostrarModalModificar() {
   modalModificar.classList.remove('oculto');
@@ -498,6 +499,8 @@ document.addEventListener('click', (e) => {
 
       obtenerPapi(e.target,"post").querySelector(".post-titulo").textContent = publicacionesObjetos[idPost-1].title;
       obtenerPapi(e.target,"post").querySelector(".post-body").textContent = publicacionesObjetos[idPost-1].body;
+      console.log(obtenerPapi(e.target,"post").querySelector(".post-titulo").textContent);
+
       ocultarModalModificar();
           
     });
