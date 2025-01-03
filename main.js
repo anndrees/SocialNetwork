@@ -482,6 +482,7 @@ function ocultarModalModificar() {
 
 // Eventos para la funcionalidad de modificar
 document.addEventListener('click', (e) => {
+  //modificar posts
   if (e.target.closest('.modificar-post-btn')) {
 
     mostrarModalModificar();  
@@ -512,7 +513,7 @@ document.addEventListener('click', (e) => {
       },{ once: true });
       
     }
-    
+    //modificar comentarios
   }else if (e.target.closest(".edit-comment-btn")) {
     mostrarModalModificar();  
     document.getElementById("modificarTitulo").value = obtenerPapi(e.target,"comment").querySelector(".comment-autor").textContent;
@@ -553,6 +554,31 @@ document.addEventListener('click', (e) => {
   
 });
 btnCancelarModificar.addEventListener('click', ocultarModalModificar);
+
+
+//Modificar TODO
+
+let btnClicado = false;
+
+document.addEventListener('click', (e) => {
+  if (e.target.closest('.edit-todo')) {
+    let elementoPadre = obtenerPapi(e.target,"todo-item");
+    let textoInput = elementoPadre.querySelector("label").textContent;
+    console.log(textoInput);
+
+    if (!btnClicado) {
+      elementoPadre.querySelector("label").innerHTML = `<input type="text" value="${elementoPadre.querySelector("label").textContent}">`;
+
+    }else {
+      if (textoInput!="") {
+        textoInput = elementoPadre.querySelector("input[type='text']").value;
+      }
+      elementoPadre.querySelector("label").textContent = textoInput;
+    }
+    btnClicado = !btnClicado;
+  }
+});
+
 
 
 
