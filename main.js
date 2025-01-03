@@ -567,15 +567,20 @@ document.addEventListener('click', (e) => {
     if (e.target.closest('.edit-todo')) {
       let elementoPadre = obtenerPapi(e.target, "todo-item");
       let textoInput = elementoPadre.querySelector("label").textContent;
-  
+      let id = elementoPadre.querySelector(".edit-todo").getAttribute("data-todo-id");
+      let todoActual = todosObjetos.find((todo) => todo.id == id);
+      console.log(id);
       if (!btnClicado) {
         elementoPadre.querySelector("label").innerHTML = 
           `<input type="text" value="${textoInput}" class="editable-input">`;
         
         elementoPadre.querySelector("input[type='text']").focus();
       } else {
-        let nuevoTexto = elementoPadre.querySelector("input[type='text']").value;
-        elementoPadre.querySelector("label").textContent = nuevoTexto || textoInput;
+        if (elementoPadre.querySelector("input[type='text']").value != "") {
+          textoInput = elementoPadre.querySelector("input[type='text']").value;
+        }
+        elementoPadre.querySelector("label").textContent = textoInput;
+        todoActual.title = textoInput;
       }
   
       btnClicado = !btnClicado;
