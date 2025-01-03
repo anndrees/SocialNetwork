@@ -564,22 +564,33 @@ btnCancelarModificar.addEventListener('click', ocultarModalModificar);
 let btnClicado = false;
 
 document.addEventListener('click', (e) => {
-  if (e.target.closest('.edit-todo')) {
-    let elementoPadre = obtenerPapi(e.target,"todo-item");
-    let textoInput = elementoPadre.querySelector("label").textContent;
-    console.log(textoInput);
-
-    if (!btnClicado) {
-      elementoPadre.querySelector("label").innerHTML = `<input type="text" value="${elementoPadre.querySelector("label").textContent}">`;
-
-    }else {
-      if (textoInput!="") {
-        textoInput = elementoPadre.querySelector("input[type='text']").value;
+  try {
+    if (e.target.closest('.edit-todo')) {
+      let elementoPadre = obtenerPapi(e.target, "todo-item");
+      let textoInput = elementoPadre.querySelector("label").textContent;
+  
+      if (!btnClicado) {
+        elementoPadre.querySelector("label").innerHTML = 
+          `<input type="text" value="${textoInput}" class="editable-input">`;
+        
+        elementoPadre.querySelector("input[type='text']").focus();
+      } else {
+        let nuevoTexto = elementoPadre.querySelector("input[type='text']").value;
+        elementoPadre.querySelector("label").textContent = nuevoTexto || textoInput;
       }
-      elementoPadre.querySelector("label").textContent = textoInput;
+  
+      btnClicado = !btnClicado;
+      console.log(btnClicado);
     }
-    btnClicado = !btnClicado;
+  
+    if (!e.target.closest('.todo-item') && btnClicado) {
+    
+        btnClicado = false;
+    }
+  } catch (error) {
+    
   }
+  
 });
 
 
