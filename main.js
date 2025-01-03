@@ -1244,9 +1244,8 @@ contenedorAddImagen.addEventListener("click", () => {
   btnAddImagen.addEventListener("click",()=>{
     let tituloImagen = document.querySelector("#tituloImagen").value;
     let urlImagen = document.querySelector("#subirImagen").files[0];
-    let nuevaImagen = new Photo(1,(numeroFotosArchivo + (imagenes.length + 1)),tituloImagen,urlImagen,urlImagen);
-    imagenes.push(nuevaImagen);
-    console.log(imagenes);
+    let nuevaImagen = new Photo(1,(numeroFotosArchivo + 1),tituloImagen,urlImagen,urlImagen);
+    photos.unshift(nuevaImagen);
   });
 
   //Aquí para cuando se pulse cancelar se oculte el modal
