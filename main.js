@@ -1005,17 +1005,65 @@ function ocultarModalComentarios(postElement) {
   document.body.classList.remove('modal-open');
 }
 
+// Función para actualizar la vista de comentarios de un post
+function actualizarComentariosPost(postElement, postId) {
+  // Obtener todos los comentarios del post
+  const comentariosPost = comentariosObjetos.filter(comment => comment.postId === postId);
+  
+  // Limpiar el contenedor de comentarios
+  const commentsContainer = postElement.querySelector('.comments-container');
+  commentsContainer.innerHTML = '';
+
+  // Mostrar los primeros 3 comentarios
+  comentariosPost.slice(0, 3).forEach(comment => {
+    const commentElement = comment.render();
+    commentsContainer.appendChild(commentElement);
+  });
+
+  // Ocultar el resto de comentarios
+  comentariosPost.slice(3).forEach(comment => {
+    const commentElement = comment.render();
+    commentElement.classList.add('hidden');
+    commentsContainer.appendChild(commentElement);
+  });
+
+  // Actualizar el enlace "Ver más comentarios"
+  if (comentariosPost.length > 3) {
+    const verMasLink = document.createElement('a');
+    verMasLink.href = '#';
+    verMasLink.className = 'ver-mas-comentarios';
+    verMasLink.textContent = 'Ver más comentarios';
+    verMasLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      const comentariosOcultos = commentsContainer.querySelectorAll('.comment.hidden');
+      const nextBatch = Array.from(comentariosOcultos).slice(0, 5);
+      nextBatch.forEach(comment => {
+        comment.classList.remove('hidden');
+        comment.classList.add('showing');
+      });
+      if (comentariosOcultos.length <= 5) {
+        verMasLink.style.display = 'none';
+      }
+    });
+    commentsContainer.appendChild(verMasLink);
+  }
+
+  // Actualizar el contador de comentarios
+  const contadorComentarios = postElement.querySelector('.comments-count');
+  contadorComentarios.textContent = comentariosPost.length;
+}
+
 // Función para crear un nuevo comentario
 function crearComentario(postElement) {
   const postId = parseInt(postElement.querySelector('#post-id').textContent);
   const usuarioSelect = postElement.querySelector('#usuarioSelectComentario');
   const tituloInput = postElement.querySelector('#tituloComment');
   const bodyInput = postElement.querySelector('#bodyComment');
-
+  
   const userId = parseInt(usuarioSelect.value);
   const titulo = tituloInput.value.trim();
   const body = bodyInput.value.trim();
-
+  
   if (!userId || !titulo || !body) {
     alert('Por favor, completa todos los campos');
     return;
@@ -1024,27 +1072,20 @@ function crearComentario(postElement) {
   // Crear el nuevo comentario
   const nextCommentId = Math.max(...comentariosObjetos.map(c => c.id), 0) + 1;
   const usuario = usuariosObjetos.find(u => u.id === userId);
-
+  
   const nuevoComentario = new Comment(nextCommentId, postId, titulo, usuario.email, body);
   nuevoComentario.asignarUsuario(usuario);
-  comentariosObjetos.push(nuevoComentario);
+  comentariosObjetos.unshift(nuevoComentario); // Añadir al principio del array
 
-  // Agregar el comentario al DOM
-  const commentsContainer = postElement.querySelector('.comments-container');
-  const commentElement = nuevoComentario.render();
-  commentsContainer.appendChild(commentElement);
-
-  // Actualizar el contador de comentarios
-  const comentariosPost = comentariosObjetos.filter(comment => comment.postId === postId);
-  const contadorComentarios = postElement.querySelector('.comments-count');
-  contadorComentarios.textContent = comentariosPost.length;
+  // Actualizar la vista de comentarios
+  actualizarComentariosPost(postElement, postId);
 
   // Limpiar el formulario y cerrar el modal
   usuarioSelect.value = '';
   tituloInput.value = '';
   bodyInput.value = '';
   ocultarModalComentarios(postElement);
-
+  
   // Actualizar los resultados de búsqueda
   realizarBusqueda(entradaBusqueda.value);
 }
