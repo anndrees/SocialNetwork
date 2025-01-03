@@ -223,7 +223,7 @@ comments.forEach(datosComentario => {
 });
 
 // Crear objetos Todo
-todosObjetos = todos.map(todo => new Todo(todo));
+todosObjetos = todos.map(todo => new Todo(todo.id, todo.userId, todo.title, todo.completed));
 
 // Establecer el select con los usuarios predefinidos
 const selectorUsuario = document.getElementById('usuarioSelect');
@@ -491,9 +491,7 @@ document.addEventListener('click', (e) => {
     document.getElementById("modificarTitulo").value = obtenerPapi(e.target, "post").querySelector(".post-titulo").textContent;
     document.getElementById("modificarBody").value = obtenerPapi(e.target, "post").querySelector(".post-body").textContent;
 
-
     let publicacion1 = publicacionesObjetos.find((publicacion) => publicacion.id == obtenerPapi(e.target, "post").getAttribute("data-post-id"));
-
 
     if (publicacion1) {
       formularioModificar.addEventListener('submit', (event) => {
@@ -521,11 +519,9 @@ document.addEventListener('click', (e) => {
     document.getElementById("modificarTitulo").value = obtenerPapi(e.target, "comment").querySelector(".comment-autor").textContent;
     document.getElementById("modificarBody").value = obtenerPapi(e.target, "comment").querySelector(".comment-body").textContent;
 
-
     let comentario1 = comentariosObjetos.find((comentario) => comentario.id == obtenerPapi(e.target, "comment").getAttribute("data-comment-id"));
     console.log(comentario1);
     console.log(obtenerPapi(e.target, "comment").getAttribute("data-comment-id"));
-
 
     if (comentario1) {
       formularioModificar.addEventListener('submit', (event) => {
