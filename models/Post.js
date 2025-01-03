@@ -34,37 +34,7 @@ export class Post {
 
     postElement.querySelector('.post-body').textContent = this.body;
 
-    // Añadir event listener para el botón de modificar
-    const btnModificar = postElement.querySelector(".modificar-post-btn");
-    if (btnModificar) {
-      btnModificar.addEventListener("click", () => {
-        const modalModificar = document.getElementById('modal-modificar');
-        modalModificar.classList.remove('oculto');
-        document.body.classList.add('modal-open');
-
-        document.getElementById("modificarTitulo").value = this.title;
-        document.getElementById("modificarBody").value = this.body;
-
-        const formularioModificar = document.getElementById("modificarPost");
-        formularioModificar.onsubmit = (event) => {
-          event.preventDefault();
-          const modificarTitulo = document.getElementById("modificarTitulo").value;
-          const modificarBody = document.getElementById("modificarBody").value;
-
-          if (modificarTitulo !== "") {
-            this.title = modificarTitulo;
-            postElement.querySelector('.post-titulo').textContent = this.title;
-          }
-          if (modificarBody !== "") {
-            this.body = modificarBody;
-            postElement.querySelector('.post-body').textContent = this.body;
-          }
-
-          modalModificar.classList.add('oculto');
-          document.body.classList.remove('modal-open');
-        };
-      });
-    }
+    
 
     const commentsContainer = postElement.querySelector('.comments-container');
     const commentsCount = postElement.querySelector('.comments-count');
