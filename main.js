@@ -335,7 +335,7 @@ document.addEventListener('click', (e) => {
     btnEliminar.addEventListener('click', (event) => {
       const postElement = obtenerPapi(e.target, "post");
       const postId = parseInt(postElement.getAttribute('data-post-id'));
-      
+
       // Eliminar el post del array
       const indicePost = publicacionesObjetos.findIndex(post => post.id === postId);
       if (indicePost !== -1) {
@@ -345,10 +345,10 @@ document.addEventListener('click', (e) => {
       // Eliminar los comentarios asociados al post
       const comentariosAMantener = comentariosObjetos.filter(comment => comment.postId !== postId);
       comentariosObjetos.splice(0, comentariosObjetos.length, ...comentariosAMantener);
-      
+
       postElement.remove();
       ocultarModalEliminar();
-      
+
       // Actualizar los resultados de búsqueda
       realizarBusqueda(entradaBusqueda.value);
     }, { once: true });
@@ -361,7 +361,7 @@ document.addEventListener('click', (e) => {
       const commentId = parseInt(commentElement.getAttribute('data-comment-id'));
       const postElement = commentElement.closest('.post');
       const postId = parseInt(postElement.querySelector('#post-id').textContent);
-      
+
       // Eliminar el comentario del array
       const indiceComment = comentariosObjetos.findIndex(comment => comment.id === commentId);
       if (indiceComment !== -1) {
@@ -401,9 +401,9 @@ document.addEventListener('click', (e) => {
           }
         }
       }
-      
+
       ocultarModalEliminar();
-      
+
       // Actualizar los resultados de búsqueda
       realizarBusqueda(entradaBusqueda.value);
     }, { once: true });
@@ -484,73 +484,73 @@ function ocultarModalModificar() {
 document.addEventListener('click', (e) => {
   if (e.target.closest('.modificar-post-btn')) {
 
-    mostrarModalModificar();  
-    document.getElementById("modificarTitulo").value = obtenerPapi(e.target,"post").querySelector(".post-titulo").textContent;
-    document.getElementById("modificarBody").value =  obtenerPapi(e.target,"post").querySelector(".post-body").textContent;
+    mostrarModalModificar();
+    document.getElementById("modificarTitulo").value = obtenerPapi(e.target, "post").querySelector(".post-titulo").textContent;
+    document.getElementById("modificarBody").value = obtenerPapi(e.target, "post").querySelector(".post-body").textContent;
 
 
-   let publicacion1 = publicacionesObjetos.find((publicacion) => publicacion.id == obtenerPapi(e.target,"post").getAttribute("data-post-id"));
+    let publicacion1 = publicacionesObjetos.find((publicacion) => publicacion.id == obtenerPapi(e.target, "post").getAttribute("data-post-id"));
 
 
     if (publicacion1) {
       formularioModificar.addEventListener('submit', (event) => {
         event.preventDefault();
-        if (!document.getElementById("modificarTitulo").value=="") {
-          publicacion1.title =  document.getElementById("modificarTitulo").value;
+        if (!document.getElementById("modificarTitulo").value == "") {
+          publicacion1.title = document.getElementById("modificarTitulo").value;
         }
-        if (!document.getElementById("modificarBody").value=="") {
-          publicacion1.body =  document.getElementById("modificarBody").value;
+        if (!document.getElementById("modificarBody").value == "") {
+          publicacion1.body = document.getElementById("modificarBody").value;
         }
-        
+
         let postsArray = Array.from(document.querySelectorAll(".post"));
-        let postObjetivo  = postsArray.find((post) => post.getAttribute("data-post-id") == publicacion1.id);
+        let postObjetivo = postsArray.find((post) => post.getAttribute("data-post-id") == publicacion1.id);
         postObjetivo.querySelector(".post-titulo").textContent = publicacion1.title;
         postObjetivo.querySelector(".post-body").textContent = publicacion1.body;
-  
+
         ocultarModalModificar();
-            
-      },{ once: true });
-      
+
+      }, { once: true });
+
     }
-    
-  }else if (e.target.closest(".edit-comment-btn")) {
-    mostrarModalModificar();  
-    document.getElementById("modificarTitulo").value = obtenerPapi(e.target,"comment").querySelector(".comment-autor").textContent;
-    document.getElementById("modificarBody").value =  obtenerPapi(e.target,"comment").querySelector(".comment-body").textContent;
+
+  } else if (e.target.closest(".edit-comment-btn")) {
+    mostrarModalModificar();
+    document.getElementById("modificarTitulo").value = obtenerPapi(e.target, "comment").querySelector(".comment-autor").textContent;
+    document.getElementById("modificarBody").value = obtenerPapi(e.target, "comment").querySelector(".comment-body").textContent;
 
 
-   let comentario1 = comentariosObjetos.find((comentario) => comentario.id == obtenerPapi(e.target,"comment").getAttribute("data-comment-id"));
+    let comentario1 = comentariosObjetos.find((comentario) => comentario.id == obtenerPapi(e.target, "comment").getAttribute("data-comment-id"));
     console.log(comentario1);
-    console.log(obtenerPapi(e.target,"comment").getAttribute("data-comment-id"));
+    console.log(obtenerPapi(e.target, "comment").getAttribute("data-comment-id"));
 
 
     if (comentario1) {
       formularioModificar.addEventListener('submit', (event) => {
         event.preventDefault();
-        if (!document.getElementById("modificarTitulo").value=="") {
-          comentario1.name =  document.getElementById("modificarTitulo").value;
+        if (!document.getElementById("modificarTitulo").value == "") {
+          comentario1.name = document.getElementById("modificarTitulo").value;
         }
-        if (!document.getElementById("modificarBody").value=="") {
-          comentario1.body =  document.getElementById("modificarBody").value;
+        if (!document.getElementById("modificarBody").value == "") {
+          comentario1.body = document.getElementById("modificarBody").value;
         }
-        
+
         let comentsArray = Array.from(document.querySelectorAll(".comment"));
-        let commentObjetivo  = comentsArray.find((coment) => coment.getAttribute("data-comment-id") == comentario1.id);
+        let commentObjetivo = comentsArray.find((coment) => coment.getAttribute("data-comment-id") == comentario1.id);
         commentObjetivo.querySelector(".comment-autor").textContent = comentario1.name;
         commentObjetivo.querySelector(".comment-body").textContent = comentario1.body;
-  
+
         ocultarModalModificar();
-            
-      },{ once: true });
-      
-    }  
+
+      }, { once: true });
+
+    }
 
   }
   // Cerrar modal al hacer click fuera
   if (e.target === modalModificar) {
     ocultarModalModificar();
   }
-  
+
 });
 btnCancelarModificar.addEventListener('click', ocultarModalModificar);
 
@@ -935,13 +935,13 @@ document.addEventListener('click', (e) => {
     const modalFoto = document.getElementById('modal-foto');
     const fotoId = parseInt(modalFoto.querySelector('.foto-imagen').dataset.photoId);
     const foto = photos.find(p => p.id === fotoId);
-    
+
     // Cerrar el modal de la foto
     ocultarModalFoto();
-    
+
     // Mostrar el modal de confirmación
     mostrarModalEliminar();
-    
+
     // Evento para el botón de eliminar
     btnEliminar.addEventListener('click', () => {
       // Eliminar la foto del array de fotos
@@ -957,7 +957,7 @@ document.addEventListener('click', (e) => {
       }
 
       ocultarModalEliminar();
-      
+
       // Actualizar los resultados de búsqueda si estamos en la sección de fotos
       if (tipoBusquedaSeleccionado === 'fotos') {
         realizarBusqueda(entradaBusqueda.value);
@@ -1002,6 +1002,68 @@ function ocultarModalComentarios(postElement) {
   document.body.classList.remove('modal-open');
 }
 
+// Función para crear un nuevo comentario
+function crearComentario(postElement) {
+  const postId = parseInt(postElement.querySelector('#post-id').textContent);
+  const usuarioSelect = postElement.querySelector('#usuarioSelectComentario');
+  const tituloInput = postElement.querySelector('#tituloComment');
+  const bodyInput = postElement.querySelector('#bodyComment');
+
+  const userId = parseInt(usuarioSelect.value);
+  const titulo = tituloInput.value.trim();
+  const body = bodyInput.value.trim();
+
+  if (!userId || !titulo || !body) {
+    alert('Por favor, completa todos los campos');
+    return;
+  }
+
+  // Crear el nuevo comentario
+  const nextCommentId = Math.max(...comentariosObjetos.map(c => c.id), 0) + 1;
+  const usuario = usuariosObjetos.find(u => u.id === userId);
+
+  const nuevoComentario = new Comment(nextCommentId, postId, titulo, usuario.email, body);
+  nuevoComentario.asignarUsuario(usuario);
+  comentariosObjetos.push(nuevoComentario);
+
+  // Agregar el comentario al DOM
+  const commentsContainer = postElement.querySelector('.comments-container');
+  const commentElement = nuevoComentario.render();
+  commentsContainer.appendChild(commentElement);
+
+  // Actualizar el contador de comentarios
+  const comentariosPost = comentariosObjetos.filter(comment => comment.postId === postId);
+  const contadorComentarios = postElement.querySelector('.comments-count');
+  contadorComentarios.textContent = comentariosPost.length;
+
+  // Limpiar el formulario y cerrar el modal
+  usuarioSelect.value = '';
+  tituloInput.value = '';
+  bodyInput.value = '';
+  ocultarModalComentarios(postElement);
+
+  // Actualizar los resultados de búsqueda
+  realizarBusqueda(entradaBusqueda.value);
+}
+
+// Eventos para el modal de comentarios
+document.addEventListener('click', (e) => {
+  if (e.target.closest('#add-comment')) {
+    const postElement = obtenerPapi(e.target, 'post');
+    mostrarModalComentarios(postElement);
+  }
+
+  if (e.target.closest('#cancelar-comment')) {
+    const postElement = obtenerPapi(e.target, 'post');
+    ocultarModalComentarios(postElement);
+  }
+
+  if (e.target.closest('#publicarComment')) {
+    const postElement = obtenerPapi(e.target, 'post');
+    crearComentario(postElement);
+  }
+});
+
 // Eventos para el modal de comentarios
 document.addEventListener('click', (e) => {
   const addCommentBtn = e.target.closest('#add-comment');
@@ -1030,7 +1092,7 @@ document.addEventListener('click', (e) => {
     const modalComentarios = postElement.querySelector('#modal-add-comments');
     const usuarioId = modalComentarios.querySelector('#usuarioSelectComentario').value;
     const titulo = modalComentarios.querySelector('#tituloComment').value;
-    const contenido = modalComentarios.querySelector('#postBody').value;
+    const contenido = modalComentarios.querySelector('#bodyComment').value;
 
     if (usuarioId && titulo && contenido) {
       // Aquí iría la lógica para crear el comentario
