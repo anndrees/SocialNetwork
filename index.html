@@ -14,15 +14,17 @@
       <img src="img/Escudo_Isengard.svg" alt="Logo Isengard" class="logo">
       <h1>Isengard</h1>
     </div>
-    <!--Contenedor para añadir el usuario-->
-    <div class="contenedor-add-user">
-      <span class="texto-add-user">Añadir usuario</span>
-      <img class="imagenAddUser" src="img/add_user.svg" alt="Logo añadir usuario" title="Añadir usuario">
-    </div>
-    <!-- Contenedor para subir fotos -->
-    <div class="contenedor-add-photo" title="Subir foto">
-      <span class="texto-add-photo">Subir foto</span>
-      <img class="imagenAddPhoto" src="img/camera-add-svgrepo-com.svg" alt="Logo subir foto" >
+    <div class="buttons-container">
+      <!--Contenedor para añadir el usuario-->
+      <div class="contenedor-add-user">
+        <span class="texto-add-user">Añadir usuario</span>
+        <img class="imagenAddUser" src="img/add_user.svg" alt="Logo añadir usuario" title="Añadir usuario">
+      </div>
+      <!-- Contenedor para subir fotos -->
+      <div class="contenedor-add-photo" title="Subir foto">
+        <span class="texto-add-photo">Subir foto</span>
+        <img class="imagenAddPhoto" src="img/camera-add-svgrepo-com.svg" alt="Logo subir foto">
+      </div>
     </div>
     <!--Contenedor oculto que se abrirá una vez clicado en el contenedor de añadir user-->
     <div id="modal-add-user" class="modal-fondo oculto">
@@ -43,7 +45,7 @@
           <label for="sitio-web">Web:</label>
           <input type="text" name="sitio-web" id="sitio-web" placeholder="Página web" value="www.prueba.com">
           <button id="crearUser" type="button">Crear</button>
-          <button id="cancelar-creacion-user" type="button" >Cancelar</button><br><span id="span-datos-incorrectos"></span>
+          <button id="cancelar-creacion-user" type="button">Cancelar</button><br><span id="span-datos-incorrectos"></span>
         </form>
       </div>
     </div>
