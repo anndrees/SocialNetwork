@@ -75,6 +75,7 @@ body.modal-open {
   top: 8px;
   right: 45px;
 }
+
 .btn-modificar-usuario {
   position: absolute;
   background: none;
@@ -98,7 +99,6 @@ body.modal-open {
   opacity: 0.7;
   transition: opacity 0.2s ease;
 }
-
 
 .eliminar-post-btn:hover {
   opacity: 1;
@@ -468,7 +468,7 @@ body.modal-open {
   -webkit-backdrop-filter: blur(5px);
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   z-index: 1000;
   overflow-y: auto;
   padding: 20px 0;
@@ -487,7 +487,6 @@ body.modal-open {
   margin: 0 0 20px 0;
   color: var(--text-color);
 }
-
 
 .modal-botones {
   display: flex;
@@ -533,18 +532,40 @@ body.modal-open {
   padding: 1rem;
   margin-bottom: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   position: sticky;
   top: 0;
   z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .logo-container {
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.buttons-container {
+  display: flex;
+  gap: 20px;
+  margin-left: auto;
+}
+
+.contenedor-add-user,
+.contenedor-add-photo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.contenedor-add-user:hover,
+.contenedor-add-photo:hover {
+  background-color: #baf2e9;
 }
 
 .logo {

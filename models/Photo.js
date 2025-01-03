@@ -1,9 +1,9 @@
 export class Photo {
-    constructor(data) {
-        this.albumId = data.albumId;
-        this.id = data.id;
-        this.title = data.title;
-        this.url = data.url;
-        this.thumbnailUrl = data.thumbnailUrl;
+    constructor(albumId, id, title, url, thumbnailUrl) {
+        this.albumId = albumId;
+        this.id = id;
+        this.title = title;
+        this.url = url;
+        this.thumbnailUrl = thumbnailUrl;
     }
 }

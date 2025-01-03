@@ -14,36 +14,38 @@
       <img src="img/Escudo_Isengard.svg" alt="Logo Isengard" class="logo">
       <h1>Isengard</h1>
     </div>
-    <!--Contenedor para añadir el usuario-->
-    <div class="contenedor-add-user">
-      <span class="texto-add-user">Añadir usuario</span>
-      <img class="imagenAddUser" src="img/add_user.svg" alt="Logo añadir usuario" title="Añadir usuario">
-    </div>
-    <!-- Contenedor para subir fotos -->
-    <div class="contenedor-add-photo" title="Subir foto">
-      <span class="texto-add-photo">Subir foto</span>
-      <img class="imagenAddPhoto" src="img/camera-add-svgrepo-com.svg" alt="Logo subir foto" >
+    <div class="buttons-container">
+      <!--Contenedor para añadir el usuario-->
+      <div class="contenedor-add-user">
+        <span class="texto-add-user">Añadir usuario</span>
+        <img class="imagenAddUser" src="img/add_user.svg" alt="Logo añadir usuario" title="Añadir usuario">
+      </div>
+      <!-- Contenedor para subir fotos -->
+      <div class="contenedor-add-photo" title="Subir foto">
+        <span class="texto-add-photo">Subir foto</span>
+        <img class="imagenAddPhoto" src="img/camera-add-svgrepo-com.svg" alt="Logo subir foto">
+      </div>
     </div>
     <!--Contenedor oculto que se abrirá una vez clicado en el contenedor de añadir user-->
     <div id="modal-add-user" class="modal-fondo oculto">
       <div class="formulario-usuario">
         <form>
           <label for="nombrePersona">Nombre: </label>
-          <input id="nombrePersona" type="text" placeholder="Nombre" required value="Pruebaaaa"><br>
+          <input id="nombrePersona" type="text" placeholder="Nombre" required value="Pruebaaaa">
           <label for="user-Name">Nombre de usuario: </label>
-          <input id="user-Name" placeholder="Nombre de usuario" required value="prueba123"><br>
+          <input id="user-Name" placeholder="Nombre de usuario" required value="prueba123">
           <label for="correo-User">Email: </label>
-          <input id="correo-User" placeholder="Email" required value="prueba@gmail.com"><br>
+          <input id="correo-User" placeholder="Email" required value="prueba@gmail.com">
           <label for="latitud">Latitud:</label>
-          <input type="text" name="latitud" id="latitud" placeholder="90" value="90"><br>
+          <input type="text" name="latitud" id="latitud" placeholder="90" value="90">
           <label for="longitud">Longitud:</label>
-          <input type="text" name="longitud" id="longitud" placeholder="-3.7038" value="-3.7038"><br>
+          <input type="text" name="longitud" id="longitud" placeholder="-3.7038" value="-3.7038">
           <label for="telefono">Teléfono:</label>
-          <input type="text" name="telefono" id="telefono" placeholder="Tel: 600000000" value="612123123"><br>
+          <input type="text" name="telefono" id="telefono" placeholder="Tel: 600000000" value="612123123">
           <label for="sitio-web">Web:</label>
-          <input type="text" name="sitio-web" id="sitio-web" placeholder="Página web" value="www.prueba.com"><br>
+          <input type="text" name="sitio-web" id="sitio-web" placeholder="Página web" value="www.prueba.com">
           <button id="crearUser" type="button">Crear</button>
-          <button id="cancelar-creacion-user" type="button" >Cancelar</button><br><span id="span-datos-incorrectos"></span>
+          <button id="cancelar-creacion-user" type="button">Cancelar</button><br><span id="span-datos-incorrectos"></span>
         </form>
       </div>
     </div>
