@@ -1292,6 +1292,10 @@ button.cerrar-modal:hover {
   flex-direction: column;
 }
 
+h3{
+  margin-bottom:-100px;
+}
+
 #add-tarea {
   position: relative;
   top: -40px;
@@ -1306,6 +1310,16 @@ button.cerrar-modal:hover {
 
 #add-tarea:hover{
   opacity: 1;
+}
+
+#form-oculto {
+  margin-top: -30px;
+  display: none;
+  margin-bottom: 20px;
+}
+
+#form-add-tarea input{
+  margin-bottom: 10px;
 }
 
 .contenedor-add-photo {
