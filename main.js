@@ -1105,3 +1105,16 @@ document.addEventListener('click', (e) => {
     }
   }
 });
+
+//Crear nuevas tareas
+const btnAddTarea = document.getElementById("add-tarea");
+const btnCancelarTarea = document.getElementById("cancelar-tarea");
+const formOculto = document.querySelector("#form-oculto");
+
+btnAddTarea.addEventListener("click",() => {
+  formOculto.style.display = "block";
+});
+
+btnCancelarTarea.addEventListener("click",() => {
+  formOculto.style.display = "none";
+});
