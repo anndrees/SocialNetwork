@@ -1109,15 +1109,24 @@ document.addEventListener('click', (e) => {
   }
 });
 
-//Crear nuevas tareas
-const btnAddTarea = document.getElementById("add-tarea");
-const btnCancelarTarea = document.getElementById("cancelar-tarea");
-const formOculto = document.querySelector("#form-oculto");
+//CREAR NUEVAS TAREAS
+
+//Hacemos que el formulario se muestre
+let formOculto = document.querySelector("#form-oculto");
+let btnAddTarea = document.getElementById("add-tarea");
 
 btnAddTarea.addEventListener("click",() => {
   formOculto.style.display = "block";
 });
 
+//Creamos la tarea nueva
+let btnCrearTarea = document.querySelector("#crear-tarea");
+btnCrearTarea.addEventListener("click",()=>{
+  
+});
+
+//Hacemos que el formulario se oculte
+let btnCancelarTarea = document.getElementById("cancelar-tarea");
 btnCancelarTarea.addEventListener("click",() => {
   formOculto.style.display = "none";
 });
