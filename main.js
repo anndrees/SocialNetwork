@@ -524,8 +524,6 @@ document.addEventListener('click', (e) => {
     document.getElementById("modificarBody").value =  obtenerPapi(e.target,"comment").querySelector(".comment-body").textContent;
 
     let comentario1 = comentariosObjetos.find((comentario) => comentario.id == obtenerPapi(e.target, "comment").getAttribute("data-comment-id"));
-    console.log(comentario1);
-    console.log(obtenerPapi(e.target, "comment").getAttribute("data-comment-id"));
 
     if (comentario1) {
       formularioModificar.addEventListener('submit', (event) => {
@@ -569,7 +567,6 @@ document.addEventListener('click', (e) => {
       let textoInput = elementoPadre.querySelector("label").textContent;
       let id = elementoPadre.querySelector(".edit-todo").getAttribute("data-todo-id");
       let todoActual = todosObjetos.find((todo) => todo.id == id);
-      console.log(id);
       if (!btnClicado) {
         elementoPadre.querySelector("label").innerHTML = 
           `<input type="text" value="${textoInput}" class="editable-input">`;
@@ -584,7 +581,6 @@ document.addEventListener('click', (e) => {
       }
   
       btnClicado = !btnClicado;
-      console.log(btnClicado);
     }
   
     if (!e.target.closest('.todo-item') && btnClicado) {
