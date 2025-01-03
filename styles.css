@@ -41,6 +41,9 @@ body.modal-open {
 .post-cabecera {
   margin-bottom: 15px;
   position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
 }
 
 .post-titulo {
@@ -932,11 +935,16 @@ body.modal-open {
   gap: 10px;
 }
 
+.post-info {
+  flex: 1;
+}
+
 .post-autor-avatar {
   width: 30px;
   height: 30px;
   border-radius: 50%;
   object-fit: cover;
+  flex-shrink: 0;
 }
 
 .usuario-resultado-container {

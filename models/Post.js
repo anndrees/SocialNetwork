@@ -24,17 +24,31 @@ export class Post {
     // Añadir el data-post-id al elemento del post
     postElement.dataset.postId = this.id;
 
-    postElement.querySelector('.post-titulo').textContent = this.title;
-    const autorElement = postElement.querySelector('.post-autor');
+    const postInfo = document.createElement('div');
+    postInfo.className = 'post-info';
+
     const avatarElement = postElement.querySelector('.post-autor-avatar');
     avatarElement.src = this.user.getAvatarUrl(30);
+
+    const tituloElement = postElement.querySelector('.post-titulo');
+    tituloElement.textContent = this.title;
+    
+    const autorElement = postElement.querySelector('.post-autor');
     autorElement.textContent = `Publicado por ${this.user.name} (@${this.user.username})`;
     autorElement.dataset.userid = this.user.id;
     autorElement.classList.add('usuario-link');
 
-    postElement.querySelector('.post-body').textContent = this.body;
+    // Mover título y autor al div post-info
+    postInfo.appendChild(tituloElement);
+    postInfo.appendChild(autorElement);
 
-    
+    // Limpiar y reorganizar la cabecera
+    const postCabecera = postElement.querySelector('.post-cabecera');
+    postCabecera.innerHTML = '';
+    postCabecera.appendChild(avatarElement);
+    postCabecera.appendChild(postInfo);
+
+    postElement.querySelector('.post-body').textContent = this.body;
 
     const commentsContainer = postElement.querySelector('.comments-container');
     const commentsCount = postElement.querySelector('.comments-count');
