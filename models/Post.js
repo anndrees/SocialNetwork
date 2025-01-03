@@ -48,6 +48,26 @@ export class Post {
     postCabecera.appendChild(avatarElement);
     postCabecera.appendChild(postInfo);
 
+    // Agregar botones de modificar y eliminar
+    const modificarBtn = document.createElement('button');
+    modificarBtn.className = 'modificar-post-btn';
+    const modificarImg = document.createElement('img');
+    modificarImg.src = 'img/pencil-svgrepo-com.svg';
+    modificarImg.alt = 'Modificar post';
+    modificarImg.title = 'Modificar post';
+    modificarBtn.appendChild(modificarImg);
+
+    const eliminarBtn = document.createElement('button');
+    eliminarBtn.className = 'eliminar-post-btn';
+    const eliminarImg = document.createElement('img');
+    eliminarImg.src = 'img/papelera.svg';
+    eliminarImg.alt = 'Eliminar post';
+    eliminarImg.title = 'Eliminar post';
+    eliminarBtn.appendChild(eliminarImg);
+
+    postCabecera.appendChild(modificarBtn);
+    postCabecera.appendChild(eliminarBtn);
+
     postElement.querySelector('.post-body').textContent = this.body;
 
     const commentsContainer = postElement.querySelector('.comments-container');
