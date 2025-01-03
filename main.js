@@ -15,6 +15,7 @@ const usuariosObjetos = [];
 const publicacionesObjetos = [];
 const comentariosObjetos = [];
 let todosObjetos = [];
+let imagenes = [];
 
 // Inicializar todos
 todos.forEach(todoData => {
@@ -1227,13 +1228,30 @@ btnCancelarTarea.addEventListener("click", () => {
 });
 
 //CREAMOS NUEVAS IMAGENES
-//Coger el contenedor de añadir imagen
+//Coger el contenedor de añadir imagen, el modal a mostrar y los botones
+let numeroFotosArchivo = photos.length; //Esto es para ver el número de imagenes del json
 let contenedorAddImagen = document.querySelector(".contenedor-add-photo");
 let divImagen = document.querySelector("#modal-add-imagen");
+let btnCancelarNuevaImagen = document.querySelector("#cancelar-creacion-imagen");
+let btnAddImagen = document.querySelector("#add-imagen");
 
 //Este es el contenedor de el logo de añadir imagen que cuando se haga click se mostrará un div oculto (un formulario)
 contenedorAddImagen.addEventListener("click", () => {
-  //Con esto mostramos el formulario
   divImagen.classList.remove("oculto");
   divImagen.classList.add("modal-open");
+
+  //Aquí se creará la imagen (se guardará) 
+  btnAddImagen.addEventListener("click",()=>{
+    let tituloImagen = document.querySelector("#tituloImagen").value;
+    let urlImagen = document.querySelector("#subirImagen").files[0];
+    let nuevaImagen = new Photo(1,(numeroFotosArchivo + (imagenes.length + 1)),tituloImagen,urlImagen,urlImagen);
+    imagenes.push(nuevaImagen);
+    console.log(imagenes);
+  });
+
+  //Aquí para cuando se pulse cancelar se oculte el modal
+  btnCancelarNuevaImagen.addEventListener("click",()=>{
+    divImagen.classList.add("oculto");
+    divImagen.classList.remove("modal-open");
+  });
 });
