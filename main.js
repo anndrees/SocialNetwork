@@ -471,7 +471,6 @@ document.addEventListener('click', (e) => {
 btnCancelar.addEventListener('click', ocultarModalEliminar);
 
 
-
 //Funcionalidad de modificar posts
 const modalModificar = document.getElementById('modal-modificar');
 const btnCancelarModificar = document.getElementById('btn-cancelar-modificar');
@@ -1045,91 +1044,6 @@ function ocultarModalComentarios(postElement) {
   document.body.classList.remove('modal-open');
 }
 
-// Función para actualizar la vista de comentarios de un post
-function actualizarComentariosPost(postElement, postId) {
-  // Obtener todos los comentarios del post
-  const comentariosPost = comentariosObjetos.filter(comment => comment.postId === postId);
-  
-  // Limpiar el contenedor de comentarios
-  const commentsContainer = postElement.querySelector('.comments-container');
-  commentsContainer.innerHTML = '';
-
-  // Mostrar los primeros 3 comentarios
-  comentariosPost.slice(0, 3).forEach(comment => {
-    const commentElement = comment.render();
-    commentsContainer.appendChild(commentElement);
-  });
-
-  // Ocultar el resto de comentarios
-  comentariosPost.slice(3).forEach(comment => {
-    const commentElement = comment.render();
-    commentElement.classList.add('hidden');
-    commentsContainer.appendChild(commentElement);
-  });
-
-  // Actualizar el enlace "Ver más comentarios"
-  if (comentariosPost.length > 3) {
-    const verMasLink = document.createElement('a');
-    verMasLink.href = '#';
-    verMasLink.className = 'ver-mas-comentarios';
-    verMasLink.textContent = 'Ver más comentarios';
-    verMasLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      const comentariosOcultos = commentsContainer.querySelectorAll('.comment.hidden');
-      const nextBatch = Array.from(comentariosOcultos).slice(0, 5);
-      nextBatch.forEach(comment => {
-        comment.classList.remove('hidden');
-        comment.classList.add('showing');
-      });
-      if (comentariosOcultos.length <= 5) {
-        verMasLink.style.display = 'none';
-      }
-    });
-    commentsContainer.appendChild(verMasLink);
-  }
-
-  // Actualizar el contador de comentarios
-  const contadorComentarios = postElement.querySelector('.comments-count');
-  contadorComentarios.textContent = comentariosPost.length;
-}
-
-// Función para crear un nuevo comentario
-function crearComentario(postElement) {
-  const postId = parseInt(postElement.querySelector('#post-id').textContent);
-  const usuarioSelect = postElement.querySelector('#usuarioSelectComentario');
-  const tituloInput = postElement.querySelector('#tituloComment');
-  const bodyInput = postElement.querySelector('#bodyComment');
-  
-  const userId = parseInt(usuarioSelect.value);
-  const titulo = tituloInput.value.trim();
-  const body = bodyInput.value.trim();
-  
-  if (!userId || !titulo || !body) {
-    alert('Por favor, completa todos los campos');
-    return;
-  }
-
-  // Crear el nuevo comentario
-  const nextCommentId = Math.max(...comentariosObjetos.map(c => c.id), 0) + 1;
-  const usuario = usuariosObjetos.find(u => u.id === userId);
-  
-  const nuevoComentario = new Comment(nextCommentId, postId, titulo, usuario.email, body);
-  nuevoComentario.asignarUsuario(usuario);
-  comentariosObjetos.unshift(nuevoComentario); // Añadir al principio del array
-
-  // Actualizar la vista de comentarios
-  actualizarComentariosPost(postElement, postId);
-
-  // Limpiar el formulario y cerrar el modal
-  usuarioSelect.value = '';
-  tituloInput.value = '';
-  bodyInput.value = '';
-  ocultarModalComentarios(postElement);
-  
-  // Actualizar los resultados de búsqueda
-  realizarBusqueda(entradaBusqueda.value);
-}
-
 // Eventos para el modal de comentarios
 document.addEventListener('click', (e) => {
   if (e.target.closest('#add-comment')) {
@@ -1234,23 +1148,49 @@ let contenedorAddImagen = document.querySelector(".contenedor-add-photo");
 let divImagen = document.querySelector("#modal-add-imagen");
 let btnCancelarNuevaImagen = document.querySelector("#cancelar-creacion-imagen");
 let btnAddImagen = document.querySelector("#add-imagen");
+let formImagen = document.querySelector("#form-add-imagen");
 
 //Este es el contenedor de el logo de añadir imagen que cuando se haga click se mostrará un div oculto (un formulario)
 contenedorAddImagen.addEventListener("click", () => {
   divImagen.classList.remove("oculto");
   divImagen.classList.add("modal-open");
+});
 
-  //Aquí se creará la imagen (se guardará) 
-  btnAddImagen.addEventListener("click",()=>{
-    let tituloImagen = document.querySelector("#tituloImagen").value;
-    let urlImagen = document.querySelector("#subirImagen").files[0];
-    let nuevaImagen = new Photo(1,(numeroFotosArchivo + 1),tituloImagen,urlImagen,urlImagen);
+//Aquí se creará la imagen (se guardará en memoria) 
+btnAddImagen.addEventListener("click",()=>{
+  let tituloImagen = document.querySelector("#tituloImagen").value;
+  let archivoImagen = document.querySelector("#subirImagen").files[0];
+
+  if (tituloImagen && archivoImagen) {
+    // Crear URL temporal para la imagen
+    const urlTemporal = URL.createObjectURL(archivoImagen);
+    
+    // Crear nueva foto con la URL temporal
+    let nuevaImagen = new Photo(1, numeroFotosArchivo + 1, tituloImagen, urlTemporal, urlTemporal);
     photos.unshift(nuevaImagen);
-  });
+    numeroFotosArchivo++;
 
-  //Aquí para cuando se pulse cancelar se oculte el modal
-  btnCancelarNuevaImagen.addEventListener("click",()=>{
+    // Limpiar el formulario
+    document.querySelector("#tituloImagen").value = "";
+    document.querySelector("#subirImagen").value = "";
+
+    // Cerrar el modal
     divImagen.classList.add("oculto");
     divImagen.classList.remove("modal-open");
-  });
+
+    // Actualizar los resultados de búsqueda si estamos en la sección de fotos
+    if (tipoBusquedaSeleccionado === 'fotos') {
+      realizarBusqueda(entradaBusqueda.value);
+    }
+  }
+});
+
+//Aquí para cuando se pulse cancelar se oculte el modal
+btnCancelarNuevaImagen.addEventListener("click",()=>{
+  // Limpiar el formulario
+  document.querySelector("#tituloImagen").value = "";
+  document.querySelector("#subirImagen").value = "";
+  
+  divImagen.classList.add("oculto");
+  divImagen.classList.remove("modal-open");
 });
