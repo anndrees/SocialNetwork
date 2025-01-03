@@ -978,7 +978,7 @@ document.addEventListener('click', (e) => {
 
     // Evento para el botón de eliminar
     btnEliminar.addEventListener('click', () => {
-      // Eliminar la foto del array de fotos
+      // Eliminar la foto del array
       const indice = photos.findIndex(f => f.id === fotoId);
       if (indice !== -1) {
         photos.splice(indice, 1);
@@ -1033,26 +1033,116 @@ function mostrarModalComentarios(postElement) {
 function ocultarModalComentarios(postElement) {
   const modalComentarios = postElement.querySelector('#modal-add-comments');
   modalComentarios.classList.add('oculto');
-  document.body.classList.remove('modal-open');
+  document.body.classList.remove('modal-open'); // Desbloquear el scroll
 }
 
 // Eventos para el modal de comentarios
 document.addEventListener('click', (e) => {
   if (e.target.closest('#add-comment')) {
     const postElement = obtenerPapi(e.target, 'post');
-    mostrarModalComentarios(postElement);
+    if (postElement) {
+      mostrarModalComentarios(postElement);
+      
+      // Llenar el select de usuarios
+      const usuarioSelect = document.getElementById('usuarioSelectComentario');
+      usuarioSelect.innerHTML = '<option value="">Selecciona un usuario</option>';
+      usuariosObjetos.forEach(usuario => {
+        const option = document.createElement('option');
+        option.value = usuario.id;
+        option.textContent = usuario.name;
+        usuarioSelect.appendChild(option);
+      });
+    }
   }
+});
 
-  if (e.target.closest('#cancelar-comment')) {
-    const postElement = obtenerPapi(e.target, 'post');
-    ocultarModalComentarios(postElement);
-  }
-
-  if (e.target.closest('#publicarComment')) {
-    const postElement = obtenerPapi(e.target, 'post');
+document.getElementById('publicarComment').addEventListener('click', () => {
+  const postElement = document.querySelector('.post');
+  if (validarFormularioComentario()) {
     crearComentario(postElement);
   }
 });
+
+document.getElementById('cancelar-comment').addEventListener('click', () => {
+  const postElement = document.querySelector('.post');
+  ocultarModalComentarios(postElement);
+});
+
+// Función para validar el formulario de comentario
+function validarFormularioComentario() {
+  const usuario = document.getElementById('usuarioSelectComentario').value;
+  const titulo = document.getElementById('tituloComment').value;
+  const contenido = document.getElementById('bodyComment').value;
+  
+  if (!usuario || !titulo || !contenido) {
+    alert('Por favor, rellena todos los campos');
+    return false;
+  }
+  return true;
+}
+
+// Función para crear un nuevo comentario
+function crearComentario(postElement) {
+  const postId = postElement.querySelector('#post-id').textContent;
+  const userId = parseInt(document.getElementById('usuarioSelectComentario').value);
+  const titulo = document.getElementById('tituloComment').value;
+  const contenido = document.getElementById('bodyComment').value;
+
+  // Encontrar el máximo ID actual de comentarios
+  const maxId = Math.max(...comentariosObjetos.map(comment => comment.id), 0);
+
+  // Crear el nuevo comentario
+  const nuevoComentario = new Comment(maxId + 1, postId, titulo, contenido, userId);
+
+  // Añadir el comentario al array
+  comentariosObjetos.push(nuevoComentario);
+
+  // Actualizar la vista
+  const commentsContainer = postElement.querySelector('.comments-container');
+  const commentsCount = postElement.querySelector('.comments-count');
+
+  // Crear y añadir el nuevo comentario al DOM
+  const commentElement = document.createElement('div');
+  commentElement.classList.add('comment');
+  commentElement.dataset.commentId = nuevoComentario.id;
+
+  const usuario = usuariosObjetos.find(user => user.id === userId);
+
+  commentElement.innerHTML = `
+    <div class="comment-cabecera">
+      <div class="comment-autor-container">
+        <img class="comment-avatar" src="https://ui-avatars.com/api/?name=${usuario?.name || 'User'}&background=random" alt="Avatar del autor">
+        <div class="comment-autor-info">
+          <strong class="comment-autor">${usuario?.name || 'Usuario'}</strong>
+          <span class="comment-username">@${usuario?.username || 'usuario'}</span>
+        </div>
+      </div>
+      <div class="comment-actions">
+        <button class="edit-comment-btn">
+          <img src="img/pencil-square-svgrepo-com.svg" alt="Editar comentario" title="Editar comentario">
+        </button>
+        <button class="delete-comment-btn">
+          <img src="img/papelera.svg" alt="Eliminar comentario" title="Eliminar comentario">
+        </button>
+      </div>
+    </div>
+    <p class="comment-body">${contenido}</p>
+  `;
+
+  commentsContainer.appendChild(commentElement);
+
+  // Actualizar el contador de comentarios
+  const comentariosPost = comentariosObjetos.filter(comment => comment.postId === parseInt(postId));
+  commentsCount.textContent = comentariosPost.length;
+
+  // Cerrar el modal y limpiar el formulario
+  const modalComentarios = document.getElementById('modal-add-comments');
+  modalComentarios.classList.add('oculto');
+  document.body.classList.remove('modal-open'); // Desbloquear el scroll
+  document.getElementById('usuarioSelectComentario').value = '';
+  document.getElementById('tituloComment').value = '';
+  document.getElementById('bodyComment').value = '';
+}
 
 // Eventos para el modal de comentarios
 document.addEventListener('click', (e) => {
@@ -1337,14 +1427,12 @@ function guardarTituloFoto(foto, nuevoTitulo) {
   
   if (tipoSeleccionado === 'fotos') {
     const searchTerm = searchInput.value.toLowerCase();
-    // Si hay término de búsqueda, filtrar por él
     if (searchTerm !== '') {
       const resultados = photos.filter(photo => 
         photo.title.toLowerCase().includes(searchTerm)
       );
       mostrarResultados(resultados, 'fotos');
     } else {
-      // Si no hay término de búsqueda, mostrar todas las fotos
       mostrarResultados(photos, 'fotos');
     }
   }
@@ -1410,5 +1498,60 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target === modalAddUser) {
       ocultarModalAddUser();
     }
+  });
+});
+
+// Funciones para eliminar foto
+function eliminarFoto(photoId) {
+  // Encontrar el índice de la foto en el array
+  const index = photos.findIndex(photo => photo.id === parseInt(photoId));
+  if (index !== -1) {
+    // Eliminar la foto del array
+    photos.splice(index, 1);
+    
+    // Actualizar la búsqueda
+    const opcionSeleccionada = document.querySelector('.search-option.selected');
+    const tipoSeleccionado = opcionSeleccionada?.dataset.type;
+    const searchInput = document.getElementById('buscador');
+    
+    if (tipoSeleccionado === 'fotos') {
+      const searchTerm = searchInput.value.toLowerCase();
+      if (searchTerm !== '') {
+        const resultados = photos.filter(photo => 
+          photo.title.toLowerCase().includes(searchTerm)
+        );
+        mostrarResultados(resultados, 'fotos');
+      } else {
+        mostrarResultados(photos, 'fotos');
+      }
+    }
+    
+    // Cerrar el modal
+    ocultarModalFoto();
+  }
+}
+
+// Event listeners para eliminar foto
+document.addEventListener('DOMContentLoaded', () => {
+  const btnEliminarFoto = document.getElementById('btn-eliminar-foto');
+  
+  btnEliminarFoto.addEventListener('click', () => {
+    const photoId = document.querySelector('#titulo-foto').dataset.photoId;
+    mostrarModalEliminar();
+    
+    // Evento para confirmar eliminación
+    const confirmarEliminacion = () => {
+      eliminarFoto(photoId);
+      ocultarModalEliminar();
+      // Remover el event listener después de usarlo
+      btnEliminar.removeEventListener('click', confirmarEliminacion);
+    };
+    
+    btnEliminar.addEventListener('click', confirmarEliminacion);
+    
+    // Remover el event listener si se cancela
+    btnCancelar.addEventListener('click', () => {
+      btnEliminar.removeEventListener('click', confirmarEliminacion);
+    });
   });
 });
