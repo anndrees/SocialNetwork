@@ -266,6 +266,9 @@ document.getElementById('nuevoPostForm').addEventListener('submit', function (e)
 
   // Limpiar el formulario
   this.reset();
+
+  // Actualizar la busqueda
+  realizarBusqueda(entradaBusqueda.value);
 });
 
 // Renderizar las publicaciones
