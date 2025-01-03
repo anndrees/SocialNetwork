@@ -41,6 +41,9 @@ body.modal-open {
 .post-cabecera {
   margin-bottom: 15px;
   position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
 }
 
 .post-titulo {
@@ -932,11 +935,16 @@ body.modal-open {
   gap: 10px;
 }
 
+.post-info {
+  flex: 1;
+}
+
 .post-autor-avatar {
   width: 30px;
   height: 30px;
   border-radius: 50%;
   object-fit: cover;
+  flex-shrink: 0;
 }
 
 .usuario-resultado-container {
@@ -1277,4 +1285,63 @@ button.cerrar-modal:hover {
 
 .modificar-post-btn img {
   vertical-align: middle;
+}
+
+.user-todos-section {
+  display: flex;
+  flex-direction: column;
+}
+
+h3{
+  margin-bottom:-100px;
+}
+
+#add-tarea {
+  position: relative;
+  top: -40px;
+  margin-left: -130px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--text-color);
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+#add-tarea:hover{
+  opacity: 1;
+}
+
+#form-oculto {
+  margin-top: -30px;
+  display: none;
+  margin-bottom: 20px;
+}
+
+#form-add-tarea input{
+  margin-bottom: 10px;
+}
+
+.contenedor-add-photo {
+  border: solid 2px black;
+  padding: 7px;
+  border-radius: 0.5rem;
+  justify-content: center;
+  margin-left: 10px;
+}
+
+.contenedor-add-photo:hover {
+  background-color: #baf2e9;
+  cursor: pointer;
+}
+
+.texto-add-photo {
+  margin: 10px;
+  font-weight: bold;
+}
+
+.imagenAddPhoto {
+  vertical-align: middle;
+  width: 24px;
+  height: 24px;
 }

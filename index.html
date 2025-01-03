@@ -19,6 +19,11 @@
       <span class="texto-add-user">Añadir usuario</span>
       <img class="imagenAddUser" src="img/add_user.svg" alt="Logo añadir usuario" title="Añadir usuario">
     </div>
+    <!-- Contenedor para subir fotos -->
+    <div class="contenedor-add-photo" title="Subir foto">
+      <span class="texto-add-photo">Subir foto</span>
+      <img class="imagenAddPhoto" src="img/camera-add-svgrepo-com.svg" alt="Logo subir foto" >
+    </div>
     <!--Contenedor oculto que se abrirá una vez clicado en el contenedor de añadir user-->
     <div id="modal-add-user" class="modal-fondo oculto">
       <div class="formulario-usuario">
@@ -80,17 +85,16 @@
             </button>
             <div id="modal-add-comments" class="modal-fondo oculto">
               <div class="formulario-comentario">
-                <form>
+                <form id="formAddComment">
                   <select id="usuarioSelectComentario">
                     <option value="">Selecciona un usuario</option>
                   </select>
                   <input id="tituloComment" type="text" placeholder="Introduce el título del comentario" required>
-                  <textarea id="postBody" placeholder="Contenido de el comentario" required></textarea>
+                  <textarea id="bodyComment" placeholder="Contenido del comentario" required></textarea>
                   <button id="publicarComment" type="button">Publicar</button>
                   <button type="button" id="cancelar-comment">Cancelar</button>
                 </form>
               </div>
-              <a href=""></a>
             </div>
 
             <div class="comments-section">
@@ -243,10 +247,22 @@
           </div>
         </div>
         <button type="button" id="btn-eliminar-usuario" class="btn-eliminar-usuario">
-          <img src="img/papelera.svg" alt="Eliminar usuario" class="delete-user-icon"> Eliminar usuario
+          <img src="img/papelera.svg" alt="Eliminar usuario" class="delete-user-icon" title="Eliminar usuario"> Eliminar usuario
         </button>
         <div class="user-todos-section">
           <h3>Tareas del usuario</h3>
+          <button id="add-tarea">
+            <img id="imagen-add-tarea" src="img/task-list-add-svgrepo-com.svg" alt="Añadir nueva tarea" title="Añadir nueva tarea">
+          </button>
+          <div id="form-oculto">
+            <form id="form-add-tarea">
+              <input type="hidden" id="userId-tarea">
+              <label for="nombreTarea">Título de la tarea: </label>
+              <input type="text" name="nombreTarea" id="nombreTarea"><br>
+              <button id="crear-tarea" type="button">Crear tarea</button>
+              <button id="cancelar-tarea" type="button">Cancelar</button><br>
+            </form>
+          </div>
           <div class="user-todos-list"></div>
         </div>
       </div>
