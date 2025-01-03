@@ -911,7 +911,7 @@ function realizarBusqueda(consulta) {
     case 'fotos':
       resultados = photos.filter(foto =>
         consulta ? foto.title.toLowerCase().includes(consulta) : true
-      ).map(foto => new Photo(foto));
+      ).map(foto => new Photo(foto.albumId, foto.id, foto.title, foto.url, foto.thumbnailUrl));
       break;
     case 'todos':
       resultados = todosObjetos.filter(tarea =>
