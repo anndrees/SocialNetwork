@@ -1197,8 +1197,10 @@ btnAddTarea.addEventListener("click",() => {
 //Creamos la tarea nueva
 let btnCrearTarea = document.querySelector("#crear-tarea");
 btnCrearTarea.addEventListener("click", () => {
-  const userId = document.getElementById('userId-tarea').value;
-  
+  const userId = document.getElementById("userId-tarea").value;
+  let tituloTarea = document.getElementById("nombreTarea").value;
+  let nuevaTarea = new Todo((todosObjetos.length + 1), userId, tituloTarea, false);
+  todosObjetos.unshift(nuevaTarea);
 });
 
 //Hacemos que el formulario se oculte
