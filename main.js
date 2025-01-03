@@ -16,6 +16,12 @@ const publicacionesObjetos = [];
 const comentariosObjetos = [];
 let todosObjetos = [];
 
+// Inicializar todos
+todos.forEach(todoData => {
+  const todo = new Todo(todoData.id, todoData.userId, todoData.title, todoData.completed);
+  todosObjetos.push(todo);
+});
+
 // Crear usuarios predefinidos
 let idMaximo = 0;
 for (let i = 0; i < users.length; i++) {
@@ -221,9 +227,6 @@ comments.forEach(datosComentario => {
     publicacion.agregarComentario(comentario);
   }
 });
-
-// Crear objetos Todo
-todosObjetos = todos.map(todo => new Todo(todo.id, todo.userId, todo.title, todo.completed));
 
 // Establecer el select con los usuarios predefinidos
 const selectorUsuario = document.getElementById('usuarioSelect');
@@ -588,9 +591,6 @@ document.addEventListener('click', (e) => {
   }
   
 });
-
-
-
 
 // Configuración de búsqueda
 const entradaBusqueda = document.getElementById('buscador');
@@ -1190,7 +1190,7 @@ document.addEventListener('click', (e) => {
 let formOculto = document.querySelector("#form-oculto");
 let btnAddTarea = document.getElementById("add-tarea");
 
-btnAddTarea.addEventListener("click",() => {
+btnAddTarea.addEventListener("click", () => {
   formOculto.style.display = "block";
 });
 
@@ -1199,12 +1199,24 @@ let btnCrearTarea = document.querySelector("#crear-tarea");
 btnCrearTarea.addEventListener("click", () => {
   const userId = document.getElementById("userId-tarea").value;
   let tituloTarea = document.getElementById("nombreTarea").value;
-  let nuevaTarea = new Todo((todosObjetos.length + 1), userId, tituloTarea, false);
+
+  // Encontrar el ID más alto actual
+  const maxId = Math.max(...todosObjetos.map(todo => todo.id), 0);
+
+  // Crear nueva tarea con ID siguiente al máximo
+  let nuevaTarea = new Todo(maxId + 1, parseInt(userId), tituloTarea, false);
   todosObjetos.unshift(nuevaTarea);
+
+  // Ocultar formulario y limpiar campo
+  formOculto.style.display = "none";
+  document.getElementById("nombreTarea").value = "";
+
+  // Actualizar la vista del perfil
+  mostrarPerfilUsuario(parseInt(userId));
 });
 
 //Hacemos que el formulario se oculte
 let btnCancelarTarea = document.getElementById("cancelar-tarea");
-btnCancelarTarea.addEventListener("click",() => {
+btnCancelarTarea.addEventListener("click", () => {
   formOculto.style.display = "none";
 });
