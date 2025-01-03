@@ -463,6 +463,9 @@ document.addEventListener('click', (e) => {
 
 btnCancelar.addEventListener('click', ocultarModalEliminar);
 
+
+
+//Funcionalidad de modificar posts
 const modalModificar = document.getElementById('modal-modificar');
 const btnCancelarModificar = document.getElementById('btn-cancelar-modificar');
 let formularioModificar = document.getElementById("modificarPost");
@@ -510,6 +513,38 @@ document.addEventListener('click', (e) => {
       
     }
     
+  }else if (e.target.closest(".edit-comment-btn")) {
+    mostrarModalModificar();  
+    document.getElementById("modificarTitulo").value = obtenerPapi(e.target,"comment").querySelector(".comment-autor").textContent;
+    document.getElementById("modificarBody").value =  obtenerPapi(e.target,"comment").querySelector(".comment-body").textContent;
+
+
+   let comentario1 = comentariosObjetos.find((comentario) => comentario.id == obtenerPapi(e.target,"comment").getAttribute("data-comment-id"));
+    console.log(comentario1);
+    console.log(obtenerPapi(e.target,"comment").getAttribute("data-comment-id"));
+
+
+    if (comentario1) {
+      formularioModificar.addEventListener('submit', (event) => {
+        event.preventDefault();
+        if (!document.getElementById("modificarTitulo").value=="") {
+          comentario1.name =  document.getElementById("modificarTitulo").value;
+        }
+        if (!document.getElementById("modificarBody").value=="") {
+          comentario1.body =  document.getElementById("modificarBody").value;
+        }
+        
+        let comentsArray = Array.from(document.querySelectorAll(".comment"));
+        let commentObjetivo  = comentsArray.find((coment) => coment.getAttribute("data-comment-id") == comentario1.id);
+        commentObjetivo.querySelector(".comment-autor").textContent = comentario1.name;
+        commentObjetivo.querySelector(".comment-body").textContent = comentario1.body;
+  
+        ocultarModalModificar();
+            
+      },{ once: true });
+      
+    }  
+
   }
   // Cerrar modal al hacer click fuera
   if (e.target === modalModificar) {
@@ -517,7 +552,6 @@ document.addEventListener('click', (e) => {
   }
   
 });
-
 btnCancelarModificar.addEventListener('click', ocultarModalModificar);
 
 
