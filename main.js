@@ -1208,3 +1208,15 @@ let btnCancelarTarea = document.getElementById("cancelar-tarea");
 btnCancelarTarea.addEventListener("click",() => {
   formOculto.style.display = "none";
 });
+
+//CREAMOS NUEVAS IMAGENES
+//Coger el contenedor de añadir imagen
+let contenedorAddImagen = document.querySelector(".contenedor-add-photo");
+let divImagen = document.querySelector("#modal-add-imagen");
+
+//Este es el contenedor de el logo de añadir imagen que cuando se haga click se mostrará un div oculto (un formulario)
+contenedorAddImagen.addEventListener("click", () => {
+  //Con esto mostramos el formulario
+  divImagen.classList.remove("oculto");
+  divImagen.classList.add("modal-open");
+});

@@ -47,6 +47,15 @@
         </form>
       </div>
     </div>
+
+    <div id="modal-add-imagen" class="modal-fondo oculto">
+      <div class="form-add-imagen">
+        <label for="tituloImagen">Título imagen</label>
+        <input type="text" name="tituloImagen" id="tituloImagen"><br>
+        <input type="file" name="subirImagen" id="subirImagen">
+      </div>
+    </div>
+
   </header>
 
   <div class="layout-container">
@@ -258,8 +267,8 @@
             <form id="form-add-tarea">
               <input type="hidden" id="userId-tarea">
               <label for="nombreTarea">Título de la tarea: </label>
-              <input type="text" name="nombreTarea" id="nombreTarea"><br>
-              <button id="crear-tarea" type="button">Crear tarea</button>
+              <input type="text" name="nombreTarea" id="nombreTarea" placeholder="Título de la nueva tarea"><br>
+              <button id="crear-tarea" type="button">Añadir tarea</button>
               <button id="cancelar-tarea" type="button">Cancelar</button><br>
             </form>
           </div>
