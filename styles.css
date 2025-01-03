@@ -21,8 +21,8 @@ body {
 
 body.modal-open {
   overflow: hidden;
-  padding-right: 15px;
-  /* Compensar el scrollbar que desaparece */
+  padding-right: 17px;
+  /* Compensar el ancho de la scrollbar para evitar saltos */
 }
 
 #container {
@@ -1086,7 +1086,7 @@ body.modal-open {
 /* Estilos para el modal de fotos */
 .modal-foto {
   max-width: 800px;
-  padding: 0;
+  padding: 20px;
 }
 
 .modal-foto .modal-header {
@@ -1104,34 +1104,61 @@ body.modal-open {
 }
 
 .modal-foto .modal-body {
-  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .modal-foto .foto-imagen {
-  width: 100%;
-  max-height: 500px;
-  object-fit: contain;
-  margin-bottom: 1rem;
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
 }
 
-.modal-foto .foto-info {
+.modal-foto .info-foto {
+  background-color: var(--background-color);
   padding: 1rem;
-  background-color: #f8f9fa;
-  border-radius: 8px;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-color);
 }
 
-.modal-foto .foto-info p {
+.modal-foto .info-foto p {
   margin: 0.5rem 0;
-  color: var(--text-color);
 }
 
-.modal-foto .foto-info a {
+.modal-foto .info-foto a {
   color: var(--primary-color);
   text-decoration: none;
+  word-break: break-all;
 }
 
-.modal-foto .foto-info a:hover {
+.modal-foto .info-foto a:hover {
   text-decoration: underline;
+}
+
+.btn-eliminar-foto {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--error-color);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-weight: 500;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.btn-eliminar-foto:hover {
+  background-color: var(--error-color-hover);
+}
+
+.btn-eliminar-foto img {
+  width: 1.2rem;
+  height: 1.2rem;
 }
 
 /* Estilo común para botones de cerrar modal */
@@ -1490,4 +1517,123 @@ h3 {
 .form-add-imagen button#cancelar-creacion-imagen:hover {
   background-color: var(--secondary-color);
   color: white;
+}
+
+/* Estilos para el modal de modificar usuario */
+#modal-modificar-usuario .modal-contenido {
+  max-width: 500px;
+  padding: 2rem;
+}
+
+#modal-modificar-usuario .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+#modal-modificar-usuario .modal-header h3 {
+  margin: 0;
+}
+
+#form-modificar-usuario .form-group {
+  margin-bottom: 1rem;
+}
+
+#form-modificar-usuario label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+#form-modificar-usuario input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+}
+
+#form-modificar-usuario .botones-modal {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+#btn-guardar-usuario {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+#btn-guardar-usuario:hover {
+  background-color: var(--primary-color-hover);
+}
+
+#btn-cancelar-modificar-usuario {
+  background-color: var(--secondary-color-hover);
+  color: var(--text-color);
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+#btn-cancelar-modificar-usuario:hover {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.titulo-imagen {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn-editar-foto {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25rem;
+}
+
+.btn-editar-foto:hover {
+  background-color: var(--secondary-color-hover);
+}
+
+.icono-editar {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.titulo-imagen input {
+  font-size: 1.17em;
+  font-weight: bold;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.25rem;
+  width: 300px;
+}
+
+.btn-guardar-titulo {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-guardar-titulo:hover {
+  background-color: var(--primary-color-hover);
 }

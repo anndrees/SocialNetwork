@@ -687,21 +687,11 @@ window.mostrarPerfilUsuario = function (userId) {
 
   let btnModificarUsuario = modalUsuario.querySelector(".btn-modificar-usuario");
   btnModificarUsuario.addEventListener("click", () => {
-    if (!clicado) {
-      email.innerHTML = "<input type='text' id='email1' value='" + usuario.email + "'>";
-      telefono.innerHTML = "<input type='text' id='telefono1' value='" + usuario.phone + "'>";
-    } else {
-      let textoInputEmail = document.getElementById("email1").value;
-      let textoInputTelefono = document.getElementById("telefono1").value;
-
-      if (!(textoInputEmail == "" && textoInputTelefono == "")) {
-        email.textContent = textoInputEmail;
-        telefono.textContent = textoInputTelefono;
-        usuario.email = email.textContent;
-        usuario.phone = telefono.textContent;
-      }
+    const userId = modalUsuario.querySelector('.perfil-info').dataset.userId;
+    const usuario = usuariosObjetos.find(u => u.id === parseInt(userId));
+    if (usuario) {
+      mostrarModalModificarUsuario(usuario);
     }
-    clicado = !clicado;
   });
 
   // Mostrar el modal
@@ -927,27 +917,33 @@ function realizarBusqueda(consulta) {
 // Funciones para el modal de fotos
 function mostrarModalFoto(foto) {
   const modalFoto = document.getElementById('modal-foto');
-  const titulo = modalFoto.querySelector('.foto-titulo');
-  const imagen = modalFoto.querySelector('.foto-imagen');
-  const albumSpan = modalFoto.querySelector('.foto-album span');
-  const urlLink = modalFoto.querySelector('.foto-url a');
-
-  titulo.textContent = foto.title;
+  const modalBody = modalFoto.querySelector(".modal-body");
+  const tituloFoto = modalFoto.querySelector("#titulo-foto");
+  const imagen = modalFoto.querySelector(".foto-imagen");
+  const albumSpan = modalFoto.querySelector(".foto-album span");
+  const urlLink = modalFoto.querySelector(".foto-url a");
+  
+  // Establecer título y datos de la foto
+  tituloFoto.textContent = foto.title;
+  tituloFoto.dataset.photoId = foto.id;
+  
+  // Establecer imagen y sus atributos
   imagen.src = foto.url;
   imagen.alt = foto.title;
-  imagen.dataset.photoId = foto.id;  // Añadir el ID de la foto
+  
+  // Establecer información adicional
   albumSpan.textContent = foto.albumId;
   urlLink.href = foto.url;
   urlLink.textContent = foto.url;
-
-  modalFoto.classList.remove('oculto');
-  document.body.classList.add('modal-open');
+  
+  modalFoto.classList.remove("oculto");
+  document.body.classList.add("modal-open");
 }
 
 function ocultarModalFoto() {
   const modalFoto = document.getElementById('modal-foto');
-  modalFoto.classList.add('oculto');
-  document.body.classList.remove('modal-open');
+  modalFoto.classList.add("oculto");
+  document.body.classList.remove("modal-open");
 }
 
 // Event listeners para el modal de fotos
@@ -1125,7 +1121,7 @@ btnCrearTarea.addEventListener("click", () => {
 
   // Ocultar formulario y limpiar campo
   formOculto.style.display = "none";
-  document.getElementById("nombreTarea").value = "";
+  document.getElementById("nombreTarea").value = ``;
 
   // Actualizar la vista del perfil
   mostrarPerfilUsuario(parseInt(userId));
@@ -1168,7 +1164,7 @@ btnAddImagen.addEventListener("click",()=>{
 
     // Limpiar el formulario
     document.querySelector("#tituloImagen").value = "";
-    document.querySelector("#subirImagen").value = "";
+    document.querySelector("#subirImagen").value = ``;
 
     // Cerrar el modal
     divImagen.classList.add("oculto");
@@ -1185,8 +1181,234 @@ btnAddImagen.addEventListener("click",()=>{
 btnCancelarNuevaImagen.addEventListener("click",()=>{
   // Limpiar el formulario
   document.querySelector("#tituloImagen").value = "";
-  document.querySelector("#subirImagen").value = "";
+  document.querySelector("#subirImagen").value = ``;
   
   divImagen.classList.add("oculto");
   divImagen.classList.remove("modal-open");
+});
+
+// Funciones para el modal de modificar usuario
+function mostrarModalModificarUsuario(usuario) {
+  const modalModificarUsuario = document.getElementById('modal-modificar-usuario');
+  const form = document.getElementById('form-modificar-usuario');
+  
+  // Rellenar el formulario con los datos actuales
+  document.getElementById('mod-nombre').value = usuario.name;
+  document.getElementById('mod-email').value = usuario.email;
+  document.getElementById('mod-telefono').value = usuario.phone;
+  document.getElementById('mod-website').value = usuario.website;
+  
+  // Guardar el ID del usuario en el formulario
+  form.dataset.userId = usuario.id;
+  
+  // Mostrar el modal
+  modalModificarUsuario.classList.remove('oculto');
+  document.body.classList.add('modal-open');
+}
+
+function ocultarModalModificarUsuario() {
+  const modalModificarUsuario = document.getElementById('modal-modificar-usuario');
+  modalModificarUsuario.classList.add('oculto');
+  document.body.classList.remove('modal-open');
+}
+
+// Event listeners para el modal de modificar usuario
+document.addEventListener('DOMContentLoaded', () => {
+  const modalModificarUsuario = document.getElementById('modal-modificar-usuario');
+  const form = document.getElementById('form-modificar-usuario');
+  const btnCancelar = document.getElementById('btn-cancelar-modificar-usuario');
+  const btnCerrar = modalModificarUsuario.querySelector('.cerrar-modal');
+
+  // Evento para guardar los cambios
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const userId = parseInt(form.dataset.userId);
+    const usuario = usuariosObjetos.find(u => u.id === userId);
+    
+    if (usuario) {
+      // Actualizar los datos del usuario
+      usuario.name = document.getElementById('mod-nombre').value;
+      usuario.email = document.getElementById('mod-email').value;
+      usuario.phone = document.getElementById('mod-telefono').value;
+      usuario.website = document.getElementById('mod-website').value;
+      
+      // Actualizar la vista del perfil
+      const perfilNombre = modalUsuario.querySelector('.perfil-nombre');
+      const perfilEmail = modalUsuario.querySelector('.perfil-email');
+      const perfilTelefono = modalUsuario.querySelector('.perfil-telefono');
+      const perfilWebsite = modalUsuario.querySelector('.perfil-website');
+      
+      perfilNombre.textContent = usuario.name;
+      perfilEmail.textContent = usuario.email;
+      perfilTelefono.textContent = usuario.phone;
+      perfilWebsite.textContent = usuario.website;
+      perfilWebsite.href = usuario.website.startsWith('http') ? usuario.website : `http://${usuario.website}`;
+      
+      // Actualizar la búsqueda si hay un término de búsqueda activo
+      const searchInput = document.getElementById('buscador');
+      if (searchInput.value.trim() !== '') {
+        const searchTerm = searchInput.value.toLowerCase();
+        const resultados = usuariosObjetos.filter(user => 
+          user.name.toLowerCase().includes(searchTerm) ||
+          user.email.toLowerCase().includes(searchTerm) ||
+          user.phone.toLowerCase().includes(searchTerm) ||
+          user.website.toLowerCase().includes(searchTerm)
+        );
+        mostrarResultados(resultados, 'usuarios');
+      }
+      
+      // Cerrar el modal
+      ocultarModalModificarUsuario();
+    }
+  });
+
+  // Eventos para cerrar el modal
+  btnCancelar.addEventListener('click', ocultarModalModificarUsuario);
+  btnCerrar.addEventListener('click', ocultarModalModificarUsuario);
+  modalModificarUsuario.addEventListener('click', (e) => {
+    if (e.target === modalModificarUsuario) {
+      ocultarModalModificarUsuario();
+    }
+  });
+});
+
+// Función para convertir el título en input
+function convertirTituloEnInput(foto) {
+  const tituloFoto = document.querySelector("#titulo-foto");
+  const tituloContainer = document.querySelector(".titulo-imagen");
+  const btnEditar = tituloContainer.querySelector(".btn-editar-foto");
+  
+  // Crear el input y el botón de guardar
+  const input = document.createElement("input");
+  input.type = "text";
+  input.value = foto.title;
+  input.id = "editar-titulo-foto";
+  
+  const btnGuardar = document.createElement("button");
+  btnGuardar.textContent = "Guardar";
+  btnGuardar.classList.add("btn-guardar-titulo");
+  
+  // Ocultar el título y el botón de editar
+  tituloFoto.style.display = "none";
+  btnEditar.style.display = "none";
+  
+  // Añadir el input y el botón de guardar
+  tituloContainer.insertBefore(input, btnEditar);
+  tituloContainer.insertBefore(btnGuardar, btnEditar);
+  
+  // Enfocar el input
+  input.focus();
+  
+  // Manejar el guardado
+  btnGuardar.addEventListener("click", () => {
+    guardarTituloFoto(foto, input.value);
+  });
+  
+  // Manejar el Enter en el input
+  input.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      guardarTituloFoto(foto, input.value);
+    }
+  });
+}
+
+// Función para guardar el nuevo título
+function guardarTituloFoto(foto, nuevoTitulo) {
+  const tituloFoto = document.querySelector("#titulo-foto");
+  const tituloContainer = document.querySelector(".titulo-imagen");
+  const btnEditar = tituloContainer.querySelector(".btn-editar-foto");
+  const input = document.querySelector("#editar-titulo-foto");
+  const btnGuardar = tituloContainer.querySelector(".btn-guardar-titulo");
+  
+  // Actualizar el título en el objeto y en la vista
+  foto.title = nuevoTitulo;
+  tituloFoto.textContent = nuevoTitulo;
+  
+  // Actualizar también el título en la galería
+  const fotoGaleria = document.querySelector(`.foto[data-id="${foto.id}"] .foto-titulo`);
+  if (fotoGaleria) {
+    fotoGaleria.textContent = nuevoTitulo;
+  }
+  
+  // Actualizar la búsqueda
+  const opcionSeleccionada = document.querySelector('.search-option.selected');
+  const tipoSeleccionado = opcionSeleccionada?.dataset.type;
+  const searchInput = document.getElementById('buscador');
+  
+  if (tipoSeleccionado === 'fotos') {
+    const searchTerm = searchInput.value.toLowerCase();
+    // Si hay término de búsqueda, filtrar por él
+    if (searchTerm !== '') {
+      const resultados = photos.filter(photo => 
+        photo.title.toLowerCase().includes(searchTerm)
+      );
+      mostrarResultados(resultados, 'fotos');
+    } else {
+      // Si no hay término de búsqueda, mostrar todas las fotos
+      mostrarResultados(photos, 'fotos');
+    }
+  }
+  
+  // Restaurar la vista normal
+  tituloFoto.style.display = "block";
+  btnEditar.style.display = "block";
+  input.remove();
+  btnGuardar.remove();
+}
+
+// Event listeners para el modal de foto
+document.addEventListener("DOMContentLoaded", () => {
+  const modalFoto = document.getElementById("modal-foto");
+  const btnCerrar = modalFoto.querySelector(".cerrar-modal");
+  const btnEditar = modalFoto.querySelector(".btn-editar-foto");
+  
+  btnCerrar.addEventListener("click", () => {
+    modalFoto.classList.add("oculto");
+    document.body.classList.remove("modal-open");
+  });
+  
+  modalFoto.addEventListener("click", (e) => {
+    if (e.target === modalFoto) {
+      modalFoto.classList.add("oculto");
+      document.body.classList.remove("modal-open");
+    }
+  });
+  
+  btnEditar.addEventListener("click", () => {
+    const photoId = document.querySelector("#titulo-foto").dataset.photoId;
+    const foto = photos.find(p => p.id === parseInt(photoId));
+    if (foto) {
+      convertirTituloEnInput(foto);
+    }
+  });
+});
+
+// Funciones para el modal de añadir usuario
+function mostrarModalAddUser() {
+  const modalAddUser = document.getElementById('modal-add-user');
+  modalAddUser.classList.remove('oculto');
+  document.body.classList.add('modal-open');
+}
+
+function ocultarModalAddUser() {
+  const modalAddUser = document.getElementById('modal-add-user');
+  modalAddUser.classList.add('oculto');
+  document.body.classList.remove('modal-open');
+}
+
+// Event listeners para el modal de añadir usuario
+document.addEventListener('DOMContentLoaded', () => {
+  const btnAddUser = document.querySelector('.contenedor-add-user');
+  const btnCancelarAddUser = document.getElementById('cancelar-creacion-user');
+  const modalAddUser = document.getElementById('modal-add-user');
+
+  btnAddUser.addEventListener('click', mostrarModalAddUser);
+  
+  btnCancelarAddUser.addEventListener('click', ocultarModalAddUser);
+  
+  modalAddUser.addEventListener('click', (e) => {
+    if (e.target === modalAddUser) {
+      ocultarModalAddUser();
+    }
+  });
 });

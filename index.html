@@ -283,21 +283,58 @@
       </div>
     </div>
   </div>
-  <div id="modal-foto" class="modal-fondo oculto">
-    <div class="modal-contenido modal-foto">
+  <div id="modal-modificar-usuario" class="modal-fondo oculto">
+    <div class="modal-contenido">
       <div class="modal-header">
-        <h3 class="foto-titulo"></h3>
+        <h3>Modificar Usuario</h3>
         <button class="cerrar-modal">✕</button>
       </div>
       <div class="modal-body">
-        <img class="foto-imagen" src="" alt="">
+        <form id="form-modificar-usuario">
+          <div class="form-group">
+            <label for="mod-nombre">Nombre:</label>
+            <input type="text" id="mod-nombre" required>
+          </div>
+          <div class="form-group">
+            <label for="mod-email">Email:</label>
+            <input type="email" id="mod-email" required>
+          </div>
+          <div class="form-group">
+            <label for="mod-telefono">Teléfono:</label>
+            <input type="text" id="mod-telefono">
+          </div>
+          <div class="form-group">
+            <label for="mod-website">Sitio web:</label>
+            <input type="text" id="mod-website">
+          </div>
+          <div class="modal-botones">
+            <button type="button" id="btn-cancelar-modificar-usuario" class="btn-secundario">Cancelar</button>
+            <button type="submit" id="btn-guardar-modificar-usuario" class="btn-primario">Guardar cambios</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div id="modal-foto" class="modal-fondo oculto">
+    <div class="modal-contenido modal-foto">
+      <div class="modal-header">
+        <div class="titulo-imagen">
+          <h3 id="titulo-foto"></h3>
+          <button class="btn-editar-foto">
+            <img src="img/pencil-square-svgrepo-com.svg" alt="Editar título" class="icono-editar">
+          </button>
+        </div>
+        <button class="cerrar-modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <img class="foto-imagen" alt="">
+        <div class="info-foto">
+          <p class="foto-album">Album: <span></span></p>
+          <p class="foto-url">URL: <a target="_blank"></a></p>
+        </div>
         <button type="button" id="btn-eliminar-foto" class="btn-eliminar-foto">
           <img src="img/papelera.svg" alt="Eliminar foto" class="delete-user-icon"> Eliminar foto
         </button>
-        <div class="foto-info">
-          <p class="foto-album">Álbum: <span></span></p>
-          <p class="foto-url">URL: <a href="" target="_blank"></a></p>
-        </div>
       </div>
     </div>
   </div>
